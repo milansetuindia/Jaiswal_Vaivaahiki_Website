@@ -1,0 +1,10 @@
+:root {
+  --primary: #8B0000;
+  --secondary: #FFD700;
+
+  --white: #ffffff;
+  --black: #000000;
+  --gray: #f3f3f3;
+
+  --radius: 10px;
+}
