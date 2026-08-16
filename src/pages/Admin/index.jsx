@@ -1,24 +1,16 @@
-// src/pages/Admin/index.jsx
-
 import { useEffect, useState } from "react";
-import {
-  Link,
-  useNavigate,
-} from "react-router-dom";
-import "./Admin.css";
+import { Link } from "react-router-dom";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-function Admin() {
-  const navigate = useNavigate();
-
+function ManageBiodata() {
   const [biodatas, setBiodatas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // ======================================================
+  // ==================================================
   // FETCH BIODATA
-  // ======================================================
+  // ==================================================
 
   const fetchBiodatas = async () => {
     try {
@@ -34,14 +26,13 @@ function Admin() {
       if (!response.ok) {
         throw new Error(
           result.message ||
-            "Failed to fetch biodata."
+            "Failed to fetch biodata"
         );
       }
 
       setBiodatas(
         result.biodatas || []
       );
-
     } catch (err) {
       console.error(
         "Fetch biodata error:",
@@ -50,89 +41,52 @@ function Admin() {
 
       setError(
         err.message ||
-          "Unable to load biodata."
+          "Unable to load biodata"
       );
-
     } finally {
       setLoading(false);
     }
   };
 
-  // ======================================================
-  // LOAD BIODATA WHEN PAGE OPENS
-  // ======================================================
+  // ==================================================
+  // LOAD BIODATA
+  // ==================================================
 
   useEffect(() => {
     fetchBiodatas();
   }, []);
 
-  // ======================================================
-  // STATISTICS
-  // ======================================================
-
-  const totalBiodata =
-    biodatas.length;
-
-  const totalPhotos =
-    biodatas.filter(
-      (item) => item.photo
-    ).length;
-
-  const totalPDFs =
-    biodatas.filter(
-      (item) => item.biodataPdf
-    ).length;
-
-  // ======================================================
-  // LOGOUT
-  // ======================================================
-
-  const handleLogout = () => {
-    // Remove admin authentication data
-    localStorage.removeItem(
-      "adminToken"
-    );
-
-    localStorage.removeItem(
-      "adminUsername"
-    );
-
-    // Redirect to admin login
-    navigate(
-      "/admin/login",
-      {
-        replace: true,
-      }
-    );
-  };
-
-  // ======================================================
+  // ==================================================
   // DELETE BIODATA
-  // ======================================================
+  // ==================================================
 
-  const handleDelete = async (id) => {
-    const confirmDelete =
+  const handleDelete = async (
+    id,
+    name
+  ) => {
+    const confirmed =
       window.confirm(
-        "Are you sure you want to delete this biodata?"
+        `Are you sure you want to delete ${name}'s biodata?\n\nThis will permanently delete the biodata, photo and PDF.`
       );
 
-    if (!confirmDelete) {
+    if (!confirmed) {
       return;
     }
 
     try {
-      const response = await fetch(
-        `${API_URL}/api/biodatas/${id}`,
-        {
-          method: "DELETE",
+      const response =
+        await fetch(
+          `${API_URL}/api/biodatas/${id}`,
+          {
+            method: "DELETE",
 
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem(
-              "adminToken"
-            )}`,
-          },
-        }
-      );
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem(
+                "adminToken"
+              )}`,
+            },
+          }
+        );
 
       const result =
         await response.json();
@@ -140,7 +94,7 @@ function Admin() {
       if (!response.ok) {
         throw new Error(
           result.message ||
-            "Failed to delete biodata."
+            "Failed to delete biodata"
         );
       }
 
@@ -148,19 +102,11 @@ function Admin() {
         "Biodata deleted successfully."
       );
 
-      // Remove deleted biodata
-      // immediately from dashboard
-      setBiodatas(
-        (previous) =>
-          previous.filter(
-            (item) =>
-              item._id !== id
-          )
-      );
-
+      // Refresh the list
+      fetchBiodatas();
     } catch (err) {
       console.error(
-        "Delete biodata error:",
+        "Delete error:",
         err
       );
 
@@ -171,9 +117,41 @@ function Admin() {
     }
   };
 
-  // ======================================================
+  // ==================================================
+  // FORMAT ADDED DATE
+  // ==================================================
+
+  const formatAddedDate = (
+    date
+  ) => {
+    if (!date) {
+      return "Not available";
+    }
+
+    const parsedDate =
+      new Date(date);
+
+    if (
+      Number.isNaN(
+        parsedDate.getTime()
+      )
+    ) {
+      return "Not available";
+    }
+
+    return parsedDate.toLocaleDateString(
+      "en-IN",
+      {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }
+    );
+  };
+
+  // ==================================================
   // PAGE
-  // ======================================================
+  // ==================================================
 
   return (
     <div className="admin-page">
@@ -187,182 +165,39 @@ function Admin() {
         <div>
 
           <h1>
-            Admin Dashboard
+            Manage Biodata
           </h1>
 
           <p>
-            Jaiswal Vaivaahiki
+            Jaiswal Vaivaahiki Admin Panel
           </p>
 
         </div>
 
-        <button
+        <Link
+          to="/admin"
           className="admin-logout"
-          type="button"
-          onClick={handleLogout}
         >
-          Logout
-        </button>
-
-      </div>
-
-
-      {/* ==================================================
-          WELCOME
-      ================================================== */}
-
-      <div className="admin-welcome">
-
-        <h2>
-          Welcome, Admin
-        </h2>
-
-        <p>
-          Manage biodata profiles, photos
-          and biodata documents from this
-          dashboard.
-        </p>
-
-      </div>
-
-
-      {/* ==================================================
-          STATISTICS
-      ================================================== */}
-
-      <div className="admin-stats">
-
-        {/* Total Biodata */}
-
-        <div className="admin-stat-card">
-
-          <h3>
-            Total Biodata
-          </h3>
-
-          <p>
-            {loading
-              ? "..."
-              : totalBiodata}
-          </p>
-
-        </div>
-
-
-        {/* Total Photos */}
-
-        <div className="admin-stat-card">
-
-          <h3>
-            Total Photos
-          </h3>
-
-          <p>
-            {loading
-              ? "..."
-              : totalPhotos}
-          </p>
-
-        </div>
-
-
-        {/* Total PDFs */}
-
-        <div className="admin-stat-card">
-
-          <h3>
-            Total PDFs
-          </h3>
-
-          <p>
-            {loading
-              ? "..."
-              : totalPDFs}
-          </p>
-
-        </div>
-
-      </div>
-
-
-      {/* ==================================================
-          ERROR
-      ================================================== */}
-
-      {error && (
-        <div className="admin-error">
-          {error}
-        </div>
-      )}
-
-
-      {/* ==================================================
-          ADMIN ACTIONS
-      ================================================== */}
-
-      <div className="admin-actions">
-
-        {/* Add Biodata */}
-
-        <Link
-          to="/admin/biodata/add"
-          className="admin-action-card"
-        >
-
-          <div className="admin-action-icon">
-            +
-          </div>
-
-          <h3>
-            Add Biodata
-          </h3>
-
-          <p>
-            Upload one person's profile
-            information, one photo and one
-            biodata PDF.
-          </p>
-
-        </Link>
-
-
-        {/* Manage Biodata */}
-
-        <Link
-          to="/admin/biodata/manage"
-          className="admin-action-card"
-        >
-
-          <div className="admin-action-icon">
-            ☰
-          </div>
-
-          <h3>
-            Manage Biodata
-          </h3>
-
-          <p>
-            View, edit or delete existing
-            biodata profiles.
-          </p>
-
+          Back to Dashboard
         </Link>
 
       </div>
 
 
       {/* ==================================================
-          RECENTLY ADDED BIODATA
+          BIODATA LIST
       ================================================== */}
 
       <div className="admin-recent">
 
         <h2>
-          Recently Added Biodata
+          All Biodata
         </h2>
 
 
-        {/* Loading */}
+        {/* ==================================================
+            LOADING
+        ================================================== */}
 
         {loading && (
           <p className="admin-message">
@@ -371,147 +206,166 @@ function Admin() {
         )}
 
 
-        {/* No Biodata */}
+        {/* ==================================================
+            ERROR
+        ================================================== */}
+
+        {error && (
+          <div className="admin-error">
+            {error}
+          </div>
+        )}
+
+
+        {/* ==================================================
+            NO BIODATA
+        ================================================== */}
 
         {!loading &&
+          !error &&
           biodatas.length === 0 && (
             <p className="admin-message">
-              No biodata has been uploaded
-              yet.
+              No biodata has been uploaded yet.
             </p>
           )}
 
 
-        {/* Biodata Table */}
+        {/* ==================================================
+            BIODATA TABLE
+        ================================================== */}
 
         {!loading &&
+          !error &&
           biodatas.length > 0 && (
 
-            <div className="admin-table">
+            <div className="admin-table-wrapper">
 
-              {/* Table Header */}
+              <div className="admin-table">
 
-              <div className="admin-table-header">
+                {/* ==================================================
+                    TABLE HEADER
+                ================================================== */}
 
-                <span>
-                  Name
-                </span>
+                <div className="admin-table-header">
 
-                <span>
-                  Age
-                </span>
+                  <span>
+                    Name
+                  </span>
 
-                <span>
-                  City
-                </span>
+                  <span>
+                    Age
+                  </span>
 
-                <span>
-                  Added On
-                </span>
+                  <span>
+                    City
+                  </span>
 
-                <span>
-                  Action
-                </span>
+                  <span>
+                    Added On
+                  </span>
 
-            </div>
+                  <span>
+                    Action
+                  </span>
 
-
-              {/* MongoDB Records */}
-
-              {biodatas
-                .slice(0, 10)
-                .map((biodata) => (
-
-                  <div
-                    className="admin-table-row"
-                    key={biodata._id}
-                  >
-
-                    {/* Name */}
-
-                    <span>
-                      {biodata.name ||
-                        "Not specified"}
-                    </span>
+                </div>
 
 
-                    {/* Age */}
+                {/* ==================================================
+                    BIODATA ROWS
+                ================================================== */}
 
-                    <span>
-                      {biodata.age ||
-                        "Not specified"}
-                    </span>
+                {biodatas.map(
+                  (biodata) => (
 
+                    <div
+                      className="admin-table-row"
+                      key={
+                        biodata._id
+                      }
+                    >
 
-                    {/* City */}
+                      {/* NAME */}
 
-                    <span>
-                      {biodata.city ||
-                        "Not specified"}
-                    </span>
-
-                    <span>
-                      {biodata.createdAt
-                        ? new Date(
-                            biodata.createdAt
-                          ).toLocaleDateString(
-                            "en-IN",
-                            {
-                              day: "2-digit",
-                              month: "short",
-                              year: "numeric",
-                            }
-                          )
-                        : "Not available"}
-                    </span>
+                      <span>
+                        {biodata.name ||
+                          "Not specified"}
+                      </span>
 
 
-                    {/* Actions */}
+                      {/* AGE */}
 
-                    <div className="admin-table-actions">
-
-                      {/* VIEW */}
-
-                      <Link
-                        to={`/biodata/${biodata._id}`}
-                        className="view-btn"
-                      >
-                        View
-                      </Link>
+                      <span>
+                        {biodata.age ||
+                          "Not specified"}
+                      </span>
 
 
-                      {/* EDIT */}
+                      {/* CITY */}
 
-                      <Link
-                        to={`/admin/biodata/edit/${biodata._id}`}
-                        className="edit-btn"
-                      >
-                        Edit
-                      </Link>
+                      <span>
+                        {biodata.city ||
+                          "Not specified"}
+                      </span>
 
 
-                      {/* DELETE */}
+                      {/* ADDED ON */}
 
-                      <button
-                        type="button"
-                        className="delete-btn"
-                        onClick={() =>
-                          handleDelete(
-                            biodata._id
-                          )
-                        }
-                      >
-                        Delete
-                      </button>
+                      <span className="admin-added-date">
+                        {formatAddedDate(
+                          biodata.createdAt
+                        )}
+                      </span>
+
+
+                      {/* ACTIONS */}
+
+                      <div className="admin-table-actions">
+
+                        {/* VIEW */}
+
+                        <Link
+                          to={`/biodata/${biodata._id}`}
+                          className="view-btn"
+                        >
+                          View
+                        </Link>
+
+
+                        {/* EDIT */}
+
+                        <Link
+                          to={`/admin/biodata/edit/${biodata._id}`}
+                          className="edit-btn"
+                        >
+                          Edit
+                        </Link>
+
+
+                        {/* DELETE */}
+
+                        <button
+                          type="button"
+                          className="delete-btn"
+                          onClick={() =>
+                            handleDelete(
+                              biodata._id,
+                              biodata.name
+                            )
+                          }
+                        >
+                          Delete
+                        </button>
+
+                      </div>
 
                     </div>
+                  )
+                )}
 
-                  </div>
-
-                ))}
+              </div>
 
             </div>
-
           )}
 
       </div>
@@ -520,4 +374,4 @@ function Admin() {
   );
 }
 
-export default Admin;
+export default ManageBiodata;
