@@ -1,0 +1,544 @@
+/* ======================================================
+   BIODATA PAGE
+   Jaiswal Vaivaahiki
+====================================================== */
+
+.biodata-page {
+  width: min(1200px, 94%);
+  margin: 60px auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+
+/* ======================================================
+   PROFILE HEADER
+====================================================== */
+
+.profile-header {
+  display: flex;
+
+  gap: 40px;
+
+  align-items: center;
+
+  background: #fff;
+
+  padding: 30px;
+
+  border-radius: 15px;
+
+  box-shadow:
+    0 5px 20px rgba(0, 0, 0, 0.08);
+
+  margin-bottom: 40px;
+
+  box-sizing: border-box;
+}
+
+
+/* ======================================================
+   PROFILE PHOTO CONTAINER
+====================================================== */
+
+.profile-photo-container {
+  flex-shrink: 0;
+
+  width: 280px;
+  height: 350px;
+}
+
+.profile-photo-container img {
+  width: 280px;
+  height: 350px;
+
+  object-fit: cover;
+
+  border-radius: 15px;
+
+  display: block;
+}
+
+
+/* ======================================================
+   NO PROFILE PHOTO
+====================================================== */
+
+.no-profile-photo {
+  width: 280px;
+  height: 350px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background: #f3f3f3;
+
+  color: #777;
+
+  border-radius: 15px;
+
+  border: 1px solid #ddd;
+
+  font-size: 18px;
+}
+
+
+/* ======================================================
+   PROFILE INFORMATION
+====================================================== */
+
+.profile-info {
+  flex: 1;
+
+  min-width: 0;
+}
+
+.profile-info h1 {
+  color: #8b0000;
+
+  margin: 0 0 20px;
+
+  font-size: 42px;
+
+  word-break: break-word;
+}
+
+.profile-info p {
+  font-size: 18px;
+
+  margin: 12px 0;
+
+  line-height: 1.5;
+
+  color: #333;
+}
+
+.profile-info strong {
+  color: #222;
+}
+
+
+/* ======================================================
+   GENERAL SECTIONS
+====================================================== */
+
+.section {
+  background: #fff;
+
+  padding: 30px;
+
+  border-radius: 15px;
+
+  margin-bottom: 30px;
+
+  box-shadow:
+    0 5px 20px rgba(0, 0, 0, 0.08);
+
+  box-sizing: border-box;
+}
+
+.section h2 {
+  color: #8b0000;
+
+  margin: 0 0 20px;
+
+  font-size: 28px;
+}
+
+.section p {
+  color: #444;
+
+  line-height: 1.6;
+}
+
+
+/* ======================================================
+   DETAILS GRID
+====================================================== */
+
+.details-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 15px;
+}
+
+.details-grid p {
+  font-size: 17px;
+
+  margin: 0;
+
+  line-height: 1.6;
+}
+
+
+/* ======================================================
+   PDF DOWNLOAD BUTTON
+====================================================== */
+
+.download-btn {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 25px;
+
+  background: #8b0000;
+
+  color: white;
+
+  padding: 15px 35px;
+
+  text-decoration: none;
+
+  border-radius: 8px;
+
+  font-weight: bold;
+
+  transition:
+    background 0.3s ease,
+    transform 0.2s ease;
+
+  text-align: center;
+}
+
+.download-btn:hover {
+  background: #6d0000;
+
+  transform: translateY(-1px);
+}
+
+
+/* ======================================================
+   BACK TO SEARCH
+====================================================== */
+
+.biodata-back {
+  text-align: center;
+
+  margin: 30px 0 50px;
+}
+
+.biodata-back a {
+  display: inline-block;
+
+  color: #8b0000;
+
+  font-weight: 600;
+
+  text-decoration: none;
+
+  padding: 10px 15px;
+
+  border-radius: 6px;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.biodata-back a:hover {
+  background: #f8eeee;
+
+  color: #6d0000;
+}
+
+
+/* ======================================================
+   LOADING / ERROR / NOT FOUND
+====================================================== */
+
+.biodata-message {
+  width: min(700px, 92%);
+
+  margin: 80px auto;
+
+  padding: 40px;
+
+  background: white;
+
+  border-radius: 15px;
+
+  text-align: center;
+
+  box-shadow:
+    0 5px 20px rgba(0, 0, 0, 0.08);
+
+  box-sizing: border-box;
+}
+
+.biodata-message h2 {
+  margin: 0 0 15px;
+
+  color: #8b0000;
+}
+
+.biodata-message p {
+  color: #555;
+
+  line-height: 1.6;
+
+  margin-bottom: 20px;
+}
+
+.biodata-message a {
+  color: #8b0000;
+
+  font-weight: 600;
+
+  text-decoration: none;
+}
+
+.biodata-message a:hover {
+  text-decoration: underline;
+}
+
+.biodata-message.error h2 {
+  color: #a00000;
+}
+
+
+/* ======================================================
+   LAPTOP
+   1024px - 1365px
+====================================================== */
+
+@media (min-width: 1024px) and (max-width: 1365px) {
+
+  .biodata-page {
+    width: 94%;
+
+    margin: 50px auto;
+  }
+
+  .profile-header {
+    gap: 30px;
+
+    padding: 28px;
+  }
+
+  .profile-photo-container,
+  .profile-photo-container img,
+  .no-profile-photo {
+    width: 250px;
+    height: 320px;
+  }
+
+  .profile-info h1 {
+    font-size: 38px;
+  }
+
+}
+
+
+/* ======================================================
+   TABLET
+   768px - 1023px
+====================================================== */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+
+  .biodata-page {
+    width: 94%;
+
+    margin: 40px auto;
+
+    padding: 15px;
+  }
+
+  .profile-header {
+    gap: 25px;
+
+    padding: 25px;
+  }
+
+  .profile-photo-container,
+  .profile-photo-container img,
+  .no-profile-photo {
+    width: 220px;
+    height: 280px;
+  }
+
+  .profile-info h1 {
+    font-size: 34px;
+  }
+
+  .profile-info p {
+    font-size: 16px;
+  }
+
+  .section {
+    padding: 25px;
+  }
+
+  .section h2 {
+    font-size: 25px;
+  }
+
+}
+
+
+/* ======================================================
+   MOBILE
+   Up to 767px
+====================================================== */
+
+@media (max-width: 767px) {
+
+  .biodata-page {
+    width: 94%;
+
+    margin: 25px auto;
+
+    padding: 0;
+  }
+
+  .profile-header {
+    flex-direction: column;
+
+    gap: 25px;
+
+    align-items: center;
+
+    padding: 22px;
+
+    margin-bottom: 25px;
+  }
+
+  .profile-photo-container,
+  .profile-photo-container img,
+  .no-profile-photo {
+    width: 100%;
+
+    max-width: 300px;
+
+    height: auto;
+  }
+
+  .profile-photo-container {
+    height: auto;
+  }
+
+  .profile-photo-container img,
+  .no-profile-photo {
+    aspect-ratio: 4 / 5;
+  }
+
+  .profile-info {
+    width: 100%;
+
+    text-align: left;
+  }
+
+  .profile-info h1 {
+    font-size: 30px;
+
+    margin-bottom: 18px;
+  }
+
+  .profile-info p {
+    font-size: 16px;
+
+    margin: 10px 0;
+  }
+
+  .section {
+    padding: 22px;
+
+    margin-bottom: 20px;
+  }
+
+  .section h2 {
+    font-size: 24px;
+
+    margin-bottom: 16px;
+  }
+
+  .details-grid {
+    grid-template-columns: 1fr;
+
+    gap: 12px;
+  }
+
+  .details-grid p {
+    font-size: 16px;
+  }
+
+  .download-btn {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 14px 18px;
+
+    margin-top: 20px;
+  }
+
+  .biodata-message {
+    margin: 50px auto;
+
+    padding: 30px 20px;
+  }
+
+}
+
+
+/* ======================================================
+   SMALL MOBILE
+   Up to 400px
+====================================================== */
+
+@media (max-width: 400px) {
+
+  .biodata-page {
+    width: 96%;
+
+    margin: 20px auto;
+  }
+
+  .profile-header {
+    padding: 18px;
+
+    border-radius: 12px;
+  }
+
+  .profile-photo-container,
+  .profile-photo-container img,
+  .no-profile-photo {
+    max-width: 250px;
+  }
+
+  .profile-info h1 {
+    font-size: 27px;
+  }
+
+  .profile-info p {
+    font-size: 15px;
+  }
+
+  .section {
+    padding: 18px;
+
+    border-radius: 12px;
+  }
+
+  .section h2 {
+    font-size: 22px;
+  }
+
+  .details-grid p {
+    font-size: 15px;
+  }
+
+  .download-btn {
+    font-size: 15px;
+
+    padding: 13px 15px;
+  }
+
+}
