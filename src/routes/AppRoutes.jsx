@@ -15,7 +15,7 @@ import Gallery from "../pages/Gallery";
 import Search from "../pages/Search";
 
 import Admin from "../pages/Admin";
-import AdminLogin from "../pages/Admin/Login";
+import AdminLogin from "../pages/Admin/login";
 import AddBiodata from "../pages/Admin/AddBiodata";
 import ManageBiodata from "../pages/Admin/ManageBiodata";
 import EditBiodata from "../pages/Admin/EditBiodata";
