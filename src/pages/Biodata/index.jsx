@@ -74,6 +74,53 @@ function Biodata() {
     }
   }, [id]);
 
+  // ======================================================
+  // DOWNLOAD BIODATA PDF
+  // ======================================================
+
+  const handleDownloadPdf = async () => {
+    if (!biodata?.biodataPdf) {
+      return;
+    }
+
+    try {
+      const pdfUrl = getFileUrl(biodata.biodataPdf);
+
+      const response = await fetch(pdfUrl);
+
+      if (!response.ok) {
+        throw new Error("Failed to download PDF");
+      }
+
+      const blob = await response.blob();
+
+      const blobUrl = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+
+      link.href = blobUrl;
+      link.download = `${biodata.name || "Biodata"}-Biodata.pdf`;
+
+      document.body.appendChild(link);
+
+      link.click();
+
+      document.body.removeChild(link);
+
+      window.URL.revokeObjectURL(blobUrl);
+
+    } catch (error) {
+      console.error(
+        "PDF download error:",
+        error
+      );
+
+      alert(
+        "Unable to download the biodata PDF. Please try again."
+      );
+    }
+  };
+
 
   // ======================================================
   // LOADING
@@ -200,6 +247,15 @@ function Biodata() {
           </p>
 
           <p>
+            <strong>Annual Income:</strong>{" "}
+            {biodata.income !== null &&
+            biodata.income !== undefined &&
+            biodata.income !== ""
+              ? `₹${biodata.income} Lakh`
+              : "Not specified"}
+          </p>
+
+          <p>
             <strong>Gender:</strong>{" "}
             {biodata.gender ||
               "Not specified"}
@@ -208,6 +264,12 @@ function Biodata() {
           <p>
             <strong>Marital Status:</strong>{" "}
             {biodata.maritalStatus ||
+              "Not specified"}
+          </p>
+
+          <p>
+            <strong>Manglik Status:</strong>{" "}
+            {biodata.manglikStatus ||
               "Not specified"}
           </p>
 
@@ -323,14 +385,31 @@ function Biodata() {
 
         {biodata.biodataPdf ? (
 
-          <a
-            href={getFileUrl(biodata.biodataPdf)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="download-btn"
-          >
-            View / Download Biodata PDF
-          </a>
+          <div className="pdf-buttons">
+
+            {/* VIEW PDF */}
+
+            <a
+              href={getFileUrl(biodata.biodataPdf)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="pdf-btn view-pdf-btn"
+            >
+              View Biodata PDF
+            </a>
+
+
+            {/* DOWNLOAD PDF */}
+
+            <button
+              type="button"
+              onClick={handleDownloadPdf}
+              className="pdf-btn download-pdf-btn"
+            >
+              Download Biodata PDF
+            </button>
+
+          </div>
 
         ) : (
 
