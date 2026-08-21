@@ -11,11 +11,7 @@ function Hero() {
       }}
     >
       <div className="hero-content">
-        <h1>Find Your Perfect Life Partner</h1>
 
-        <p>
-          Trusted Matrimonial Portal for the Jaiswal Community
-        </p>
 
         <div className="hero-buttons">
           <Link to="/search" className="primary-btn">
