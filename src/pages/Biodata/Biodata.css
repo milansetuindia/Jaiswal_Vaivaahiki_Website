@@ -177,38 +177,89 @@
 
 
 /* ======================================================
-   PDF DOWNLOAD BUTTON
+   PDF BUTTONS
 ====================================================== */
 
-.download-btn {
+.pdf-buttons {
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  margin-top: 25px;
+
+  flex-wrap: wrap;
+}
+
+
+.pdf-btn {
   display: inline-flex;
 
   align-items: center;
   justify-content: center;
 
-  margin-top: 25px;
+  min-height: 50px;
 
-  background: #8b0000;
-
-  color: white;
-
-  padding: 15px 35px;
-
-  text-decoration: none;
+  padding: 14px 25px;
 
   border-radius: 8px;
 
+  font-size: 16px;
+
   font-weight: bold;
+
+  text-decoration: none;
+
+  box-sizing: border-box;
+
+  cursor: pointer;
 
   transition:
     background 0.3s ease,
     transform 0.2s ease;
-
-  text-align: center;
 }
 
-.download-btn:hover {
+
+/* ======================================================
+   VIEW PDF BUTTON
+====================================================== */
+
+.view-pdf-btn {
+  background: #8b0000;
+
+  color: white;
+
+  border: 2px solid #8b0000;
+}
+
+.view-pdf-btn:hover {
   background: #6d0000;
+
+  border-color: #6d0000;
+
+  transform: translateY(-1px);
+}
+
+
+/* ======================================================
+   DOWNLOAD PDF BUTTON
+====================================================== */
+
+.download-pdf-btn {
+  background: white;
+
+  color: #8b0000;
+
+  border: 2px solid #8b0000;
+}
+
+.download-pdf-btn:hover {
+  background: #f8eeee;
+
+  color: #6d0000;
+
+  border-color: #6d0000;
 
   transform: translateY(-1px);
 }
@@ -469,14 +520,20 @@
     font-size: 16px;
   }
 
-  .download-btn {
+  .pdf-buttons {
+    flex-direction: column;
+
+    width: 100%;
+
+    gap: 12px;
+  }
+
+  .pdf-btn {
     width: 100%;
 
     box-sizing: border-box;
 
     padding: 14px 18px;
-
-    margin-top: 20px;
   }
 
   .biodata-message {
@@ -535,7 +592,7 @@
     font-size: 15px;
   }
 
-  .download-btn {
+  .pdf-btn {
     font-size: 15px;
 
     padding: 13px 15px;
