@@ -8,6 +8,13 @@ function createBiodataDocument(data) {
 
     name: data.name,
     age: Number(data.age),
+
+    income:
+      data.income !== undefined &&
+      data.income !== ""
+        ? Number(data.income)
+        : null,
+
     gender: data.gender || "",
     city: data.city || "",
     state: data.state || "",
@@ -16,6 +23,7 @@ function createBiodataDocument(data) {
     occupation: data.occupation || "",
 
     maritalStatus: data.maritalStatus || "",
+    manglikStatus: data.manglikStatus || "",
     caste: data.caste || "",
     subCaste: data.subCaste || "",
 
