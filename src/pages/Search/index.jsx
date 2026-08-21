@@ -31,7 +31,10 @@ function Search() {
   const [gender, setGender] = useState("");
   const [ageFrom, setAgeFrom] = useState("");
   const [ageTo, setAgeTo] = useState("");
+  const [incomeFrom, setIncomeFrom] = useState("");
+  const [incomeTo, setIncomeTo] = useState("");
   const [maritalStatus, setMaritalStatus] = useState("");
+  const [manglikStatus, setManglikStatus] = useState("");
   const [education, setEducation] = useState("");
   const [occupation, setOccupation] = useState("");
   const [caste, setCaste] = useState("");
@@ -48,7 +51,10 @@ function Search() {
     setGender(searchParams.get("gender") || "");
     setAgeFrom(searchParams.get("ageFrom") || "");
     setAgeTo(searchParams.get("ageTo") || "");
+    setIncomeFrom(searchParams.get("incomeFrom") || "");
+    setIncomeTo(searchParams.get("incomeTo") || "");
     setMaritalStatus(searchParams.get("maritalStatus") || "");
+    setManglikStatus(searchParams.get("manglikStatus") || "");
     setEducation(searchParams.get("education") || "");
     setOccupation(searchParams.get("occupation") || "");
     setCaste(searchParams.get("caste") || "");
@@ -110,6 +116,14 @@ function Search() {
       ? Number(ageTo)
       : null;
 
+    const minimumIncome = incomeFrom
+      ? Number(incomeFrom)
+      : null;
+
+    const maximumIncome = incomeTo
+      ? Number(incomeTo)
+      : null;
+
     const results = biodatas.filter((person) => {
       // Search by name, education or occupation
       const matchesSearch =
@@ -134,11 +148,27 @@ function Search() {
         maximumAge === null ||
         Number(person.age) <= maximumAge;
 
+      // Minimum income
+      const matchesIncomeFrom =
+        minimumIncome === null ||
+        Number(person.income) >= minimumIncome;
+
+      // Maximum income
+      const matchesIncomeTo =
+        maximumIncome === null ||
+        Number(person.income) <= maximumIncome;
+
       // Marital status
       const matchesMaritalStatus =
         !maritalStatus ||
         person.maritalStatus?.toLowerCase() ===
           maritalStatus.toLowerCase();
+
+      // Manglik Status
+      const matchesManglikStatus =
+        !manglikStatus ||
+        person.manglikStatus?.toLowerCase() ===
+          manglikStatus.toLowerCase();
 
       // Education
       const matchesEducation =
@@ -187,7 +217,10 @@ function Search() {
         matchesGender &&
         matchesAgeFrom &&
         matchesAgeTo &&
+        matchesIncomeFrom &&
+        matchesIncomeTo &&
         matchesMaritalStatus &&
+        matchesManglikStatus &&
         matchesEducation &&
         matchesOccupation &&
         matchesCaste &&
@@ -203,7 +236,10 @@ function Search() {
     gender,
     ageFrom,
     ageTo,
+    incomeFrom,
+    incomeTo,
     maritalStatus,
+    manglikStatus,
     education,
     occupation,
     caste,
@@ -231,7 +267,10 @@ function Search() {
     setGender("");
     setAgeFrom("");
     setAgeTo("");
+    setIncomeFrom("");
+    setIncomeTo("");
     setMaritalStatus("");
+    setManglikStatus("");
     setEducation("");
     setOccupation("");
     setCaste("");
@@ -304,11 +343,11 @@ function Search() {
             </option>
 
             <option value="Male">
-              Groom
+              Male
             </option>
 
             <option value="Female">
-              Bride
+              Female
             </option>
           </select>
         </div>
@@ -361,6 +400,56 @@ function Search() {
           />
         </div>
 
+        {/* Income From */}
+
+        <div className="search-field">
+          <label htmlFor="incomeFrom">
+            Annual Income From (₹ Lakh)
+          </label>
+
+          <input
+            id="incomeFrom"
+            type="number"
+            min="0"
+            max="1000"
+            step="0.1"
+            placeholder="e.g. 5"
+            value={incomeFrom}
+            onChange={(event) => {
+              setIncomeFrom(event.target.value);
+              updateFilter(
+                "incomeFrom",
+                event.target.value
+              );
+            }}
+          />
+        </div>
+
+        {/* Income To */}
+
+        <div className="search-field">
+          <label htmlFor="incomeTo">
+            Annual Income To (₹ Lakh)
+          </label>
+
+          <input
+            id="incomeTo"
+            type="number"
+            min="0"
+            max="1000"
+            step="0.1"
+            placeholder="e.g. 20"
+            value={incomeTo}
+            onChange={(event) => {
+              setIncomeTo(event.target.value);
+              updateFilter(
+                "incomeTo",
+                event.target.value
+              );
+            }}
+          />
+        </div>
+
         {/* Marital Status */}
 
         <div className="search-field">
@@ -393,6 +482,42 @@ function Search() {
 
             <option value="Widowed">
               Widowed
+            </option>
+          </select>
+        </div>
+
+        {/* Manglik Status */}
+
+        <div className="search-field">
+          <label htmlFor="manglikStatus">
+            Manglik Status
+          </label>
+
+          <select
+            id="manglikStatus"
+            value={manglikStatus}
+            onChange={(event) => {
+              setManglikStatus(event.target.value);
+              updateFilter(
+                "manglikStatus",
+                event.target.value
+              );
+            }}
+          >
+            <option value="">
+              All
+            </option>
+
+            <option value="Yes">
+              Yes
+            </option>
+
+            <option value="No">
+              No
+            </option>
+
+            <option value="Aanshik">
+              Aanshik
             </option>
           </select>
         </div>
