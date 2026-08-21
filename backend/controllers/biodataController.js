@@ -145,12 +145,14 @@ async function uploadBiodata(
     const {
       name,
       age,
+      income,
       gender,
       city,
       state,
       education,
       occupation,
       maritalStatus,
+      manglikStatus,
       caste,
       subCaste,
     } = req.body;
@@ -256,11 +258,13 @@ async function uploadBiodata(
         name,
         age,
         gender,
+        income,
         city,
         state,
         education,
         occupation,
         maritalStatus,
+        manglikStatus,
         caste,
         subCaste,
 
@@ -502,12 +506,14 @@ async function updateBiodata(
     const {
       name,
       age,
+      income,
       gender,
       city,
       state,
       education,
       occupation,
       maritalStatus,
+      manglikStatus,
       caste,
       subCaste,
     } = req.body;
@@ -530,12 +536,19 @@ async function updateBiodata(
     const updateData = {
       name,
       age: Number(age),
+      income:
+        income !== undefined &&
+        income !== ""
+          ? Number(income)
+          : null,
       gender: gender || "",
+
       city: city || "",
       state: state || "",
       education: education || "",
       occupation: occupation || "",
       maritalStatus: maritalStatus || "",
+      manglikStatus: manglikStatus || "",
       caste: caste || "",
       subCaste: subCaste || "",
       updatedAt: new Date(),
