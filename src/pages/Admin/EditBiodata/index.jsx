@@ -28,8 +28,10 @@ function EditBiodata() {
   const [formData, setFormData] = useState({
     name: "",
     age: "",
+    income: "",
     gender: "",
     maritalStatus: "",
+    manglikStatus: "",
     caste: "",
     subCaste: "",
     city: "",
@@ -76,9 +78,12 @@ function EditBiodata() {
         setFormData({
           name: biodata.name || "",
           age: biodata.age || "",
+          income: biodata.income ?? "",
           gender: biodata.gender || "",
           maritalStatus:
             biodata.maritalStatus || "",
+          manglikStatus:
+            biodata.manglikStatus || "",
           caste: biodata.caste || "",
           subCaste: biodata.subCaste || "",
           city: biodata.city || "",
@@ -215,6 +220,11 @@ function EditBiodata() {
       );
 
       data.append(
+        "income",
+        formData.income
+      );
+
+      data.append(
         "gender",
         formData.gender
       );
@@ -222,6 +232,10 @@ function EditBiodata() {
       data.append(
         "maritalStatus",
         formData.maritalStatus
+      );
+      data.append(
+        "manglikStatus",
+        formData.manglikStatus
       );
 
       data.append("caste", formData.caste);
@@ -448,6 +462,29 @@ function EditBiodata() {
 
             </div>
 
+            {/* Annual Income */}
+
+            <div className="form-group">
+
+              <label htmlFor="income">
+                Annual Income (₹ Lakh)
+              </label>
+
+              <input
+                id="income"
+                name="income"
+                type="number"
+                min="0"
+                max="1000"
+                step="0.1"
+                placeholder="e.g. 10"
+                value={formData.income}
+                onChange={handleChange}
+                required
+              />
+
+            </div>
+
 
             {/* Gender */}
 
@@ -514,6 +551,42 @@ function EditBiodata() {
 
                 <option value="Widowed">
                   Widowed
+                </option>
+
+              </select>
+
+            </div>
+
+            {/* Manglik Status */}
+
+            <div className="form-group">
+
+              <label htmlFor="manglikStatus">
+                Manglik Status
+              </label>
+
+              <select
+                id="manglikStatus"
+                name="manglikStatus"
+                value={formData.manglikStatus}
+                onChange={handleChange}
+                required
+              >
+
+                <option value="">
+                  Select Manglik Status
+                </option>
+
+                <option value="Yes">
+                  Yes
+                </option>
+
+                <option value="No">
+                  No
+                </option>
+
+                <option value="Aanshik">
+                  Aanshik
                 </option>
 
               </select>
