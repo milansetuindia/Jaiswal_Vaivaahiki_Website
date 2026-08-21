@@ -73,10 +73,10 @@ function Contact() {
             </p>
 
             <a
-              href="mailto:milansetuindia@gmail.com"
+              href="mailto:jaiswalvaivaahiki@gmail.com"
               className="contact-link"
             >
-              milansetuindia@gmail.com
+              jaiswalvaivaahiki@gmail.com
             </a>
 
           </div>
