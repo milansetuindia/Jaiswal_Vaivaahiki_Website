@@ -9,8 +9,10 @@ function AddBiodata() {
   const [formData, setFormData] = useState({
     name: "",
     age: "",
+    income: "",
     gender: "",
     maritalStatus: "",
+    manglikStatus: "",
     caste: "",
     subCaste: "",
     city: "",
@@ -92,8 +94,10 @@ function AddBiodata() {
 
       data.append("name", formData.name);
       data.append("age", formData.age);
+      data.append("income", formData.income);
       data.append("gender", formData.gender);
       data.append("maritalStatus", formData.maritalStatus);
+      data.append("manglikStatus", formData.manglikStatus);
       data.append("caste", formData.caste);
       data.append("subCaste", formData.subCaste);
       data.append("city", formData.city);
@@ -141,8 +145,10 @@ function AddBiodata() {
       setFormData({
         name: "",
         age: "",
+        income: "",
         gender: "",
         maritalStatus: "",
+        manglikStatus: "",
         caste: "",
         subCaste: "",
         city: "",
@@ -264,6 +270,29 @@ function AddBiodata() {
 
             </div>
 
+            {/* Annual Income */}
+
+            <div className="form-group">
+
+              <label htmlFor="income">
+                Annual Income (₹ Lakh)
+              </label>
+
+              <input
+                id="income"
+                name="income"
+                type="number"
+                min="0"
+                max="1000"
+                step="0.1"
+                placeholder="e.g. 10"
+                value={formData.income}
+                onChange={handleChange}
+                required
+              />
+
+            </div>
+
 
             {/* Gender */}
 
@@ -328,6 +357,42 @@ function AddBiodata() {
 
                 <option value="Widowed">
                   Widowed
+                </option>
+
+              </select>
+
+            </div>
+
+            {/* Manglik Status */}
+
+            <div className="form-group">
+
+              <label htmlFor="manglikStatus">
+                Manglik Status
+              </label>
+
+              <select
+                id="manglikStatus"
+                name="manglikStatus"
+                value={formData.manglikStatus}
+                onChange={handleChange}
+                required
+              >
+
+                <option value="">
+                  Select Manglik Status
+                </option>
+
+                <option value="Yes">
+                  Yes
+                </option>
+
+                <option value="No">
+                  No
+                </option>
+
+                <option value="Aanshik">
+                  Aanshik
                 </option>
 
               </select>
