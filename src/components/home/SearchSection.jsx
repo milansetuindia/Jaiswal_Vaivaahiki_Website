@@ -11,7 +11,10 @@ function SearchSection() {
     gender: "",
     ageFrom: "",
     ageTo: "",
+    incomeFrom: "",
+    incomeTo: "",
     maritalStatus: "",
+    manglikStatus: "",
     education: "",
     occupation: "",
     state: "",
@@ -77,11 +80,11 @@ function SearchSection() {
             </option>
 
             <option value="Female">
-              Bride
+              Female
             </option>
 
             <option value="Male">
-              Groom
+              Male
             </option>
           </select>
         </div>
@@ -130,6 +133,50 @@ function SearchSection() {
           />
         </div>
 
+        {/* ==================================================
+            INCOME FROM
+        ================================================== */}
+
+        <div className="form-group">
+          <label htmlFor="incomeFrom">
+            Annual Income From (₹ Lakh)
+          </label>
+
+          <input
+            id="incomeFrom"
+            name="incomeFrom"
+            type="number"
+            min="0"
+            max="1000"
+            step="0.1"
+            placeholder="e.g. 5"
+            value={filters.incomeFrom}
+            onChange={handleChange}
+          />
+        </div>
+
+        {/* ==================================================
+            INCOME TO
+        ================================================== */}
+
+        <div className="form-group">
+          <label htmlFor="incomeTo">
+            Annual Income To (₹ Lakh)
+          </label>
+
+          <input
+            id="incomeTo"
+            name="incomeTo"
+            type="number"
+            min="0"
+            max="1000"
+            step="0.1"
+            placeholder="e.g. 20"
+            value={filters.incomeTo}
+            onChange={handleChange}
+          />
+        </div>
+
 
         {/* ==================================================
             MARITAL STATUS
@@ -160,6 +207,39 @@ function SearchSection() {
 
             <option value="Widowed">
               Widowed
+            </option>
+          </select>
+        </div>
+
+        {/* ==================================================
+            MANGLIK STATUS
+        ================================================== */}
+
+        <div className="form-group">
+          <label htmlFor="manglikStatus">
+            Manglik Status
+          </label>
+
+          <select
+            id="manglikStatus"
+            name="manglikStatus"
+            value={filters.manglikStatus}
+            onChange={handleChange}
+          >
+            <option value="">
+              All
+            </option>
+
+            <option value="Yes">
+              Yes
+            </option>
+
+            <option value="No">
+              No
+            </option>
+
+            <option value="Aanshik">
+              Aanshik
             </option>
           </select>
         </div>
