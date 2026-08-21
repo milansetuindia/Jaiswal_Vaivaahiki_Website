@@ -35,7 +35,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://jaiswal-milan-setu.netlify.app",
+      "https://jaiswal-vaivaahiki.netlify.app",
     ],
     credentials: true,
   })
