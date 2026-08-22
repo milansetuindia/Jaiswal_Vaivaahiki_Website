@@ -288,7 +288,6 @@ function AddBiodata() {
                 placeholder="e.g. 10"
                 value={formData.income}
                 onChange={handleChange}
-                required
               />
 
             </div>
