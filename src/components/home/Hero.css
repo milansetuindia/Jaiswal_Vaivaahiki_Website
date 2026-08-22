@@ -1,64 +1,195 @@
-.hero {
-    height: 85vh;
-    min-height: 600px;
+/* ======================================================
+   HERO
+   Jaiswal Vaivaahiki
+====================================================== */
 
-    background-size: cover;
-    background-position: center;
+.hero {
+    width: 100%;
+
+    margin: 0 auto 60px;
+
+    padding: 0;
 
     display: flex;
+
     justify-content: center;
-    align-items: center;
+}
+
+
+/* ======================================================
+   IMAGE WRAPPER
+====================================================== */
+
+.hero-image-wrapper {
+    position: relative;
+
+    width: 100%;
+
+    max-width: 1717px;
+
+    margin: 0 auto;
+
+    overflow: hidden;
 
     border-radius: 15px;
 
-    margin-bottom: 60px;
+    line-height: 0;
 }
 
-.hero-content {
-    text-align: center;
-    color: white;
-    max-width: 800px;
-    padding: 20px;
+
+/* ======================================================
+   HERO IMAGE
+====================================================== */
+
+.hero-image {
+    display: block;
+
+    width: 100%;
+
+    height: auto;
+
+    max-width: 100%;
+
+    object-fit: contain;
 }
 
-.hero-content h1 {
-    font-size: 56px;
-    margin-bottom: 25px;
-    line-height: 1.2;
+
+/* ======================================================
+   INVISIBLE CLICKABLE AREAS
+====================================================== */
+
+.hero-click {
+    position: absolute;
+
+    display: block;
+
+    z-index: 5;
+
+    background: transparent;
+
+    border: none;
+
+    cursor: pointer;
+
+    text-decoration: none;
 }
 
-.hero-content p {
-    font-size: 22px;
-    margin-bottom: 40px;
+
+/* ======================================================
+   SEARCH BIODATA CLICK AREA
+   Based on the position of the button
+   inside your 1717 × 916 image.
+====================================================== */
+
+.search-click {
+    left: 7.1%;
+    top: 67.7%;
+
+    width: 21.5%;
+    height: 10.5%;
 }
 
-.hero-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
+
+/* ======================================================
+   VIEW GALLERY CLICK AREA
+====================================================== */
+
+.gallery-click {
+    left: 29.2%;
+    top: 67.7%;
+
+    width: 21.5%;
+    height: 10.5%;
 }
 
-.primary-btn,
-.secondary-btn {
-    padding: 15px 35px;
-    border-radius: 8px;
-    font-size: 18px;
-    font-weight: bold;
-    transition: 0.3s;
+
+/* ======================================================
+   DESKTOP
+====================================================== */
+
+@media (min-width: 1200px) {
+
+    .hero-image-wrapper {
+        border-radius: 18px;
+    }
+
 }
 
-.primary-btn {
-    background: var(--secondary);
-    color: black;
+
+/* ======================================================
+   TABLET
+====================================================== */
+
+@media (max-width: 1023px) {
+
+    .hero {
+        margin-bottom: 45px;
+    }
+
+    .hero-image-wrapper {
+        width: 100%;
+
+        border-radius: 15px;
+    }
+
 }
 
-.secondary-btn {
-    border: 2px solid white;
-    color: white;
+
+/* ======================================================
+   MOBILE
+====================================================== */
+
+@media (max-width: 767px) {
+
+    .hero {
+        width: 100%;
+
+        margin-bottom: 30px;
+    }
+
+    .hero-image-wrapper {
+        width: 100%;
+
+        border-radius: 12px;
+    }
+
+    /*
+     * IMPORTANT:
+     *
+     * Do NOT use:
+     *
+     * height: 75vh;
+     * background-size: cover;
+     *
+     * here.
+     *
+     * The original image is a complete artwork.
+     * We want the entire image to remain visible.
+     */
+
+    .hero-image {
+        width: 100%;
+
+        height: auto;
+
+        object-fit: contain;
+    }
+
 }
 
-.primary-btn:hover,
-.secondary-btn:hover {
-    transform: translateY(-2px);
+
+/* ======================================================
+   SMALL MOBILE
+====================================================== */
+
+@media (max-width: 480px) {
+
+    .hero {
+        margin-bottom: 25px;
+    }
+
+    .hero-image-wrapper {
+        border-radius: 10px;
+    }
+
 }
