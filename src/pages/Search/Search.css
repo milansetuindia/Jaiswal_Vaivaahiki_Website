@@ -1,146 +1,376 @@
+/* ======================================================
+   SEARCH PAGE
+   Jaiswal Vaivaahiki
+====================================================== */
+
 .search-page {
   padding: 40px 6%;
+
   min-height: 100vh;
+
   background: #f7f7fb;
 }
 
+
+/* ======================================================
+   SEARCH HEADER
+====================================================== */
+
 .search-header {
   text-align: center;
+
   margin-bottom: 35px;
 }
 
 .search-header h1 {
   color: #a00000;
+
   font-size: 42px;
+
   margin-bottom: 10px;
 }
 
 .search-header p {
   color: #555;
+
   font-size: 18px;
 }
 
-/* Filters */
+
+/* ======================================================
+   SEARCH FILTERS
+====================================================== */
 
 .search-filters {
   background: #ffffff;
+
   padding: 25px;
+
   border-radius: 14px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+
+  box-shadow:
+    0 5px 20px rgba(0, 0, 0, 0.08);
 
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr auto;
+
+  grid-template-columns:
+    2fr 1fr 1fr auto;
+
   gap: 18px;
+
   align-items: end;
 
   margin-bottom: 40px;
 }
 
+
+/* ======================================================
+   SEARCH FILTERS HEADER
+====================================================== */
+
+.search-filters-header {
+  grid-column: 1 / -1;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 5px;
+
+  padding-bottom: 20px;
+
+  border-bottom: 1px solid #f0dddd;
+}
+
+
+/* ======================================================
+   FILTER TITLE
+====================================================== */
+
+.filters-title h2 {
+  margin: 0 0 5px;
+
+  color: #8b0000;
+
+  font-size: 24px;
+}
+
+.filters-title p {
+  margin: 0;
+
+  color: #777;
+
+  font-size: 14px;
+}
+
+
+/* ======================================================
+   BACK TO HOME BUTTON
+====================================================== */
+
+.back-home-btn {
+  flex-shrink: 0;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 11px 20px;
+
+  background: #8b0000;
+
+  color: #ffffff;
+
+  border: 2px solid #8b0000;
+
+  border-radius: 9px;
+
+  text-decoration: none;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.2s ease;
+}
+
+.back-home-btn:hover {
+  background: #ffd000;
+
+  color: #7d0000;
+
+  border-color: #ffd000;
+
+  transform: translateY(-2px);
+}
+
+
+/* ======================================================
+   SEARCH FIELD
+====================================================== */
+
 .search-field {
   display: flex;
+
   flex-direction: column;
+
   gap: 8px;
 }
 
 .search-field label {
   font-weight: 600;
+
   color: #333;
 }
 
 .search-field input,
 .search-field select {
   padding: 13px 15px;
+
   border: 1px solid #ccc;
+
   border-radius: 8px;
+
   font-size: 15px;
+
   outline: none;
+
+  background: #ffffff;
+
+  box-sizing: border-box;
+
+  width: 100%;
 }
 
 .search-field input:focus,
 .search-field select:focus {
   border-color: #a00000;
+
+  box-shadow:
+    0 0 0 2px rgba(160, 0, 0, 0.08);
 }
+
+
+/* ======================================================
+   CLEAR FILTER BUTTON
+====================================================== */
 
 .clear-filter-btn {
   border: none;
+
   background: #a00000;
+
   color: white;
+
   padding: 13px 20px;
+
   border-radius: 8px;
+
   font-size: 15px;
+
   font-weight: 600;
+
   cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    transform 0.2s ease;
 }
 
 .clear-filter-btn:hover {
   background: #800000;
+
+  transform: translateY(-2px);
 }
 
-/* Results */
+
+/* ======================================================
+   RESULTS
+====================================================== */
+
+.search-results {
+  width: 100%;
+}
 
 .results-heading {
   display: flex;
+
   justify-content: space-between;
+
   align-items: center;
+
   margin-bottom: 25px;
 }
 
 .results-heading h2 {
   color: #a00000;
+
   font-size: 30px;
+
+  margin: 0;
 }
 
 .results-heading span {
   color: #666;
 }
 
-/* Profile grid */
+
+/* ======================================================
+   PROFILE GRID
+====================================================== */
 
 .search-profile-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
   gap: 25px;
 }
 
+
+/* ======================================================
+   PROFILE CARD
+====================================================== */
+
 .search-profile-card {
   background: white;
+
   border-radius: 15px;
+
   overflow: hidden;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+
+  box-shadow:
+    0 5px 20px rgba(0, 0, 0, 0.08);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
+
+.search-profile-card:hover {
+  transform: translateY(-5px);
+
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.12);
+}
+
+
+/* ======================================================
+   PROFILE IMAGE
+====================================================== */
 
 .search-profile-image {
   position: relative;
+
   width: 100%;
+
   height: 280px;
+
   background: #eee;
 }
 
 .search-profile-image img {
   width: 100%;
+
   height: 100%;
+
   object-fit: cover;
 }
 
 .no-photo {
   height: 100%;
+
   display: flex;
+
   align-items: center;
+
   justify-content: center;
+
   color: #777;
 }
 
+
+/* ======================================================
+   PROFILE BADGE
+====================================================== */
+
 .search-badge {
   position: absolute;
+
   top: 15px;
+
   right: 15px;
+
   background: #a00000;
+
   color: white;
+
   padding: 7px 14px;
+
   border-radius: 20px;
+
   font-size: 13px;
+
   font-weight: 600;
 }
+
+
+/* ======================================================
+   PROFILE CONTENT
+====================================================== */
 
 .search-profile-content {
   padding: 22px;
@@ -148,39 +378,71 @@
 
 .search-profile-content h3 {
   color: #a00000;
+
   font-size: 24px;
-  margin-bottom: 15px;
+
+  margin: 0 0 15px;
 }
 
 .search-profile-content p {
   color: #555;
+
   margin: 10px 0;
+
   font-size: 15px;
+
+  line-height: 1.5;
 }
+
+
+/* ======================================================
+   VIEW BIODATA BUTTON
+====================================================== */
 
 .search-view-btn {
   display: block;
+
   text-align: center;
+
   margin-top: 20px;
+
   padding: 12px;
+
   background: #a00000;
+
   color: white;
+
   text-decoration: none;
+
   border-radius: 8px;
+
   font-weight: 600;
+
+  transition:
+    background 0.25s ease,
+    transform 0.2s ease;
 }
 
 .search-view-btn:hover {
   background: #800000;
+
+  transform: translateY(-2px);
 }
 
-/* Messages */
+
+/* ======================================================
+   MESSAGES
+====================================================== */
 
 .search-message {
   background: white;
+
   padding: 40px;
+
   text-align: center;
+
   border-radius: 12px;
+
   color: #555;
 }
 
@@ -188,38 +450,133 @@
   color: #a00000;
 }
 
-/* Responsive */
+
+/* ======================================================
+   TABLET
+====================================================== */
 
 @media (max-width: 1000px) {
+
   .search-filters {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns:
+      1fr 1fr;
   }
 
   .search-profile-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns:
+      repeat(2, 1fr);
   }
+
 }
 
+
+/* ======================================================
+   MOBILE
+====================================================== */
+
 @media (max-width: 650px) {
+
   .search-page {
     padding: 25px 4%;
   }
+
 
   .search-header h1 {
     font-size: 32px;
   }
 
+
+  .search-header p {
+    font-size: 16px;
+  }
+
+
   .search-filters {
     grid-template-columns: 1fr;
+
+    padding: 20px;
+
+    gap: 16px;
   }
+
+
+  /* ================================================
+     FILTER HEADER MOBILE
+  ================================================ */
+
+  .search-filters-header {
+    grid-column: 1 / -1;
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    text-align: center;
+
+    gap: 15px;
+
+    padding-bottom: 18px;
+  }
+
+
+  .filters-title h2 {
+    font-size: 22px;
+  }
+
+
+  .filters-title p {
+    font-size: 13px;
+  }
+
+
+  .back-home-btn {
+    width: 100%;
+
+    box-sizing: border-box;
+  }
+
 
   .search-profile-grid {
     grid-template-columns: 1fr;
   }
 
+
   .results-heading {
     flex-direction: column;
+
     align-items: flex-start;
+
     gap: 8px;
   }
+
+
+  .results-heading h2 {
+    font-size: 27px;
+  }
+
+}
+
+
+/* ======================================================
+   SMALL MOBILE
+====================================================== */
+
+@media (max-width: 400px) {
+
+  .search-page {
+    padding: 20px 3%;
+  }
+
+  .search-filters {
+    padding: 16px;
+  }
+
+  .search-header h1 {
+    font-size: 29px;
+  }
+
+  .search-profile-content {
+    padding: 18px;
+  }
+
 }
