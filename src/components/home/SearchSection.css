@@ -1,87 +1,353 @@
-.search-section {
-    margin: 60px 0;
-}
+/* ======================================================
+   SEARCH SECTION
+   Jaiswal Vaivaahiki
+====================================================== */
 
 .search-card {
-    background: white;
-    border-radius: 15px;
-    padding: 40px;
-    box-shadow: 0 5px 20px rgba(0,0,0,.08);
+  width: min(1200px, 94%);
+
+  margin: 20px auto 80px;
+
+  padding: 45px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border-radius: 22px;
+
+  border: 1px solid #f0dddd;
+
+  box-shadow:
+    0 12px 35px rgba(80, 0, 0, 0.08);
+
+  position: relative;
+
+  overflow: hidden;
 }
+
+
+/* ======================================================
+   DECORATIVE TOP LINE
+====================================================== */
+
+.search-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 5px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #8b0000,
+      #d6a64f,
+      #8b0000
+    );
+}
+
+
+/* ======================================================
+   HEADING
+====================================================== */
 
 .search-card h2 {
-    text-align: center;
-    color: var(--primary);
-    margin-bottom: 10px;
-    font-size: 34px;
+  text-align: center;
+
+  color: #7d0000;
+
+  font-size: 38px;
+
+  line-height: 1.2;
+
+  margin: 0 0 12px;
 }
 
-.search-card p {
-    text-align: center;
-    color: #666;
-    margin-bottom: 35px;
+.search-card h2::after {
+  content: "";
+
+  display: block;
+
+  width: 65px;
+  height: 3px;
+
+  background: #d6a64f;
+
+  margin: 15px auto 0;
+
+  border-radius: 10px;
 }
+
+
+/* ======================================================
+   DESCRIPTION
+====================================================== */
+
+.search-card > p {
+  text-align: center;
+
+  color: #666;
+
+  font-size: 17px;
+
+  line-height: 1.6;
+
+  max-width: 700px;
+
+  margin: 18px auto 38px;
+}
+
+
+/* ======================================================
+   SEARCH FORM
+====================================================== */
 
 .search-form {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 22px;
 }
+
+
+/* ======================================================
+   FORM GROUP
+====================================================== */
 
 .form-group {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+
+  flex-direction: column;
 }
 
+
+/* ======================================================
+   LABEL
+====================================================== */
+
 .form-group label {
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #333;
+  margin-bottom: 8px;
+
+  color: #333;
+
+  font-size: 14px;
+
+  font-weight: 700;
 }
+
+
+/* ======================================================
+   INPUTS / SELECTS
+====================================================== */
 
 .form-group input,
 .form-group select {
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 15px;
+  width: 100%;
+
+  box-sizing: border-box;
+
+  min-height: 46px;
+
+  padding: 11px 13px;
+
+  background: #fffdfd;
+
+  color: #333;
+
+  border: 1px solid #ddd0d0;
+
+  border-radius: 9px;
+
+  font-size: 15px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
 }
+
+
+/* ======================================================
+   PLACEHOLDER
+====================================================== */
+
+.form-group input::placeholder {
+  color: #999;
+}
+
+
+/* ======================================================
+   FOCUS
+====================================================== */
 
 .form-group input:focus,
 .form-group select:focus {
-    outline: none;
-    border-color: var(--primary);
+  outline: none;
+
+  border-color: #8b0000;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 0 0 3px rgba(139, 0, 0, 0.08);
 }
 
+
+/* ======================================================
+   SEARCH BUTTON
+====================================================== */
+
 .search-btn {
-    margin: 35px auto 0;
-    display: block;
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 15px 45px;
-    font-size: 18px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: .3s;
+  grid-column: 1 / -1;
+
+  justify-self: center;
+
+  min-width: 220px;
+
+  margin-top: 12px;
+
+  padding: 14px 40px;
+
+  background: #8b0000;
+
+  color: #ffffff;
+
+  border: 2px solid #8b0000;
+
+  border-radius: 9px;
+
+  font-size: 17px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.2s ease,
+    box-shadow 0.25s ease;
 }
 
 .search-btn:hover {
-    background: #6d0000;
+  background: #6d0000;
+
+  border-color: #6d0000;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px rgba(109, 0, 0, 0.18);
 }
 
-@media (max-width: 992px) {
-    .search-form {
-        grid-template-columns: repeat(2, 1fr);
-    }
+.search-btn:active {
+  transform: translateY(0);
 }
 
-@media (max-width: 600px) {
-    .search-form {
-        grid-template-columns: 1fr;
-    }
 
-    .search-card {
-        padding: 25px;
-    }
+/* ======================================================
+   TABLET
+====================================================== */
+
+@media (max-width: 1000px) {
+
+  .search-card {
+    padding: 35px;
+  }
+
+  .search-form {
+    grid-template-columns:
+      repeat(2, 1fr);
+
+    gap: 20px;
+  }
+
+}
+
+
+/* ======================================================
+   MOBILE
+====================================================== */
+
+@media (max-width: 650px) {
+
+  .search-card {
+    width: 94%;
+
+    margin: 15px auto 50px;
+
+    padding: 32px 20px;
+
+    border-radius: 18px;
+  }
+
+  .search-card h2 {
+    font-size: 30px;
+  }
+
+  .search-card > p {
+    font-size: 15px;
+
+    margin-bottom: 30px;
+  }
+
+  .search-form {
+    grid-template-columns: 1fr;
+
+    gap: 17px;
+  }
+
+  .form-group label {
+    font-size: 14px;
+  }
+
+  .form-group input,
+  .form-group select {
+    min-height: 48px;
+
+    font-size: 16px;
+  }
+
+  .search-btn {
+    width: 100%;
+
+    min-width: 0;
+
+    margin-top: 8px;
+
+    padding: 14px 20px;
+
+    font-size: 16px;
+  }
+
+}
+
+
+/* ======================================================
+   SMALL MOBILE
+====================================================== */
+
+@media (max-width: 400px) {
+
+  .search-card {
+    width: 96%;
+
+    padding: 28px 16px;
+  }
+
+  .search-card h2 {
+    font-size: 27px;
+  }
+
+  .search-card > p {
+    font-size: 14px;
+  }
+
 }
