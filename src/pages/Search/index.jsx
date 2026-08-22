@@ -45,7 +45,10 @@ function Search() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Read filters from URL
+  // ======================================================
+  // READ FILTERS FROM URL
+  // ======================================================
+
   useEffect(() => {
     setSearch(searchParams.get("search") || "");
     setGender(searchParams.get("gender") || "");
@@ -53,8 +56,12 @@ function Search() {
     setAgeTo(searchParams.get("ageTo") || "");
     setIncomeFrom(searchParams.get("incomeFrom") || "");
     setIncomeTo(searchParams.get("incomeTo") || "");
-    setMaritalStatus(searchParams.get("maritalStatus") || "");
-    setManglikStatus(searchParams.get("manglikStatus") || "");
+    setMaritalStatus(
+      searchParams.get("maritalStatus") || ""
+    );
+    setManglikStatus(
+      searchParams.get("manglikStatus") || ""
+    );
     setEducation(searchParams.get("education") || "");
     setOccupation(searchParams.get("occupation") || "");
     setCaste(searchParams.get("caste") || "");
@@ -63,7 +70,10 @@ function Search() {
     setCity(searchParams.get("city") || "");
   }, [searchParams]);
 
-  // Fetch biodata from MongoDB
+  // ======================================================
+  // FETCH BIODATA
+  // ======================================================
+
   useEffect(() => {
     const fetchBiodatas = async () => {
       try {
@@ -75,21 +85,32 @@ function Search() {
         );
 
         if (!response.ok) {
-          throw new Error("Failed to fetch biodata");
+          throw new Error(
+            "Failed to fetch biodata"
+          );
         }
 
         const data = await response.json();
 
         if (data.success) {
-          setBiodatas(data.biodatas || []);
+          setBiodatas(
+            data.biodatas || []
+          );
         } else {
           throw new Error(
-            data.message || "Failed to fetch biodata"
+            data.message ||
+              "Failed to fetch biodata"
           );
         }
       } catch (err) {
-        console.error("Search fetch error:", err);
-        setError("Unable to load biodata.");
+        console.error(
+          "Search fetch error:",
+          err
+        );
+
+        setError(
+          "Unable to load biodata."
+        );
       } finally {
         setLoading(false);
       }
@@ -98,15 +119,31 @@ function Search() {
     fetchBiodatas();
   }, []);
 
-  // Filter biodata
+  // ======================================================
+  // FILTER BIODATA
+  // ======================================================
+
   useEffect(() => {
-    const searchText = search.trim().toLowerCase();
-    const educationText = education.trim().toLowerCase();
-    const occupationText = occupation.trim().toLowerCase();
-    const casteText = caste.trim().toLowerCase();
-    const subCasteText = subCaste.trim().toLowerCase();
-    const stateText = state.trim().toLowerCase();
-    const cityText = city.trim().toLowerCase();
+    const searchText =
+      search.trim().toLowerCase();
+
+    const educationText =
+      education.trim().toLowerCase();
+
+    const occupationText =
+      occupation.trim().toLowerCase();
+
+    const casteText =
+      caste.trim().toLowerCase();
+
+    const subCasteText =
+      subCaste.trim().toLowerCase();
+
+    const stateText =
+      state.trim().toLowerCase();
+
+    const cityText =
+      city.trim().toLowerCase();
 
     const minimumAge = ageFrom
       ? Number(ageFrom)
@@ -124,111 +161,124 @@ function Search() {
       ? Number(incomeTo)
       : null;
 
-    const results = biodatas.filter((person) => {
-      // Search by name, education or occupation
-      const matchesSearch =
-        !searchText ||
-        person.name?.toLowerCase().includes(searchText) ||
-        person.education?.toLowerCase().includes(searchText) ||
-        person.occupation?.toLowerCase().includes(searchText);
+    const results = biodatas.filter(
+      (person) => {
 
-      // Gender
-      const matchesGender =
-        !gender ||
-        person.gender?.toLowerCase() ===
-          gender.toLowerCase();
+        // Search by name, education or occupation
+        const matchesSearch =
+          !searchText ||
+          person.name
+            ?.toLowerCase()
+            .includes(searchText) ||
+          person.education
+            ?.toLowerCase()
+            .includes(searchText) ||
+          person.occupation
+            ?.toLowerCase()
+            .includes(searchText);
 
-      // Minimum age
-      const matchesAgeFrom =
-        minimumAge === null ||
-        Number(person.age) >= minimumAge;
+        // Gender
+        const matchesGender =
+          !gender ||
+          person.gender?.toLowerCase() ===
+            gender.toLowerCase();
 
-      // Maximum age
-      const matchesAgeTo =
-        maximumAge === null ||
-        Number(person.age) <= maximumAge;
+        // Minimum age
+        const matchesAgeFrom =
+          minimumAge === null ||
+          Number(person.age) >= minimumAge;
 
-      // Minimum income
-      const matchesIncomeFrom =
-        minimumIncome === null ||
-        Number(person.income) >= minimumIncome;
+        // Maximum age
+        const matchesAgeTo =
+          maximumAge === null ||
+          Number(person.age) <= maximumAge;
 
-      // Maximum income
-      const matchesIncomeTo =
-        maximumIncome === null ||
-        Number(person.income) <= maximumIncome;
+        // Minimum income
+        const matchesIncomeFrom =
+          minimumIncome === null ||
+          Number(person.income) >=
+            minimumIncome;
 
-      // Marital status
-      const matchesMaritalStatus =
-        !maritalStatus ||
-        person.maritalStatus?.toLowerCase() ===
-          maritalStatus.toLowerCase();
+        // Maximum income
+        const matchesIncomeTo =
+          maximumIncome === null ||
+          Number(person.income) <=
+            maximumIncome;
 
-      // Manglik Status
-      const matchesManglikStatus =
-        !manglikStatus ||
-        person.manglikStatus?.toLowerCase() ===
-          manglikStatus.toLowerCase();
+        // Marital status
+        const matchesMaritalStatus =
+          !maritalStatus ||
+          person.maritalStatus
+            ?.toLowerCase() ===
+            maritalStatus.toLowerCase();
 
-      // Education
-      const matchesEducation =
-        !educationText ||
-        person.education
-          ?.toLowerCase()
-          .includes(educationText);
+        // Manglik status
+        const matchesManglikStatus =
+          !manglikStatus ||
+          person.manglikStatus
+            ?.toLowerCase() ===
+            manglikStatus.toLowerCase();
 
-      // Occupation
-      const matchesOccupation =
-        !occupationText ||
-        person.occupation
-          ?.toLowerCase()
-          .includes(occupationText);
+        // Education
+        const matchesEducation =
+          !educationText ||
+          person.education
+            ?.toLowerCase()
+            .includes(educationText);
 
-      // State
-      const matchesState =
-        !stateText ||
-        person.state
-          ?.toLowerCase()
-          .includes(stateText);
+        // Occupation
+        const matchesOccupation =
+          !occupationText ||
+          person.occupation
+            ?.toLowerCase()
+            .includes(occupationText);
 
-      // City
-      const matchesCity =
-        !cityText ||
-        person.city
-          ?.toLowerCase()
-          .includes(cityText);
+        // State
+        const matchesState =
+          !stateText ||
+          person.state
+            ?.toLowerCase()
+            .includes(stateText);
 
-      // Caste
-      const matchesCaste =
-        !casteText ||
-        person.caste
-          ?.toLowerCase()
-          === casteText;
+        // City
+        const matchesCity =
+          !cityText ||
+          person.city
+            ?.toLowerCase()
+            .includes(cityText);
 
-      // Sub-caste
-      const matchesSubCaste =
-        !subCasteText ||
-        person.subCaste
-          ?.toLowerCase()
-          .includes(subCasteText);
+        // Caste
+        const matchesCaste =
+          !casteText ||
+          person.caste
+            ?.toLowerCase() ===
+            casteText;
 
-      return (
-        matchesSearch &&
-        matchesGender &&
-        matchesAgeFrom &&
-        matchesAgeTo &&
-        matchesIncomeFrom &&
-        matchesIncomeTo &&
-        matchesMaritalStatus &&
-        matchesManglikStatus &&
-        matchesEducation &&
-        matchesOccupation &&
-        matchesCaste &&
-        matchesSubCaste &&
-        matchesState &&
-        matchesCity
-      );
-    });
+        // Sub-caste
+        const matchesSubCaste =
+          !subCasteText ||
+          person.subCaste
+            ?.toLowerCase()
+            .includes(subCasteText);
+
+        return (
+          matchesSearch &&
+          matchesGender &&
+          matchesAgeFrom &&
+          matchesAgeTo &&
+          matchesIncomeFrom &&
+          matchesIncomeTo &&
+          matchesMaritalStatus &&
+          matchesManglikStatus &&
+          matchesEducation &&
+          matchesOccupation &&
+          matchesCaste &&
+          matchesSubCaste &&
+          matchesState &&
+          matchesCity
+        );
+      }
+    );
 
     setFilteredBiodatas(results);
   }, [
@@ -249,18 +299,34 @@ function Search() {
     biodatas,
   ]);
 
-  // Update URL whenever filters change
-  const updateFilter = (name, value) => {
-    const params = new URLSearchParams(searchParams);
+  // ======================================================
+  // UPDATE URL FILTER
+  // ======================================================
+
+  const updateFilter = (
+    name,
+    value
+  ) => {
+    const params =
+      new URLSearchParams(
+        searchParams
+      );
 
     if (value.trim() === "") {
       params.delete(name);
     } else {
-      params.set(name, value);
+      params.set(
+        name,
+        value
+      );
     }
 
     setSearchParams(params);
   };
+
+  // ======================================================
+  // CLEAR FILTERS
+  // ======================================================
 
   const clearFilters = () => {
     setSearch("");
@@ -281,26 +347,77 @@ function Search() {
     setSearchParams({});
   };
 
+  // ======================================================
+  // PAGE
+  // ======================================================
+
   return (
     <div className="search-page">
 
-      {/* Header */}
+      {/* ==================================================
+          HEADER
+      ================================================== */}
 
       <div className="search-header">
-        <h1>Search Biodata</h1>
+
+        <h1>
+          Search Biodata
+        </h1>
 
         <p>
-          Find suitable profiles from Jaiswal Vaivaahiki.
+          Find suitable profiles from
+          Jaiswal Vaivaahiki.
         </p>
+
       </div>
 
-      {/* Search Filters */}
+
+      {/* ==================================================
+          SEARCH FILTERS
+      ================================================== */}
 
       <div className="search-filters">
 
-        {/* General Search */}
+        {/* ==================================================
+            SEARCH CARD HEADER
+        ================================================== */}
+
+        <div className="search-filters-header">
+
+          <div className="filters-title">
+
+            <h2>
+              Search Filters
+            </h2>
+
+            <p>
+              Refine your search to find
+              suitable profiles.
+            </p>
+
+          </div>
+
+
+          {/* ==================================================
+              BACK TO HOME
+          ================================================== */}
+
+          <Link
+            to="/"
+            className="back-home-btn"
+          >
+            ← Back to Home
+          </Link>
+
+        </div>
+
+
+        {/* ==================================================
+            GENERAL SEARCH
+        ================================================== */}
 
         <div className="search-field">
+
           <label htmlFor="search">
             Search
           </label>
@@ -311,18 +428,28 @@ function Search() {
             placeholder="Name, education or occupation"
             value={search}
             onChange={(event) => {
-              setSearch(event.target.value);
+
+              setSearch(
+                event.target.value
+              );
+
               updateFilter(
                 "search",
                 event.target.value
               );
+
             }}
           />
+
         </div>
 
-        {/* Gender */}
+
+        {/* ==================================================
+            GENDER
+        ================================================== */}
 
         <div className="search-field">
+
           <label htmlFor="gender">
             Gender
           </label>
@@ -331,13 +458,19 @@ function Search() {
             id="gender"
             value={gender}
             onChange={(event) => {
-              setGender(event.target.value);
+
+              setGender(
+                event.target.value
+              );
+
               updateFilter(
                 "gender",
                 event.target.value
               );
+
             }}
           >
+
             <option value="">
               All
             </option>
@@ -349,12 +482,18 @@ function Search() {
             <option value="Female">
               Female
             </option>
+
           </select>
+
         </div>
 
-        {/* Age From */}
+
+        {/* ==================================================
+            AGE FROM
+        ================================================== */}
 
         <div className="search-field">
+
           <label htmlFor="ageFrom">
             Age From
           </label>
@@ -367,18 +506,28 @@ function Search() {
             placeholder="18"
             value={ageFrom}
             onChange={(event) => {
-              setAgeFrom(event.target.value);
+
+              setAgeFrom(
+                event.target.value
+              );
+
               updateFilter(
                 "ageFrom",
                 event.target.value
               );
+
             }}
           />
+
         </div>
 
-        {/* Age To */}
+
+        {/* ==================================================
+            AGE TO
+        ================================================== */}
 
         <div className="search-field">
+
           <label htmlFor="ageTo">
             Age To
           </label>
@@ -391,18 +540,28 @@ function Search() {
             placeholder="35"
             value={ageTo}
             onChange={(event) => {
-              setAgeTo(event.target.value);
+
+              setAgeTo(
+                event.target.value
+              );
+
               updateFilter(
                 "ageTo",
                 event.target.value
               );
+
             }}
           />
+
         </div>
 
-        {/* Income From */}
+
+        {/* ==================================================
+            ANNUAL INCOME FROM
+        ================================================== */}
 
         <div className="search-field">
+
           <label htmlFor="incomeFrom">
             Annual Income From (₹ Lakh)
           </label>
@@ -416,18 +575,28 @@ function Search() {
             placeholder="e.g. 5"
             value={incomeFrom}
             onChange={(event) => {
-              setIncomeFrom(event.target.value);
+
+              setIncomeFrom(
+                event.target.value
+              );
+
               updateFilter(
                 "incomeFrom",
                 event.target.value
               );
+
             }}
           />
+
         </div>
 
-        {/* Income To */}
+
+        {/* ==================================================
+            ANNUAL INCOME TO
+        ================================================== */}
 
         <div className="search-field">
+
           <label htmlFor="incomeTo">
             Annual Income To (₹ Lakh)
           </label>
@@ -441,18 +610,28 @@ function Search() {
             placeholder="e.g. 20"
             value={incomeTo}
             onChange={(event) => {
-              setIncomeTo(event.target.value);
+
+              setIncomeTo(
+                event.target.value
+              );
+
               updateFilter(
                 "incomeTo",
                 event.target.value
               );
+
             }}
           />
+
         </div>
 
-        {/* Marital Status */}
+
+        {/* ==================================================
+            MARITAL STATUS
+        ================================================== */}
 
         <div className="search-field">
+
           <label htmlFor="maritalStatus">
             Marital Status
           </label>
@@ -461,13 +640,19 @@ function Search() {
             id="maritalStatus"
             value={maritalStatus}
             onChange={(event) => {
-              setMaritalStatus(event.target.value);
+
+              setMaritalStatus(
+                event.target.value
+              );
+
               updateFilter(
                 "maritalStatus",
                 event.target.value
               );
+
             }}
           >
+
             <option value="">
               All
             </option>
@@ -483,12 +668,18 @@ function Search() {
             <option value="Widowed">
               Widowed
             </option>
+
           </select>
+
         </div>
 
-        {/* Manglik Status */}
+
+        {/* ==================================================
+            MANGLIK STATUS
+        ================================================== */}
 
         <div className="search-field">
+
           <label htmlFor="manglikStatus">
             Manglik Status
           </label>
@@ -497,13 +688,19 @@ function Search() {
             id="manglikStatus"
             value={manglikStatus}
             onChange={(event) => {
-              setManglikStatus(event.target.value);
+
+              setManglikStatus(
+                event.target.value
+              );
+
               updateFilter(
                 "manglikStatus",
                 event.target.value
               );
+
             }}
           >
+
             <option value="">
               All
             </option>
@@ -519,12 +716,18 @@ function Search() {
             <option value="Aanshik">
               Aanshik
             </option>
+
           </select>
+
         </div>
 
-        {/* Education */}
+
+        {/* ==================================================
+            EDUCATION
+        ================================================== */}
 
         <div className="search-field">
+
           <label htmlFor="education">
             Education
           </label>
@@ -535,18 +738,28 @@ function Search() {
             placeholder="e.g. B.Tech"
             value={education}
             onChange={(event) => {
-              setEducation(event.target.value);
+
+              setEducation(
+                event.target.value
+              );
+
               updateFilter(
                 "education",
                 event.target.value
               );
+
             }}
           />
+
         </div>
 
-        {/* Occupation */}
+
+        {/* ==================================================
+            OCCUPATION
+        ================================================== */}
 
         <div className="search-field">
+
           <label htmlFor="occupation">
             Occupation
           </label>
@@ -557,18 +770,28 @@ function Search() {
             placeholder="e.g. Software Engineer"
             value={occupation}
             onChange={(event) => {
-              setOccupation(event.target.value);
+
+              setOccupation(
+                event.target.value
+              );
+
               updateFilter(
                 "occupation",
                 event.target.value
               );
+
             }}
           />
+
         </div>
 
-        {/* State */}
+
+        {/* ==================================================
+            STATE
+        ================================================== */}
 
         <div className="search-field">
+
           <label htmlFor="state">
             State
           </label>
@@ -579,18 +802,28 @@ function Search() {
             placeholder="e.g. Bihar"
             value={state}
             onChange={(event) => {
-              setState(event.target.value);
+
+              setState(
+                event.target.value
+              );
+
               updateFilter(
                 "state",
                 event.target.value
               );
+
             }}
           />
+
         </div>
 
-        {/* City */}
+
+        {/* ==================================================
+            CITY
+        ================================================== */}
 
         <div className="search-field">
+
           <label htmlFor="city">
             City
           </label>
@@ -601,16 +834,25 @@ function Search() {
             placeholder="e.g. Patna"
             value={city}
             onChange={(event) => {
-              setCity(event.target.value);
+
+              setCity(
+                event.target.value
+              );
+
               updateFilter(
                 "city",
                 event.target.value
               );
+
             }}
           />
+
         </div>
 
-        {/* Caste */}
+
+        {/* ==================================================
+            CASTE
+        ================================================== */}
 
         <div className="search-field">
 
@@ -622,12 +864,16 @@ function Search() {
             id="caste"
             value={caste}
             onChange={(event) => {
-              setCaste(event.target.value);
+
+              setCaste(
+                event.target.value
+              );
 
               updateFilter(
                 "caste",
                 event.target.value
               );
+
             }}
           >
 
@@ -651,7 +897,10 @@ function Search() {
 
         </div>
 
-        {/* Sub-caste */}
+
+        {/* ==================================================
+            SUB-CASTE
+        ================================================== */}
 
         <div className="search-field">
 
@@ -665,18 +914,25 @@ function Search() {
             placeholder="Enter sub-caste"
             value={subCaste}
             onChange={(event) => {
-              setSubCaste(event.target.value);
+
+              setSubCaste(
+                event.target.value
+              );
 
               updateFilter(
                 "subCaste",
                 event.target.value
               );
+
             }}
           />
 
         </div>
 
-        {/* Clear */}
+
+        {/* ==================================================
+            CLEAR FILTERS
+        ================================================== */}
 
         <button
           type="button"
@@ -688,11 +944,15 @@ function Search() {
 
       </div>
 
-      {/* Results */}
+
+      {/* ==================================================
+          RESULTS
+      ================================================== */}
 
       <div className="search-results">
 
         <div className="results-heading">
+
           <h2>
             Biodata Profiles
           </h2>
@@ -703,9 +963,13 @@ function Search() {
               ? "s"
               : ""}
           </span>
+
         </div>
 
-        {/* Loading */}
+
+        {/* ==================================================
+            LOADING
+        ================================================== */}
 
         {loading && (
           <div className="search-message">
@@ -713,7 +977,10 @@ function Search() {
           </div>
         )}
 
-        {/* Error */}
+
+        {/* ==================================================
+            ERROR
+        ================================================== */}
 
         {error && !loading && (
           <div className="search-message error">
@@ -721,7 +988,10 @@ function Search() {
           </div>
         )}
 
-        {/* No Results */}
+
+        {/* ==================================================
+            NO RESULTS
+        ================================================== */}
 
         {!loading &&
           !error &&
@@ -731,112 +1001,138 @@ function Search() {
             </div>
           )}
 
-        {/* Results */}
+
+        {/* ==================================================
+            RESULTS
+        ================================================== */}
 
         {!loading &&
           !error &&
           filteredBiodatas.length > 0 && (
+
             <div className="search-profile-grid">
 
-              {filteredBiodatas.map((person) => (
+              {filteredBiodatas.map(
+                (person) => (
 
-                <div
-                  className="search-profile-card"
-                  key={person._id}
-                >
+                  <div
+                    className="search-profile-card"
+                    key={person._id}
+                  >
 
-                  <div className="search-profile-image">
+                    {/* PROFILE IMAGE */}
 
-                    {person.photo ? (
-                      <img
-                        src={getFileUrl(person.photo)}
-                        alt={person.name}
-                      />
-                    ) : (
-                      <div className="no-photo">
-                        No Photo
-                      </div>
-                    )}
+                    <div className="search-profile-image">
 
-                    <span className="search-badge">
-                      {person.gender === "Female"
-                        ? "Bride"
-                        : "Groom"}
-                    </span>
+                      {person.photo ? (
+
+                        <img
+                          src={getFileUrl(
+                            person.photo
+                          )}
+                          alt={person.name}
+                        />
+
+                      ) : (
+
+                        <div className="no-photo">
+                          No Photo
+                        </div>
+
+                      )}
+
+                      <span className="search-badge">
+
+                        {person.gender ===
+                        "Female"
+                          ? "Bride"
+                          : "Groom"}
+
+                      </span>
+
+                    </div>
+
+
+                    {/* PROFILE CONTENT */}
+
+                    <div className="search-profile-content">
+
+                      <h3>
+                        {person.name}
+                      </h3>
+
+                      <p>
+                        🎂 <strong>Age:</strong>{" "}
+                        {person.age} Years
+                      </p>
+
+                      <p>
+                        🎓 <strong>Education:</strong>{" "}
+                        {person.education ||
+                          "Not specified"}
+                      </p>
+
+                      <p>
+                        💼 <strong>Occupation:</strong>{" "}
+                        {person.occupation ||
+                          "Not specified"}
+                      </p>
+
+                      <p>
+                        📍 <strong>City:</strong>{" "}
+                        {person.city ||
+                          "Not specified"}
+                      </p>
+
+                      <p>
+                        🧬 <strong>Caste:</strong>{" "}
+                        {person.caste ||
+                          "Not specified"}
+                      </p>
+
+                      <p>
+                        🔹 <strong>Sub-caste:</strong>{" "}
+                        {person.subCaste ||
+                          "Not specified"}
+                      </p>
+
+                      <p>
+                        📅 <strong>Added:</strong>{" "}
+
+                        {person.createdAt
+                          ? new Date(
+                              person.createdAt
+                            ).toLocaleDateString(
+                              "en-IN",
+                              {
+                                day: "2-digit",
+                                month: "short",
+                                year: "numeric",
+                              }
+                            )
+                          : "Date not available"}
+
+                      </p>
+
+
+                      {/* VIEW BIODATA */}
+
+                      <Link
+                        to={`/biodata/${person._id}`}
+                        className="search-view-btn"
+                      >
+                        View Biodata
+                      </Link>
+
+                    </div>
 
                   </div>
 
-                  <div className="search-profile-content">
-
-                    <h3>
-                      {person.name}
-                    </h3>
-
-                    <p>
-                      🎂 <strong>Age:</strong>{" "}
-                      {person.age} Years
-                    </p>
-
-                    <p>
-                      🎓 <strong>Education:</strong>{" "}
-                      {person.education ||
-                        "Not specified"}
-                    </p>
-
-                    <p>
-                      💼 <strong>Occupation:</strong>{" "}
-                      {person.occupation ||
-                        "Not specified"}
-                    </p>
-
-                    <p>
-                      📍 <strong>City:</strong>{" "}
-                      {person.city ||
-                        "Not specified"}
-                    </p>
-
-                    <p>
-                      🧬 <strong>Caste:</strong>{" "}
-                      {person.caste ||
-                        "Not specified"}
-                    </p>
-
-                    <p>
-                      🔹 <strong>Sub-caste:</strong>{" "}
-                      {person.subCaste ||
-                        "Not specified"}
-                    </p>
-
-                    <p>
-                      📅 <strong>Added:</strong>{" "}
-                      {person.createdAt
-                        ? new Date(
-                            person.createdAt
-                          ).toLocaleDateString(
-                            "en-IN",
-                            {
-                              day: "2-digit",
-                              month: "short",
-                              year: "numeric",
-                            }
-                          )
-                        : "Date not available"}
-                    </p>
-
-                    <Link
-                      to={`/biodata/${person._id}`}
-                      className="search-view-btn"
-                    >
-                      View Biodata
-                    </Link>
-
-                  </div>
-
-                </div>
-
-              ))}
+                )
+              )}
 
             </div>
+
           )}
 
       </div>
@@ -846,5 +1142,3 @@ function Search() {
 }
 
 export default Search;
-
-
