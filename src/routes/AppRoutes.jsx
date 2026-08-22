@@ -26,9 +26,13 @@ import NotFound from "../pages/NotFound";
 import Contact from "../pages/Contact";
 import Biodata from "../pages/Biodata";
 
+import Privacy from "../pages/Privacy";
+import Terms from "../pages/Terms";
+
 function AppRoutes() {
   return (
     <BrowserRouter>
+
       <Routes>
 
         {/* =========================================
@@ -76,6 +80,16 @@ function AppRoutes() {
         />
 
         <Route
+          path="/privacy"
+          element={<Privacy />}
+        />
+
+        <Route
+          path="/terms"
+          element={<Terms />}
+        />
+
+        <Route
           path="/biodata/:id"
           element={<Biodata />}
         />
@@ -96,7 +110,9 @@ function AppRoutes() {
             PROTECTED ADMIN ROUTES
         ========================================= */}
 
-        <Route element={<ProtectedAdminRoute />}>
+        <Route
+          element={<ProtectedAdminRoute />}
+        >
 
           <Route
             path="/admin"
@@ -131,6 +147,7 @@ function AppRoutes() {
         />
 
       </Routes>
+
     </BrowserRouter>
   );
 }
