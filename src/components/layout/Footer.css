@@ -1,7 +1,316 @@
-.footer {
-    background: var(--primary);
-    color: white;
-    text-align: center;
-    padding: 20px;
+/* ======================================================
+   FOOTER
+   Jaiswal Vaivaahiki
+====================================================== */
+
+.site-footer {
+  position: relative;
+
+  margin-top: 80px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #6d0000,
+      #8b0000,
+      #6d0000
+    );
+
+  color: white;
+
+  overflow: hidden;
+}
+
+
+/* ======================================================
+   DECORATIVE TOP BORDER
+====================================================== */
+
+.site-footer::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 5px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #ffd000,
+      #d6a64f,
+      #ffd000,
+      #d6a64f,
+      #ffd000
+    );
+}
+
+
+/* ======================================================
+   DECORATIVE SYMBOL
+====================================================== */
+
+.footer-decoration {
+  position: absolute;
+
+  top: 20px;
+  right: 45px;
+
+  color: #ffd000;
+
+  font-size: 55px;
+
+  opacity: 0.25;
+}
+
+
+/* ======================================================
+   FOOTER CONTAINER
+====================================================== */
+
+.footer-container {
+  width: min(1200px, 94%);
+
+  margin: 0 auto;
+
+  padding: 65px 0 45px;
+
+  display: grid;
+
+  grid-template-columns:
+    1.5fr
+    1fr
+    1fr
+    1.3fr;
+
+  gap: 45px;
+}
+
+
+/* ======================================================
+   BRAND
+====================================================== */
+
+.footer-brand h2 {
+  margin: 0 0 18px;
+
+  color: #ffd000;
+
+  font-size: 30px;
+
+  line-height: 1.2;
+}
+
+.footer-brand p {
+  max-width: 330px;
+
+  margin: 0;
+
+  color:
+    rgba(255, 255, 255, 0.85);
+
+  font-size: 15px;
+
+  line-height: 1.7;
+}
+
+
+/* ======================================================
+   HEART / SYMBOL
+====================================================== */
+
+.footer-symbol {
+  margin-top: 20px;
+
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background: #ffd000;
+
+  color: #7d0000;
+
+  border-radius: 50%;
+
+  font-size: 19px;
+
+  font-weight: bold;
+
+  box-shadow:
+    0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+
+/* ======================================================
+   COLUMNS
+====================================================== */
+
+.footer-column h3 {
+  margin: 0 0 20px;
+
+  color: #ffd000;
+
+  font-size: 18px;
+
+  font-weight: 800;
+}
+
+
+/* ======================================================
+   LINKS
+====================================================== */
+
+.footer-links {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+.footer-links a {
+  color:
+    rgba(255, 255, 255, 0.85);
+
+  text-decoration: none;
+
+  font-size: 15px;
+
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.footer-links a:hover {
+  color: #ffd000;
+
+  transform: translateX(4px);
+}
+
+
+/* ======================================================
+   COMMUNITY TEXT
+====================================================== */
+
+.footer-community-text {
+  max-width: 270px;
+
+  margin: 0 0 18px;
+
+  color:
+    rgba(255, 255, 255, 0.85);
+
+  font-size: 15px;
+
+  line-height: 1.7;
+}
+
+
+/* ======================================================
+   COMMUNITY DECORATION
+====================================================== */
+
+.footer-heart {
+  display: inline-block;
+
+  color: #f5d98b;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.5px;
+}
+
+
+/* ======================================================
+   BOTTOM
+====================================================== */
+
+.footer-bottom {
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.15);
+
+  text-align: center;
+
+  padding: 20px;
+
+  background:
+    rgba(0, 0, 0, 0.12);
+}
+
+.footer-bottom p {
+  margin: 0;
+
+  color:
+    rgba(255, 255, 255, 0.75);
+
+  font-size: 13px;
+}
+
+
+/* ======================================================
+   TABLET
+====================================================== */
+
+@media (max-width: 900px) {
+
+  .footer-container {
+    grid-template-columns:
+      repeat(2, 1fr);
+
+    gap: 40px 30px;
+  }
+
+}
+
+
+/* ======================================================
+   MOBILE
+====================================================== */
+
+@media (max-width: 600px) {
+
+  .site-footer {
     margin-top: 50px;
+  }
+
+  .footer-container {
+    width: 90%;
+
+    padding: 50px 0 35px;
+
+    grid-template-columns: 1fr;
+
+    gap: 35px;
+  }
+
+  .footer-brand h2 {
+    font-size: 27px;
+  }
+
+  .footer-decoration {
+    right: 20px;
+
+    font-size: 40px;
+  }
+
+  .footer-bottom {
+    padding: 18px 15px;
+  }
+
+  .footer-bottom p {
+    font-size: 12px;
+
+    line-height: 1.6;
+  }
+
 }
