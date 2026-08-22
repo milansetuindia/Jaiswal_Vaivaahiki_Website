@@ -163,7 +163,7 @@ function Contact() {
             </p>
 
             <a
-              href="mailto:milansetuindia@gmail.com"
+              href="mailto:jaiswalvaivaahiki@gmail.com"
               className="support-button"
             >
               Email Us
