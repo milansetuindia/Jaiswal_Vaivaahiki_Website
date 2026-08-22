@@ -1,149 +1,408 @@
-.latest-section{
-    margin:80px 0;
+/* ======================================================
+   LATEST PROFILES
+   Jaiswal Vaivaahiki
+====================================================== */
+
+.latest-profiles {
+  width: min(1200px, 94%);
+  margin: 0 auto 80px;
+  padding: 70px 20px;
+  box-sizing: border-box;
 }
 
-.latest-section h2{
-    text-align:center;
-    color:var(--primary);
-    font-size:42px;
-    margin-bottom:50px;
+
+/* ======================================================
+   SECTION HEADING
+====================================================== */
+
+.latest-profiles > h2 {
+  text-align: center;
+
+  color: #7d0000;
+
+  font-size: 40px;
+
+  line-height: 1.2;
+
+  margin: 0 0 50px;
+
+  position: relative;
 }
 
-.profile-grid{
+.latest-profiles > h2::after {
+  content: "";
 
-    display:grid;
+  display: block;
 
-    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  width: 70px;
+  height: 3px;
 
-    gap:35px;
+  background: #d6a64f;
+
+  margin: 18px auto 0;
+
+  border-radius: 10px;
 }
 
-.profile-card{
 
-    background:#fff;
+/* ======================================================
+   PROFILE GRID
+====================================================== */
 
-    border-radius:18px;
+.profile-grid {
+  display: grid;
 
-    overflow:hidden;
+  grid-template-columns:
+    repeat(3, 1fr);
 
-    box-shadow:0 8px 25px rgba(0,0,0,.08);
-
-    transition:.35s;
+  gap: 28px;
 }
 
-.profile-card:hover{
 
-    transform:translateY(-10px);
+/* ======================================================
+   PROFILE CARD
+====================================================== */
 
-    box-shadow:0 15px 35px rgba(0,0,0,.15);
+.profile-card {
+  background: #ffffff;
+
+  border-radius: 18px;
+
+  overflow: hidden;
+
+  border: 1px solid #f0dddd;
+
+  box-shadow:
+    0 8px 25px rgba(80, 0, 0, 0.08);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
 }
 
-.profile-image{
+.profile-card:hover {
+  transform: translateY(-8px);
 
-    position:relative;
+  border-color: #d6a64f;
+
+  box-shadow:
+    0 18px 40px rgba(80, 0, 0, 0.14);
 }
 
-.profile-image img{
 
-    width:100%;
+/* ======================================================
+   PROFILE IMAGE
+====================================================== */
 
-    height:360px;
+.profile-image {
+  position: relative;
 
-    object-fit:cover;
+  overflow: hidden;
+
+  background: #f6eeee;
 }
 
-.badge{
+.profile-image img {
+  display: block;
 
-    position:absolute;
+  width: 100%;
 
-    top:15px;
+  height: 340px;
 
-    right:15px;
+  object-fit: cover;
 
-    background:#8B0000;
-
-    color:#fff;
-
-    padding:8px 18px;
-
-    border-radius:30px;
-
-    font-size:14px;
-
-    font-weight:bold;
+  transition:
+    transform 0.5s ease;
 }
 
-.profile-content{
-
-    padding:25px;
+.profile-card:hover .profile-image img {
+  transform: scale(1.04);
 }
 
-.profile-content h3{
 
-    color:#8B0000;
+/* ======================================================
+   IMAGE OVERLAY
+====================================================== */
 
-    font-size:28px;
+.profile-image::after {
+  content: "";
 
-    margin-bottom:18px;
+  position: absolute;
 
-    text-align:center;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 80px;
+
+  background:
+    linear-gradient(
+      transparent,
+      rgba(0, 0, 0, 0.18)
+    );
+
+  pointer-events: none;
 }
 
-.profile-info{
 
-    display:flex;
+/* ======================================================
+   BRIDE / GROOM BADGE
+====================================================== */
 
-    flex-direction:column;
+.badge {
+  position: absolute;
 
-    gap:12px;
+  top: 16px;
+  right: 16px;
 
-    margin-bottom:25px;
+  z-index: 2;
+
+  background: #8b0000;
+
+  color: #ffffff;
+
+  padding: 8px 17px;
+
+  border-radius: 30px;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.3px;
+
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.18);
 }
 
-.profile-info p{
 
-    font-size:16px;
+/* ======================================================
+   PROFILE CONTENT
+====================================================== */
 
-    color:#444;
+.profile-content {
+  padding: 25px;
 }
 
-.view-btn{
 
-    display:block;
+/* ======================================================
+   PROFILE NAME
+====================================================== */
 
-    text-align:center;
+.profile-content h3 {
+  color: #7d0000;
 
-    background:#8B0000;
+  font-size: 25px;
 
-    color:#fff;
+  line-height: 1.3;
 
-    text-decoration:none;
+  margin: 0 0 20px;
 
-    padding:15px;
+  text-align: center;
 
-    border-radius:10px;
-
-    font-size:18px;
-
-    font-weight:bold;
-
-    transition:.3s;
+  word-break: break-word;
 }
 
-.view-btn:hover{
 
-    background:#6e0000;
+/* ======================================================
+   PROFILE INFORMATION
+====================================================== */
+
+.profile-info {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 11px;
+
+  margin-bottom: 24px;
 }
 
-@media(max-width:768px){
+.profile-info p {
+  margin: 0;
 
-    .profile-image img{
+  color: #555;
 
-        height:300px;
-    }
+  font-size: 15px;
 
-    .latest-section h2{
+  line-height: 1.5;
+}
 
-        font-size:34px;
-    }
+.profile-info strong {
+  color: #333;
+}
+
+
+/* ======================================================
+   VIEW BUTTON
+====================================================== */
+
+.view-btn {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  background: #8b0000;
+
+  color: #ffffff;
+
+  text-decoration: none;
+
+  padding: 13px 18px;
+
+  border-radius: 9px;
+
+  font-size: 16px;
+
+  font-weight: 700;
+
+  border: 2px solid #8b0000;
+
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.2s ease;
+}
+
+.view-btn:hover {
+  background: #6d0000;
+
+  border-color: #6d0000;
+
+  transform: translateY(-2px);
+}
+
+
+/* ======================================================
+   LOADING / ERROR / EMPTY
+====================================================== */
+
+.loading-message,
+.error-message,
+.empty-message {
+  text-align: center;
+
+  color: #666;
+
+  font-size: 17px;
+
+  padding: 30px;
+}
+
+.error-message {
+  color: #a00000;
+}
+
+
+/* ======================================================
+   TABLET
+====================================================== */
+
+@media (max-width: 1000px) {
+
+  .latest-profiles {
+    padding: 60px 15px;
+  }
+
+  .profile-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+
+    gap: 22px;
+  }
+
+  .latest-profiles > h2 {
+    font-size: 35px;
+  }
+
+}
+
+
+/* ======================================================
+   MOBILE
+====================================================== */
+
+@media (max-width: 650px) {
+
+  .latest-profiles {
+    width: 94%;
+
+    padding: 45px 5px;
+
+    margin-bottom: 50px;
+  }
+
+  .latest-profiles > h2 {
+    font-size: 29px;
+
+    margin-bottom: 35px;
+  }
+
+  .profile-grid {
+    grid-template-columns: 1fr;
+
+    gap: 20px;
+  }
+
+  .profile-card {
+    max-width: 430px;
+
+    width: 100%;
+
+    margin: 0 auto;
+  }
+
+  .profile-image img {
+    height: 330px;
+  }
+
+  .profile-content {
+    padding: 22px;
+  }
+
+  .profile-content h3 {
+    font-size: 23px;
+  }
+
+}
+
+
+/* ======================================================
+   SMALL MOBILE
+====================================================== */
+
+@media (max-width: 400px) {
+
+  .latest-profiles {
+    width: 96%;
+  }
+
+  .latest-profiles > h2 {
+    font-size: 26px;
+  }
+
+  .profile-image img {
+    height: 300px;
+  }
+
+  .profile-content {
+    padding: 19px;
+  }
+
+  .profile-info p {
+    font-size: 14px;
+  }
+
+  .view-btn {
+    font-size: 15px;
+
+    padding: 12px 15px;
+  }
+
 }
