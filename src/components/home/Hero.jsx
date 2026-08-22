@@ -1,28 +1,37 @@
+// src/components/home/Hero.jsx
+
 import "./Hero.css";
 import { Link } from "react-router-dom";
 import heroImage from "../../assets/images/hero.png";
 
 function Hero() {
   return (
-    <section
-      className="hero"
-      style={{
-        backgroundImage: `linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.55)), url(${heroImage})`,
-      }}
-    >
-      <div className="hero-content">
+    <section className="hero">
 
+      <div className="hero-image-wrapper">
+        <img
+          src={heroImage}
+          alt="Jaiswal Vaivaahiki - Matrimonial Portal"
+          className="hero-image"
+        />
 
-        <div className="hero-buttons">
-          <Link to="/search" className="primary-btn">
-            Search Biodata
-          </Link>
+        {/* Invisible clickable areas over the buttons
+            already present inside hero.png */}
 
-          <Link to="/gallery" className="secondary-btn">
-            View Gallery
-          </Link>
-        </div>
+        <Link
+          to="/search"
+          className="hero-click search-click"
+          aria-label="Search Biodata"
+        />
+
+        <Link
+          to="/gallery"
+          className="hero-click gallery-click"
+          aria-label="View Gallery"
+        />
+
       </div>
+
     </section>
   );
 }
