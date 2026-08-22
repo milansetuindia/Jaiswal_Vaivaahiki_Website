@@ -1,0 +1,486 @@
+/* ======================================================
+   HOME CTA
+   Jaiswal Vaivaahiki
+====================================================== */
+
+.home-cta {
+  width: min(1200px, 94%);
+
+  margin: 0 auto 80px;
+
+  padding: 80px 30px;
+
+  box-sizing: border-box;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7d0000,
+      #a00000,
+      #7d0000
+    );
+
+  border-radius: 24px;
+
+  position: relative;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 15px 40px rgba(80, 0, 0, 0.18);
+}
+
+
+/* ======================================================
+   DECORATIVE FLIPPING ICON
+====================================================== */
+
+.cta-flip-icon {
+  width: 100px;
+
+  height: 100px;
+
+  margin: 0 auto 25px;
+
+  perspective: 800px;
+
+  position: relative;
+
+  z-index: 3;
+}
+
+
+/* ======================================================
+   ICON INNER
+====================================================== */
+
+.cta-flip-icon-inner {
+  width: 100%;
+
+  height: 100%;
+
+  position: relative;
+
+  transform-style: preserve-3d;
+
+  transition:
+    transform 0.7s
+    cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+
+/* ======================================================
+   ONLY ICON FLIPS
+====================================================== */
+
+.home-cta:hover .cta-flip-icon-inner {
+  transform: rotateY(180deg);
+}
+
+
+/* ======================================================
+   ICON FRONT + BACK
+====================================================== */
+
+.cta-icon-front,
+.cta-icon-back {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+
+  height: 100%;
+
+  border-radius: 50%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  box-sizing: border-box;
+
+  font-size: 38px;
+
+  backface-visibility: hidden;
+
+  -webkit-backface-visibility: hidden;
+
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+
+/* ======================================================
+   ICON FRONT
+   MAROON
+====================================================== */
+
+.cta-icon-front {
+  background: #8b0000;
+
+  color: #ffd000;
+
+  border: 3px solid #f5d98b;
+
+  transform: rotateY(0deg);
+}
+
+
+/* ======================================================
+   ICON BACK
+   GOLDEN
+====================================================== */
+
+.cta-icon-back {
+  background:
+    linear-gradient(
+      135deg,
+      #ffd000,
+      #f5c400
+    );
+
+  color: #8b0000;
+
+  border: 3px solid #ffffff;
+
+  transform: rotateY(180deg);
+
+  box-shadow:
+    0 10px 28px rgba(255, 208, 0, 0.3);
+}
+
+
+/* ======================================================
+   DECORATION
+====================================================== */
+
+.cta-decoration {
+  position: absolute;
+
+  color: #d6a64f;
+
+  font-size: 80px;
+
+  opacity: 0.25;
+
+  pointer-events: none;
+}
+
+
+.cta-decoration-left {
+  left: 35px;
+
+  top: 25px;
+}
+
+
+.cta-decoration-right {
+  right: 35px;
+
+  bottom: 10px;
+}
+
+
+/* ======================================================
+   CONTENT
+====================================================== */
+
+.cta-content {
+  max-width: 750px;
+
+  margin: 0 auto;
+
+  text-align: center;
+
+  position: relative;
+
+  z-index: 2;
+}
+
+
+/* ======================================================
+   EYEBROW
+====================================================== */
+
+.cta-eyebrow {
+  display: inline-block;
+
+  color: #f5d98b;
+
+  font-size: 13px;
+
+  font-weight: 800;
+
+  letter-spacing: 2px;
+
+  margin-bottom: 15px;
+}
+
+
+/* ======================================================
+   HEADING
+====================================================== */
+
+.cta-content h2 {
+  margin: 0 0 18px;
+
+  color: #ffffff;
+
+  font-size: 42px;
+
+  line-height: 1.2;
+}
+
+
+.cta-content h2 span {
+  color: #f5d98b;
+}
+
+
+/* ======================================================
+   DESCRIPTION
+====================================================== */
+
+.cta-content p {
+  max-width: 650px;
+
+  margin: 0 auto 32px;
+
+  color:
+    rgba(255, 255, 255, 0.9);
+
+  font-size: 17px;
+
+  line-height: 1.7;
+}
+
+
+/* ======================================================
+   BUTTONS
+====================================================== */
+
+.cta-buttons {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 15px;
+
+  flex-wrap: wrap;
+}
+
+
+.cta-primary,
+.cta-secondary {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-width: 180px;
+
+  padding: 14px 25px;
+
+  border-radius: 9px;
+
+  font-size: 16px;
+
+  font-weight: 700;
+
+  text-decoration: none;
+
+  transition:
+    transform 0.2s ease,
+    background 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+
+/* ======================================================
+   PRIMARY BUTTON
+====================================================== */
+
+.cta-primary {
+  background: #f5d98b;
+
+  color: #6d0000;
+
+  border: 2px solid #f5d98b;
+}
+
+
+.cta-primary:hover {
+  background: #ffffff;
+
+  border-color: #ffffff;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+
+/* ======================================================
+   SECONDARY BUTTON
+====================================================== */
+
+.cta-secondary {
+  background: transparent;
+
+  color: #ffffff;
+
+  border:
+    2px solid
+    rgba(255, 255, 255, 0.8);
+}
+
+
+.cta-secondary:hover {
+  background: #ffffff;
+
+  color: #7d0000;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+
+/* ======================================================
+   MOBILE
+====================================================== */
+
+@media (max-width: 600px) {
+
+  .home-cta {
+    width: 94%;
+
+    padding: 55px 20px;
+
+    margin-bottom: 50px;
+
+    border-radius: 19px;
+  }
+
+
+  /* ----------------------------------------------
+     FLIPPING ICON
+  ---------------------------------------------- */
+
+  .cta-flip-icon {
+    width: 85px;
+
+    height: 85px;
+
+    margin-bottom: 22px;
+  }
+
+
+  .cta-icon-front,
+  .cta-icon-back {
+    font-size: 32px;
+  }
+
+
+  /* ----------------------------------------------
+     HEADING
+  ---------------------------------------------- */
+
+  .cta-content h2 {
+    font-size: 30px;
+  }
+
+
+  /* ----------------------------------------------
+     DESCRIPTION
+  ---------------------------------------------- */
+
+  .cta-content p {
+    font-size: 15px;
+  }
+
+
+  /* ----------------------------------------------
+     BUTTONS
+  ---------------------------------------------- */
+
+  .cta-buttons {
+    flex-direction: column;
+
+    align-items: center;
+  }
+
+
+  .cta-primary,
+  .cta-secondary {
+    width: 90%;
+
+    max-width: 320px;
+
+    box-sizing: border-box;
+  }
+
+
+  /* ----------------------------------------------
+     DECORATIONS
+  ---------------------------------------------- */
+
+  .cta-decoration {
+    font-size: 55px;
+  }
+
+}
+
+
+/* ======================================================
+   SMALL MOBILE
+====================================================== */
+
+@media (max-width: 400px) {
+
+  .home-cta {
+    padding:
+      45px 18px;
+  }
+
+
+  .cta-flip-icon {
+    width: 75px;
+
+    height: 75px;
+  }
+
+
+  .cta-icon-front,
+  .cta-icon-back {
+    font-size: 28px;
+  }
+
+
+  .cta-content h2 {
+    font-size: 27px;
+  }
+
+
+  .cta-content p {
+    font-size: 14px;
+
+    line-height: 1.6;
+  }
+
+
+  .cta-primary,
+  .cta-secondary {
+    width: 100%;
+
+    font-size: 15px;
+  }
+
+}

@@ -1,0 +1,456 @@
+/* ======================================================
+   TRUST / STATISTICS
+   Jaiswal Vaivaahiki
+====================================================== */
+
+.trust-stats {
+  width: min(1200px, 94%);
+
+  margin: 0 auto 70px;
+
+  padding: 65px 30px;
+
+  box-sizing: border-box;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fffaf5,
+      #ffffff
+    );
+
+  border-radius: 22px;
+
+  border: 1px solid #f0dddd;
+
+  box-shadow:
+    0 10px 30px rgba(80, 0, 0, 0.06);
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+
+/* ======================================================
+   DECORATIVE CORNERS
+====================================================== */
+
+.trust-stats::before {
+  content: "✦";
+
+  position: absolute;
+
+  top: 18px;
+  left: 25px;
+
+  color: #d6a64f;
+
+  font-size: 25px;
+
+  opacity: 0.7;
+}
+
+
+.trust-stats::after {
+  content: "✦";
+
+  position: absolute;
+
+  bottom: 18px;
+  right: 25px;
+
+  color: #d6a64f;
+
+  font-size: 25px;
+
+  opacity: 0.7;
+}
+
+
+/* ======================================================
+   HEADING
+====================================================== */
+
+.trust-heading {
+  max-width: 720px;
+
+  margin: 0 auto 45px;
+
+  text-align: center;
+}
+
+
+.trust-eyebrow {
+  display: inline-block;
+
+  color: #a00000;
+
+  font-size: 13px;
+
+  font-weight: 800;
+
+  letter-spacing: 2px;
+
+  margin-bottom: 12px;
+}
+
+
+.trust-heading h2 {
+  margin: 0 0 15px;
+
+  color: #7d0000;
+
+  font-size: 36px;
+
+  line-height: 1.25;
+}
+
+
+.trust-heading p {
+  margin: 0;
+
+  color: #666;
+
+  font-size: 17px;
+
+  line-height: 1.7;
+}
+
+
+/* ======================================================
+   STAT CONTAINER
+====================================================== */
+
+.stats-container {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 18px;
+}
+
+
+/* ======================================================
+   STAT CARD
+====================================================== */
+
+.stat-card {
+  text-align: center;
+
+  padding: 25px 15px;
+
+  background: #ffffff;
+
+  border-radius: 15px;
+
+  border: 1px solid #f0dddd;
+
+  transition:
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+
+/* ======================================================
+   CARD HOVER
+   CARD ITSELF DOES NOT MOVE
+====================================================== */
+
+.stat-card:hover {
+  border-color: #d6a64f;
+
+  box-shadow:
+    0 10px 25px rgba(80, 0, 0, 0.1);
+}
+
+
+/* ======================================================
+   ICON FLIP CONTAINER
+====================================================== */
+
+.stat-icon-flip {
+  width: 72px;
+
+  height: 72px;
+
+  margin: 0 auto 15px;
+
+  perspective: 700px;
+
+  position: relative;
+}
+
+
+/* ======================================================
+   ICON INNER
+====================================================== */
+
+.stat-icon-inner {
+  width: 100%;
+
+  height: 100%;
+
+  position: relative;
+
+  transform-style: preserve-3d;
+
+  transition:
+    transform 0.7s
+    cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+
+/* ======================================================
+   FLIP ONLY THE ICON
+====================================================== */
+
+.stat-card:hover .stat-icon-inner {
+  transform: rotateY(180deg);
+}
+
+
+/* ======================================================
+   ICON FRONT + BACK
+====================================================== */
+
+.stat-icon-face {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+
+  height: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  box-sizing: border-box;
+
+  font-size: 30px;
+
+  backface-visibility: hidden;
+
+  -webkit-backface-visibility: hidden;
+
+  box-shadow:
+    0 6px 18px rgba(80, 0, 0, 0.08);
+}
+
+
+/* ======================================================
+   ICON FRONT
+   LIGHT CREAM
+====================================================== */
+
+.stat-icon-front {
+  background: #fff5e1;
+
+  color: #7d0000;
+
+  border: 2px solid #f5dfb0;
+
+  transform: rotateY(0deg);
+}
+
+
+/* ======================================================
+   ICON BACK
+   GOLDEN
+====================================================== */
+
+.stat-icon-back {
+  background:
+    linear-gradient(
+      135deg,
+      #ffd000,
+      #f5c400
+    );
+
+  color: #8b0000;
+
+  border: 2px solid #ffd000;
+
+  transform: rotateY(180deg);
+
+  box-shadow:
+    0 8px 22px rgba(255, 190, 0, 0.25);
+}
+
+
+/* ======================================================
+   NUMBER
+====================================================== */
+
+.stat-number {
+  color: #8b0000;
+
+  font-size: 32px;
+
+  font-weight: 800;
+
+  line-height: 1.2;
+
+  margin-bottom: 7px;
+}
+
+
+/* ======================================================
+   LABEL
+====================================================== */
+
+.stat-label {
+  color: #666;
+
+  font-size: 14px;
+
+  font-weight: 600;
+}
+
+
+/* ======================================================
+   TABLET
+====================================================== */
+
+@media (max-width: 900px) {
+
+  .trust-stats {
+    padding: 55px 25px;
+  }
+
+
+  .stats-container {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+
+  .trust-heading h2 {
+    font-size: 32px;
+  }
+
+}
+
+
+/* ======================================================
+   MOBILE
+====================================================== */
+
+@media (max-width: 600px) {
+
+  .trust-stats {
+    width: 94%;
+
+    padding: 45px 18px;
+
+    margin-bottom: 50px;
+
+    border-radius: 18px;
+  }
+
+
+  .trust-heading {
+    margin-bottom: 30px;
+  }
+
+
+  .trust-heading h2 {
+    font-size: 27px;
+  }
+
+
+  .trust-heading p {
+    font-size: 15px;
+  }
+
+
+  .stats-container {
+    grid-template-columns:
+      repeat(2, 1fr);
+
+    gap: 12px;
+  }
+
+
+  .stat-card {
+    padding: 22px 10px;
+  }
+
+
+  /* ----------------------------------------------
+     MOBILE ICON
+  ---------------------------------------------- */
+
+  .stat-icon-flip {
+    width: 62px;
+
+    height: 62px;
+
+    margin-bottom: 12px;
+  }
+
+
+  .stat-icon-face {
+    font-size: 26px;
+  }
+
+
+  .stat-number {
+    font-size: 27px;
+  }
+
+
+  .stat-label {
+    font-size: 13px;
+  }
+
+}
+
+
+/* ======================================================
+   SMALL MOBILE
+====================================================== */
+
+@media (max-width: 400px) {
+
+  .trust-stats {
+    width: 96%;
+
+    padding: 40px 12px;
+  }
+
+
+  .stats-container {
+    gap: 10px;
+  }
+
+
+  .stat-card {
+    padding: 20px 8px;
+  }
+
+
+  .stat-icon-flip {
+    width: 58px;
+
+    height: 58px;
+  }
+
+
+  .stat-icon-face {
+    font-size: 24px;
+  }
+
+
+  .stat-number {
+    font-size: 24px;
+  }
+
+}
