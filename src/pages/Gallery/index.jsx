@@ -1,6 +1,12 @@
+// src/pages/Gallery/Gallery.jsx
+
 import "./Gallery.css";
 
 function Gallery() {
+
+  // ======================================================
+  // CLOUDINARY GALLERY IMAGES
+  // ======================================================
 
   const galleryImages = [
     {
@@ -29,10 +35,19 @@ function Gallery() {
     },
   ];
 
+
+  // ======================================================
+  // PAGE
+  // ======================================================
+
   return (
     <div className="gallery-page">
 
-      {/* Header */}
+
+      {/* ==================================================
+          HEADER
+      ================================================== */}
+
       <div className="gallery-header">
 
         <h1>
@@ -47,23 +62,33 @@ function Gallery() {
       </div>
 
 
-      {/* Gallery */}
+      {/* ==================================================
+          GALLERY
+      ================================================== */}
+
       <div className="gallery-container">
 
         <div className="gallery-grid">
 
           {galleryImages.map((image, index) => (
+
             <div
               className="gallery-card"
-              key={index}
+              key={image.src}
             >
+
+              {/* IMAGE */}
 
               <img
                 src={image.src}
                 alt={image.title}
                 className="gallery-image"
                 loading="lazy"
+                decoding="async"
               />
+
+
+              {/* OVERLAY */}
 
               <div className="gallery-overlay">
 
@@ -74,6 +99,7 @@ function Gallery() {
               </div>
 
             </div>
+
           ))}
 
         </div>
