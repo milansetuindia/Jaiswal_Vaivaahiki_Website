@@ -84,10 +84,14 @@ function TrustStats() {
 
         <p>
           Explore matrimonial profiles from
-          the Jaiswal community and take
-          the first step toward finding a
-          suitable life partner.
+          the Kalar, Kalwar &amp; Kalal community
+          and take the first step toward finding
+          a suitable life partner.
         </p>
+
+        <span className="trust-tagline">
+          Specific • Comprehensive • Reliable
+        </span>
 
       </div>
 
