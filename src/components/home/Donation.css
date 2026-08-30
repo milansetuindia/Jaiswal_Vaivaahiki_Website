@@ -647,6 +647,12 @@
 }
 
 
+
+
+
+
+
+
 /* ======================================================
    MOBILE
 ====================================================== */
@@ -699,17 +705,33 @@
   }
 
   .donation-box {
-    gap: 25px;
+    gap: 28px;
 
-    padding: 25px 18px;
+    padding: 25px 12px;
 
     border-radius: 15px;
   }
 
+
+  /* ================================================
+     BIGGER QR CODE FOR MOBILE SCANNING
+  ================================================= */
+
   .donation-qr-wrapper {
-    width: 180px;
-    height: 180px;
+    width: min(240px, 78vw);
+    height: min(240px, 78vw);
+
+    padding: 10px;
+
+    border-radius: 16px;
   }
+
+  .scan-text {
+    margin-top: 15px;
+
+    font-size: 14px;
+  }
+
 
   .donation-details h3 {
     font-size: 21px;
@@ -781,13 +803,19 @@
   }
 
   .donation-box {
-    padding: 22px 12px;
+    padding: 22px 10px;
   }
 
+
+  /* BIGGER QR EVEN ON SMALL PHONES */
+
   .donation-qr-wrapper {
-    width: 160px;
-    height: 160px;
+    width: min(220px, 82vw);
+    height: min(220px, 82vw);
+
+    padding: 9px;
   }
+
 
   .scan-text {
     font-size: 13px;
