@@ -14,13 +14,13 @@ function Features() {
       icon: "❤️",
       title: "Community Focused",
       description:
-        "A matrimonial platform created especially for families looking for suitable Jaiswal community matches.",
+        "A matrimonial platform created especially for families looking for suitable matches from the Kalar, Kalwar & Kalal community.",
     },
     {
       icon: "🛡️",
       title: "Trusted Profiles",
       description:
-        "Biodata profiles are carefully managed through our administration system.",
+        "Biodata profiles are carefully reviewed and managed through our administrative system.",
     },
     {
       icon: "📄",
