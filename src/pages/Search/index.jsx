@@ -1,12 +1,38 @@
 // src/pages/Search/index.jsx
 
-import { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
+
 import "./Search.css";
+
 
 const API_URL = import.meta.env.VITE_API_URL;
 
+
+// ======================================================
+// PROFILES PER PAGE
+// ======================================================
+
+const PROFILES_PER_PAGE = 30;
+
+
+// ======================================================
+// GET FILE URL
+// ======================================================
+
 const getFileUrl = (filePath) => {
+
   if (!filePath) {
     return "";
   }
@@ -19,111 +45,277 @@ const getFileUrl = (filePath) => {
   }
 
   return `${API_URL}${filePath}`;
+
 };
 
+
+// ======================================================
+// COMPONENT
+// ======================================================
+
 function Search() {
-  const [searchParams, setSearchParams] = useSearchParams();
 
-  const [biodatas, setBiodatas] = useState([]);
-  const [filteredBiodatas, setFilteredBiodatas] = useState([]);
+  // ======================================================
+  // NAVIGATION
+  // ======================================================
 
-  const [search, setSearch] = useState("");
-  const [gender, setGender] = useState("");
-  const [ageFrom, setAgeFrom] = useState("");
-  const [ageTo, setAgeTo] = useState("");
-  const [incomeFrom, setIncomeFrom] = useState("");
-  const [incomeTo, setIncomeTo] = useState("");
-  const [maritalStatus, setMaritalStatus] = useState("");
-  const [manglikStatus, setManglikStatus] = useState("");
-  const [education, setEducation] = useState("");
-  const [occupation, setOccupation] = useState("");
-  const [caste, setCaste] = useState("");
-  const [subCaste, setSubCaste] = useState("");
-  const [state, setState] = useState("");
-  const [city, setCity] = useState("");
+  const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const location = useLocation();
+
+  const [searchParams, setSearchParams] =
+    useSearchParams();
+
+
+  // ======================================================
+  // REFS
+  // ======================================================
+
+  const searchResultsRef = useRef(null);
+
+  const isRestoringRef = useRef(false);
+
+  const hasRestoredRef = useRef(false);
+
+
+  // ======================================================
+  // PAGINATION STATE
+  // ======================================================
+
+  const [currentPage, setCurrentPage] =
+    useState(
+      () =>
+        Number(
+          location.state?.page
+        ) || 1
+    );
+
+
+  const [shouldScroll, setShouldScroll] =
+    useState(false);
+
+
+  // ======================================================
+  // BIODATA STATE
+  // ======================================================
+
+  const [biodatas, setBiodatas] =
+    useState([]);
+
+  const [filteredBiodatas, setFilteredBiodatas] =
+    useState([]);
+
+
+  // ======================================================
+  // FILTER STATES
+  // ======================================================
+
+  const [search, setSearch] =
+    useState("");
+
+  const [gender, setGender] =
+    useState("");
+
+  const [ageFrom, setAgeFrom] =
+    useState("");
+
+  const [ageTo, setAgeTo] =
+    useState("");
+
+  const [diet, setDiet] =
+    useState("");
+
+  const [incomeFrom, setIncomeFrom] =
+    useState("");
+
+  const [incomeTo, setIncomeTo] =
+    useState("");
+
+  const [maritalStatus, setMaritalStatus] =
+    useState("");
+
+  const [manglikStatus, setManglikStatus] =
+    useState("");
+
+  const [education, setEducation] =
+    useState("");
+
+  const [occupation, setOccupation] =
+    useState("");
+
+  const [caste, setCaste] =
+    useState("");
+
+  const [subCaste, setSubCaste] =
+    useState("");
+
+  const [state, setState] =
+    useState("");
+
+  const [city, setCity] =
+    useState("");
+
+
+  // ======================================================
+  // LOADING / ERROR
+  // ======================================================
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [error, setError] =
+    useState("");
+
 
   // ======================================================
   // READ FILTERS FROM URL
   // ======================================================
 
   useEffect(() => {
-    setSearch(searchParams.get("search") || "");
-    setGender(searchParams.get("gender") || "");
-    setAgeFrom(searchParams.get("ageFrom") || "");
-    setAgeTo(searchParams.get("ageTo") || "");
-    setIncomeFrom(searchParams.get("incomeFrom") || "");
-    setIncomeTo(searchParams.get("incomeTo") || "");
+
+    setSearch(
+      searchParams.get("search") || ""
+    );
+
+    setGender(
+      searchParams.get("gender") || ""
+    );
+
+    setAgeFrom(
+      searchParams.get("ageFrom") || ""
+    );
+
+    setAgeTo(
+      searchParams.get("ageTo") || ""
+    );
+
+    setDiet(
+      searchParams.get("diet") || ""
+    );
+
+    setIncomeFrom(
+      searchParams.get("incomeFrom") || ""
+    );
+
+    setIncomeTo(
+      searchParams.get("incomeTo") || ""
+    );
+
     setMaritalStatus(
       searchParams.get("maritalStatus") || ""
     );
+
     setManglikStatus(
       searchParams.get("manglikStatus") || ""
     );
-    setEducation(searchParams.get("education") || "");
-    setOccupation(searchParams.get("occupation") || "");
-    setCaste(searchParams.get("caste") || "");
-    setSubCaste(searchParams.get("subCaste") || "");
-    setState(searchParams.get("state") || "");
-    setCity(searchParams.get("city") || "");
+
+    setEducation(
+      searchParams.get("education") || ""
+    );
+
+    setOccupation(
+      searchParams.get("occupation") || ""
+    );
+
+    setCaste(
+      searchParams.get("caste") || ""
+    );
+
+    setSubCaste(
+      searchParams.get("subCaste") || ""
+    );
+
+    setState(
+      searchParams.get("state") || ""
+    );
+
+    setCity(
+      searchParams.get("city") || ""
+    );
+
   }, [searchParams]);
 
+
   // ======================================================
-  // FETCH BIODATA
+  // FETCH BIODATAS
   // ======================================================
 
   useEffect(() => {
+
     const fetchBiodatas = async () => {
+
       try {
+
         setLoading(true);
+
         setError("");
+
 
         const response = await fetch(
           `${API_URL}/api/biodatas`
         );
 
+
         if (!response.ok) {
+
           throw new Error(
             "Failed to fetch biodata"
           );
+
         }
 
-        const data = await response.json();
+
+        const data =
+          await response.json();
+
 
         if (data.success) {
+
           setBiodatas(
             data.biodatas || []
           );
+
         } else {
+
           throw new Error(
             data.message ||
-              "Failed to fetch biodata"
+            "Failed to fetch biodata"
           );
+
         }
+
       } catch (err) {
+
         console.error(
           "Search fetch error:",
           err
         );
 
+
         setError(
           "Unable to load biodata."
         );
+
       } finally {
+
         setLoading(false);
+
       }
+
     };
 
+
     fetchBiodatas();
+
   }, []);
+
 
   // ======================================================
   // FILTER BIODATA
   // ======================================================
 
   useEffect(() => {
+
     const searchText =
       search.trim().toLowerCase();
 
@@ -145,147 +337,203 @@ function Search() {
     const cityText =
       city.trim().toLowerCase();
 
-    const minimumAge = ageFrom
-      ? Number(ageFrom)
-      : null;
 
-    const maximumAge = ageTo
-      ? Number(ageTo)
-      : null;
+    const minimumAge =
+      ageFrom
+        ? Number(ageFrom)
+        : null;
 
-    const minimumIncome = incomeFrom
-      ? Number(incomeFrom)
-      : null;
 
-    const maximumIncome = incomeTo
-      ? Number(incomeTo)
-      : null;
+    const maximumAge =
+      ageTo
+        ? Number(ageTo)
+        : null;
 
-    const results = biodatas.filter(
-      (person) => {
 
-        // Search by name, education or occupation
-        const matchesSearch =
-          !searchText ||
-          person.name
-            ?.toLowerCase()
-            .includes(searchText) ||
-          person.education
-            ?.toLowerCase()
-            .includes(searchText) ||
-          person.occupation
-            ?.toLowerCase()
-            .includes(searchText);
+    const minimumIncome =
+      incomeFrom
+        ? Number(incomeFrom)
+        : null;
 
-        // Gender
-        const matchesGender =
-          !gender ||
-          person.gender?.toLowerCase() ===
-            gender.toLowerCase();
 
-        // Minimum age
-        const matchesAgeFrom =
-          minimumAge === null ||
-          Number(person.age) >= minimumAge;
+    const maximumIncome =
+      incomeTo
+        ? Number(incomeTo)
+        : null;
 
-        // Maximum age
-        const matchesAgeTo =
-          maximumAge === null ||
-          Number(person.age) <= maximumAge;
 
-        // Minimum income
-        const matchesIncomeFrom =
-          minimumIncome === null ||
-          Number(person.income) >=
-            minimumIncome;
+    const results =
+      biodatas.filter(
+        (person) => {
 
-        // Maximum income
-        const matchesIncomeTo =
-          maximumIncome === null ||
-          Number(person.income) <=
-            maximumIncome;
+          // SEARCH
 
-        // Marital status
-        const matchesMaritalStatus =
-          !maritalStatus ||
-          person.maritalStatus
-            ?.toLowerCase() ===
-            maritalStatus.toLowerCase();
+          const matchesSearch =
+            !searchText ||
+            person.name
+              ?.toLowerCase()
+              .includes(searchText) ||
+            person.education
+              ?.toLowerCase()
+              .includes(searchText) ||
+            person.occupation
+              ?.toLowerCase()
+              .includes(searchText);
 
-        // Manglik status
-        const matchesManglikStatus =
-          !manglikStatus ||
-          person.manglikStatus
-            ?.toLowerCase() ===
-            manglikStatus.toLowerCase();
 
-        // Education
-        const matchesEducation =
-          !educationText ||
-          person.education
-            ?.toLowerCase()
-            .includes(educationText);
+          // GENDER
 
-        // Occupation
-        const matchesOccupation =
-          !occupationText ||
-          person.occupation
-            ?.toLowerCase()
-            .includes(occupationText);
+          const matchesGender =
+            !gender ||
+            person.gender?.toLowerCase() ===
+              gender.toLowerCase();
 
-        // State
-        const matchesState =
-          !stateText ||
-          person.state
-            ?.toLowerCase()
-            .includes(stateText);
 
-        // City
-        const matchesCity =
-          !cityText ||
-          person.city
-            ?.toLowerCase()
-            .includes(cityText);
+          // DIET
 
-        // Caste
-        const matchesCaste =
-          !casteText ||
-          person.caste
-            ?.toLowerCase() ===
-            casteText;
+          const matchesDiet =
+            !diet ||
+            person.diet?.toLowerCase() ===
+              diet.toLowerCase();
 
-        // Sub-caste
-        const matchesSubCaste =
-          !subCasteText ||
-          person.subCaste
-            ?.toLowerCase()
-            .includes(subCasteText);
 
-        return (
-          matchesSearch &&
-          matchesGender &&
-          matchesAgeFrom &&
-          matchesAgeTo &&
-          matchesIncomeFrom &&
-          matchesIncomeTo &&
-          matchesMaritalStatus &&
-          matchesManglikStatus &&
-          matchesEducation &&
-          matchesOccupation &&
-          matchesCaste &&
-          matchesSubCaste &&
-          matchesState &&
-          matchesCity
-        );
-      }
+          // AGE FROM
+
+          const matchesAgeFrom =
+            minimumAge === null ||
+            Number(person.age) >= minimumAge;
+
+
+          // AGE TO
+
+          const matchesAgeTo =
+            maximumAge === null ||
+            Number(person.age) <= maximumAge;
+
+
+          // INCOME FROM
+
+          const matchesIncomeFrom =
+            minimumIncome === null ||
+            Number(person.income) >=
+              minimumIncome;
+
+
+          // INCOME TO
+
+          const matchesIncomeTo =
+            maximumIncome === null ||
+            Number(person.income) <=
+              maximumIncome;
+
+
+          // MARITAL STATUS
+
+          const matchesMaritalStatus =
+            !maritalStatus ||
+            person.maritalStatus
+              ?.toLowerCase() ===
+              maritalStatus.toLowerCase();
+
+
+          // MANGLIK STATUS
+
+          const matchesManglikStatus =
+            !manglikStatus ||
+            person.manglikStatus
+              ?.toLowerCase() ===
+              manglikStatus.toLowerCase();
+
+
+          // EDUCATION
+
+          const matchesEducation =
+            !educationText ||
+            person.education
+              ?.toLowerCase()
+              .includes(educationText);
+
+
+          // OCCUPATION
+
+          const matchesOccupation =
+            !occupationText ||
+            person.occupation
+              ?.toLowerCase()
+              .includes(occupationText);
+
+
+          // CASTE
+
+          const matchesCaste =
+            !casteText ||
+            person.caste
+              ?.toLowerCase() ===
+              casteText;
+
+
+          // SUB CASTE
+
+          const matchesSubCaste =
+            !subCasteText ||
+            person.subCaste
+              ?.toLowerCase()
+              .includes(subCasteText);
+
+
+          // STATE
+
+          const matchesState =
+            !stateText ||
+            person.state
+              ?.toLowerCase()
+              .includes(stateText);
+
+
+          // CITY
+
+          const matchesCity =
+            !cityText ||
+            person.city
+              ?.toLowerCase()
+              .includes(cityText);
+
+
+          return (
+
+            matchesSearch &&
+            matchesGender &&
+            matchesAgeFrom &&
+            matchesAgeTo &&
+            matchesDiet &&
+            matchesIncomeFrom &&
+            matchesIncomeTo &&
+            matchesMaritalStatus &&
+            matchesManglikStatus &&
+            matchesEducation &&
+            matchesOccupation &&
+            matchesCaste &&
+            matchesSubCaste &&
+            matchesState &&
+            matchesCity
+
+          );
+
+        }
+      );
+
+
+    setFilteredBiodatas(
+      results
     );
 
-    setFilteredBiodatas(results);
   }, [
+
     search,
     gender,
     ageFrom,
     ageTo,
+    diet,
     incomeFrom,
     incomeTo,
     maritalStatus,
@@ -297,7 +545,409 @@ function Search() {
     state,
     city,
     biodatas,
+
   ]);
+
+
+  // ======================================================
+  // RESTORE PAGE AFTER RETURNING FROM BIODATA
+  // ======================================================
+
+  useEffect(() => {
+
+    if (
+      !location.state?.restoreSearch
+    ) {
+      return;
+    }
+
+
+    const savedPage =
+      Number(
+        location.state.page
+      ) || 1;
+
+
+    isRestoringRef.current =
+      true;
+
+
+    hasRestoredRef.current =
+      false;
+
+
+    setCurrentPage(
+      savedPage
+    );
+
+  }, [
+    location.key,
+  ]);
+
+
+  // ======================================================
+  // PAGINATION CALCULATIONS
+  // ======================================================
+
+  const totalPages =
+    Math.ceil(
+      filteredBiodatas.length /
+      PROFILES_PER_PAGE
+    );
+
+
+  const startIndex =
+    (currentPage - 1) *
+    PROFILES_PER_PAGE;
+
+
+  const visibleBiodatas =
+    filteredBiodatas.slice(
+      startIndex,
+      startIndex +
+      PROFILES_PER_PAGE
+    );
+
+
+  // ======================================================
+  // VALIDATE CURRENT PAGE
+  // ======================================================
+
+  useEffect(() => {
+
+    if (
+      loading ||
+      filteredBiodatas.length === 0
+    ) {
+      return;
+    }
+
+
+    if (
+      currentPage > totalPages
+    ) {
+
+      setCurrentPage(
+        totalPages
+      );
+
+    }
+
+
+    if (
+      currentPage < 1
+    ) {
+
+      setCurrentPage(1);
+
+    }
+
+  }, [
+    loading,
+    filteredBiodatas.length,
+    currentPage,
+    totalPages,
+  ]);
+
+
+  // ======================================================
+  // RESTORE EXACT SCROLL POSITION
+  // AFTER CORRECT PAGE HAS RENDERED
+  // ======================================================
+
+  useLayoutEffect(() => {
+
+    if (
+      !location.state?.restoreSearch
+    ) {
+      return;
+    }
+
+
+    if (
+      loading ||
+      filteredBiodatas.length === 0
+    ) {
+      return;
+    }
+
+
+    if (
+      hasRestoredRef.current
+    ) {
+      return;
+    }
+
+
+    const savedPage =
+      Number(
+        location.state.page
+      ) || 1;
+
+
+    const validPage =
+      Math.min(
+        Math.max(
+          savedPage,
+          1
+        ),
+        totalPages
+      );
+
+
+    // Wait until correct pagination page is rendered
+
+    if (
+      currentPage !== validPage
+    ) {
+      return;
+    }
+
+
+    const savedScrollPosition =
+      location.state.scrollPosition;
+
+
+    if (
+      typeof savedScrollPosition !==
+      "number"
+    ) {
+
+      hasRestoredRef.current =
+        true;
+
+      isRestoringRef.current =
+        false;
+
+      return;
+
+    }
+
+
+    // Mark as restored before scrolling
+
+    hasRestoredRef.current =
+      true;
+
+
+    requestAnimationFrame(() => {
+
+      requestAnimationFrame(() => {
+
+        window.scrollTo({
+
+          top:
+            savedScrollPosition,
+
+          left: 0,
+
+          behavior:
+            "auto",
+
+        });
+
+
+        isRestoringRef.current =
+          false;
+
+      });
+
+    });
+
+  }, [
+
+    location.key,
+    loading,
+    filteredBiodatas.length,
+    currentPage,
+    totalPages,
+
+  ]);
+
+
+  // ======================================================
+  // RESET PAGE WHEN USER CHANGES FILTER
+  // ======================================================
+
+  useEffect(() => {
+
+    if (
+      isRestoringRef.current
+    ) {
+      return;
+    }
+
+
+    setCurrentPage(1);
+
+  }, [
+
+    search,
+    gender,
+    ageFrom,
+    ageTo,
+    diet,
+    incomeFrom,
+    incomeTo,
+    maritalStatus,
+    manglikStatus,
+    education,
+    occupation,
+    caste,
+    subCaste,
+    state,
+    city,
+
+  ]);
+
+
+  // ======================================================
+  // SCROLL TO SEARCH RESULTS AFTER PAGINATION
+  // ======================================================
+
+  useEffect(() => {
+
+    if (
+      !shouldScroll ||
+      !searchResultsRef.current
+    ) {
+      return;
+    }
+
+
+    const headerOffset =
+      80;
+
+
+    const elementPosition =
+      searchResultsRef.current
+        .getBoundingClientRect()
+        .top;
+
+
+    const scrollPosition =
+      elementPosition +
+      window.scrollY -
+      headerOffset;
+
+
+    window.scrollTo({
+
+      top:
+        scrollPosition,
+
+      behavior:
+        "smooth",
+
+    });
+
+
+    setShouldScroll(false);
+
+  }, [
+
+    currentPage,
+    shouldScroll,
+
+  ]);
+
+
+  // ======================================================
+  // PREVIOUS PAGE
+  // ======================================================
+
+  const handlePrevious = () => {
+
+    if (
+      currentPage <= 1
+    ) {
+      return;
+    }
+
+
+    setShouldScroll(true);
+
+
+    setCurrentPage(
+      (previousPage) =>
+        previousPage - 1
+    );
+
+  };
+
+
+  // ======================================================
+  // NEXT PAGE
+  // ======================================================
+
+  const handleNext = () => {
+
+    if (
+      currentPage >= totalPages
+    ) {
+      return;
+    }
+
+
+    setShouldScroll(true);
+
+
+    setCurrentPage(
+      (previousPage) =>
+        previousPage + 1
+    );
+
+  };
+
+
+  // ======================================================
+  // OPEN BIODATA
+  // ======================================================
+
+  const handleViewBiodata = (
+    personId
+  ) => {
+
+    navigate(
+      `/biodata/${personId}`,
+      {
+        state: {
+
+          // Identify Search as source
+
+          fromSearch:
+            true,
+
+
+          // Save exact Search URL including filters
+
+          returnTo:
+            `${location.pathname}${location.search}`,
+
+
+          // Save current pagination page
+
+          page:
+            currentPage,
+
+
+          // Save exact scroll position
+
+          scrollPosition:
+            window.scrollY,
+
+
+          // Save selected profile
+
+          selectedProfileId:
+            personId,
+
+        },
+      }
+    );
+
+  };
+
 
   // ======================================================
   // UPDATE URL FILTER
@@ -307,32 +957,47 @@ function Search() {
     name,
     value
   ) => {
+
     const params =
       new URLSearchParams(
         searchParams
       );
 
-    if (value.trim() === "") {
+
+    if (
+      value.trim() === ""
+    ) {
+
       params.delete(name);
+
     } else {
+
       params.set(
         name,
         value
       );
+
     }
 
-    setSearchParams(params);
+
+    setSearchParams(
+      params
+    );
+
   };
+
 
   // ======================================================
   // CLEAR FILTERS
   // ======================================================
 
   const clearFilters = () => {
+
     setSearch("");
     setGender("");
     setAgeFrom("");
     setAgeTo("");
+    setDiet("");
     setIncomeFrom("");
     setIncomeTo("");
     setMaritalStatus("");
@@ -344,19 +1009,23 @@ function Search() {
     setState("");
     setCity("");
 
+    setCurrentPage(1);
+
     setSearchParams({});
+
   };
+
 
   // ======================================================
   // PAGE
   // ======================================================
 
   return (
+
     <div className="search-page">
 
-      {/* ==================================================
-          HEADER
-      ================================================== */}
+
+      {/* HEADER */}
 
       <div className="search-header">
 
@@ -372,15 +1041,10 @@ function Search() {
       </div>
 
 
-      {/* ==================================================
-          SEARCH FILTERS
-      ================================================== */}
+      {/* SEARCH FILTERS */}
 
       <div className="search-filters">
 
-        {/* ==================================================
-            SEARCH CARD HEADER
-        ================================================== */}
 
         <div className="search-filters-header">
 
@@ -398,10 +1062,6 @@ function Search() {
           </div>
 
 
-          {/* ==================================================
-              BACK TO HOME
-          ================================================== */}
-
           <Link
             to="/"
             className="back-home-btn"
@@ -412,9 +1072,7 @@ function Search() {
         </div>
 
 
-        {/* ==================================================
-            GENERAL SEARCH
-        ================================================== */}
+        {/* SEARCH */}
 
         <div className="search-field">
 
@@ -444,9 +1102,7 @@ function Search() {
         </div>
 
 
-        {/* ==================================================
-            GENDER
-        ================================================== */}
+        {/* GENDER */}
 
         <div className="search-field">
 
@@ -488,9 +1144,7 @@ function Search() {
         </div>
 
 
-        {/* ==================================================
-            AGE FROM
-        ================================================== */}
+        {/* AGE FROM */}
 
         <div className="search-field">
 
@@ -522,9 +1176,7 @@ function Search() {
         </div>
 
 
-        {/* ==================================================
-            AGE TO
-        ================================================== */}
+        {/* AGE TO */}
 
         <div className="search-field">
 
@@ -556,9 +1208,49 @@ function Search() {
         </div>
 
 
-        {/* ==================================================
-            ANNUAL INCOME FROM
-        ================================================== */}
+        {/* DIET */}
+
+        <div className="search-field">
+
+          <label htmlFor="diet">
+            Diet
+          </label>
+
+          <select
+            id="diet"
+            value={diet}
+            onChange={(event) => {
+
+              setDiet(
+                event.target.value
+              );
+
+              updateFilter(
+                "diet",
+                event.target.value
+              );
+
+            }}
+          >
+
+            <option value="">
+              All Diet Preferences
+            </option>
+
+            <option value="Vegetarian">
+              Vegetarian
+            </option>
+
+            <option value="Non-Vegetarian">
+              Non-Vegetarian
+            </option>
+
+          </select>
+
+        </div>
+
+
+        {/* INCOME FROM */}
 
         <div className="search-field">
 
@@ -591,9 +1283,7 @@ function Search() {
         </div>
 
 
-        {/* ==================================================
-            ANNUAL INCOME TO
-        ================================================== */}
+        {/* INCOME TO */}
 
         <div className="search-field">
 
@@ -626,9 +1316,7 @@ function Search() {
         </div>
 
 
-        {/* ==================================================
-            MARITAL STATUS
-        ================================================== */}
+        {/* MARITAL STATUS */}
 
         <div className="search-field">
 
@@ -674,9 +1362,7 @@ function Search() {
         </div>
 
 
-        {/* ==================================================
-            MANGLIK STATUS
-        ================================================== */}
+        {/* MANGLIK STATUS */}
 
         <div className="search-field">
 
@@ -722,9 +1408,7 @@ function Search() {
         </div>
 
 
-        {/* ==================================================
-            EDUCATION
-        ================================================== */}
+        {/* EDUCATION */}
 
         <div className="search-field">
 
@@ -754,9 +1438,7 @@ function Search() {
         </div>
 
 
-        {/* ==================================================
-            OCCUPATION
-        ================================================== */}
+        {/* OCCUPATION */}
 
         <div className="search-field">
 
@@ -786,9 +1468,7 @@ function Search() {
         </div>
 
 
-        {/* ==================================================
-            STATE
-        ================================================== */}
+        {/* STATE */}
 
         <div className="search-field">
 
@@ -818,9 +1498,7 @@ function Search() {
         </div>
 
 
-        {/* ==================================================
-            CITY
-        ================================================== */}
+        {/* CITY */}
 
         <div className="search-field">
 
@@ -850,9 +1528,7 @@ function Search() {
         </div>
 
 
-        {/* ==================================================
-            CASTE
-        ================================================== */}
+        {/* CASTE */}
 
         <div className="search-field">
 
@@ -898,9 +1574,7 @@ function Search() {
         </div>
 
 
-        {/* ==================================================
-            SUB-CASTE
-        ================================================== */}
+        {/* SUB-CASTE */}
 
         <div className="search-field">
 
@@ -930,9 +1604,7 @@ function Search() {
         </div>
 
 
-        {/* ==================================================
-            CLEAR FILTERS
-        ================================================== */}
+        {/* CLEAR FILTERS */}
 
         <button
           type="button"
@@ -946,105 +1618,75 @@ function Search() {
 
 
       {/* ==================================================
-          RESULTS
+          SEARCH RESULTS
       ================================================== */}
 
-      <div className="search-results">
+      <div
+        className="search-results-section"
+        ref={searchResultsRef}
+      >
 
-        <div className="results-heading">
+        <h2>
+          Search Results
+        </h2>
 
-          <h2>
-            Biodata Profiles
-          </h2>
-
-          <span>
-            {filteredBiodatas.length} profile
-            {filteredBiodatas.length !== 1
-              ? "s"
-              : ""}
-          </span>
-
-        </div>
-
-
-        {/* ==================================================
-            LOADING
-        ================================================== */}
 
         {loading && (
-          <div className="search-message">
-            Loading biodata...
-          </div>
+
+          <p className="search-loading-message">
+            Loading biodatas...
+          </p>
+
         )}
 
 
-        {/* ==================================================
-            ERROR
-        ================================================== */}
+        {!loading && error && (
 
-        {error && !loading && (
-          <div className="search-message error">
+          <p className="search-error-message">
             {error}
-          </div>
+          </p>
+
         )}
 
-
-        {/* ==================================================
-            NO RESULTS
-        ================================================== */}
 
         {!loading &&
           !error &&
           filteredBiodatas.length === 0 && (
-            <div className="search-message">
-              No biodata found.
-            </div>
+
+            <p className="no-results-message">
+              No biodata profiles found.
+            </p>
+
           )}
 
-
-        {/* ==================================================
-            RESULTS
-        ================================================== */}
 
         {!loading &&
           !error &&
           filteredBiodatas.length > 0 && (
 
-            <div className="search-profile-grid">
+            <div className="search-results-grid">
 
-              {filteredBiodatas.map(
+              {visibleBiodatas.map(
                 (person) => (
 
                   <div
                     className="search-profile-card"
                     key={person._id}
+                    data-profile-id={person._id}
                   >
-
-                    {/* PROFILE IMAGE */}
 
                     <div className="search-profile-image">
 
-                      {person.photo ? (
+                      <img
+                        src={getFileUrl(
+                          person.photo
+                        )}
+                        alt={person.name}
+                      />
 
-                        <img
-                          src={getFileUrl(
-                            person.photo
-                          )}
-                          alt={person.name}
-                        />
+                      <span className="search-profile-badge">
 
-                      ) : (
-
-                        <div className="no-photo">
-                          No Photo
-                        </div>
-
-                      )}
-
-                      <span className="search-badge">
-
-                        {person.gender ===
-                        "Female"
+                        {person.gender === "Female"
                           ? "Bride"
                           : "Groom"}
 
@@ -1053,76 +1695,75 @@ function Search() {
                     </div>
 
 
-                    {/* PROFILE CONTENT */}
-
                     <div className="search-profile-content">
 
                       <h3>
                         {person.name}
                       </h3>
 
-                      <p>
-                        🎂 <strong>Age:</strong>{" "}
-                        {person.age} Years
-                      </p>
 
-                      <p>
-                        🎓 <strong>Education:</strong>{" "}
-                        {person.education ||
-                          "Not specified"}
-                      </p>
+                      <div className="search-profile-info">
 
-                      <p>
-                        💼 <strong>Occupation:</strong>{" "}
-                        {person.occupation ||
-                          "Not specified"}
-                      </p>
+                        <p>
+                          🎂 <strong>Age:</strong>{" "}
+                          {person.age} Years
+                        </p>
 
-                      <p>
-                        📍 <strong>City:</strong>{" "}
-                        {person.city ||
-                          "Not specified"}
-                      </p>
 
-                      <p>
-                        🧬 <strong>Caste:</strong>{" "}
-                        {person.caste ||
-                          "Not specified"}
-                      </p>
+                        <p>
+                          🎓{" "}
 
-                      <p>
-                        🔹 <strong>Sub-caste:</strong>{" "}
-                        {person.subCaste ||
-                          "Not specified"}
-                      </p>
+                          <strong>
+                            Education:
+                          </strong>{" "}
 
-                      <p>
-                        📅 <strong>Added:</strong>{" "}
+                          {person.education ||
+                            "Not specified"}
 
-                        {person.createdAt
-                          ? new Date(
-                              person.createdAt
-                            ).toLocaleDateString(
-                              "en-IN",
-                              {
-                                day: "2-digit",
-                                month: "short",
-                                year: "numeric",
-                              }
-                            )
-                          : "Date not available"}
+                        </p>
 
-                      </p>
+
+                        <p>
+                          💼{" "}
+
+                          <strong>
+                            Occupation:
+                          </strong>{" "}
+
+                          {person.occupation ||
+                            "Not specified"}
+
+                        </p>
+
+
+                        <p>
+                          📍{" "}
+
+                          <strong>
+                            City:
+                          </strong>{" "}
+
+                          {person.city ||
+                            "Not specified"}
+
+                        </p>
+
+                      </div>
 
 
                       {/* VIEW BIODATA */}
 
-                      <Link
-                        to={`/biodata/${person._id}`}
+                      <button
+                        type="button"
                         className="search-view-btn"
+                        onClick={() =>
+                          handleViewBiodata(
+                            person._id
+                          )
+                        }
                       >
                         View Biodata
-                      </Link>
+                      </button>
 
                     </div>
 
@@ -1135,10 +1776,59 @@ function Search() {
 
           )}
 
+
+        {/* PAGINATION */}
+
+        {!loading &&
+          !error &&
+          filteredBiodatas.length > 0 &&
+          totalPages > 1 && (
+
+            <div className="search-pagination-controls">
+
+              <button
+                type="button"
+                className="search-pagination-btn"
+                onClick={handlePrevious}
+                disabled={
+                  currentPage === 1
+                }
+              >
+                ← Previous
+              </button>
+
+
+              <span className="search-page-indicator">
+
+                Page {currentPage} of{" "}
+                {totalPages}
+
+              </span>
+
+
+              <button
+                type="button"
+                className="search-pagination-btn"
+                onClick={handleNext}
+                disabled={
+                  currentPage === totalPages
+                }
+              >
+                Next →
+              </button>
+
+            </div>
+
+          )}
+
       </div>
 
     </div>
+
   );
+
 }
 
+
 export default Search;
+
