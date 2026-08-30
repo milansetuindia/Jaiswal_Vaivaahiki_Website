@@ -8,6 +8,7 @@ function createBiodataDocument(data) {
 
     name: data.name,
     age: Number(data.age),
+    diet: data.diet || "",
 
     income:
       data.income !== undefined &&
