@@ -9,6 +9,7 @@ function AddBiodata() {
   const [formData, setFormData] = useState({
     name: "",
     age: "",
+    diet: "",
     income: "",
     gender: "",
     maritalStatus: "",
@@ -94,6 +95,7 @@ function AddBiodata() {
 
       data.append("name", formData.name);
       data.append("age", formData.age);
+      data.append("diet", formData.diet);
       data.append("income", formData.income);
       data.append("gender", formData.gender);
       data.append("maritalStatus", formData.maritalStatus);
@@ -145,6 +147,7 @@ function AddBiodata() {
       setFormData({
         name: "",
         age: "",
+        diet: "",
         income: "",
         gender: "",
         maritalStatus: "",
@@ -270,6 +273,36 @@ function AddBiodata() {
 
             </div>
 
+            <div className="form-group">
+
+              <label>Diet</label>
+
+              <select
+                name="diet"
+                value={formData.diet}
+                onChange={handleChange}
+              >
+
+                <option value="">
+                  Select Diet
+                </option>
+
+                <option value="Vegetarian">
+                  Vegetarian
+                </option>
+
+                <option value="Non-Vegetarian">
+                  Non-Vegetarian
+                </option>
+
+                <option value="Not Specified">
+                  Not Specified
+                </option>
+
+              </select>
+
+            </div>
+
             {/* Annual Income */}
 
             <div className="form-group">
@@ -358,6 +391,10 @@ function AddBiodata() {
                   Widowed
                 </option>
 
+                <option value="Not Specified">
+                  Not Specified
+                </option>
+
               </select>
 
             </div>
@@ -392,6 +429,10 @@ function AddBiodata() {
 
                 <option value="Aanshik">
                   Aanshik
+                </option>
+
+                <option value="Not Specified">
+                  Not Specified
                 </option>
 
               </select>
