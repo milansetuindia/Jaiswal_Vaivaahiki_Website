@@ -28,6 +28,7 @@ function EditBiodata() {
   const [formData, setFormData] = useState({
     name: "",
     age: "",
+    diet: "",
     income: "",
     gender: "",
     maritalStatus: "",
@@ -78,6 +79,7 @@ function EditBiodata() {
         setFormData({
           name: biodata.name || "",
           age: biodata.age || "",
+          diet: biodata.diet || "",
           income: biodata.income ?? "",
           gender: biodata.gender || "",
           maritalStatus:
@@ -217,6 +219,11 @@ function EditBiodata() {
       data.append(
         "age",
         formData.age
+      );
+
+      data.append(
+        "diet",
+        formData.diet
       );
 
       data.append(
@@ -462,6 +469,41 @@ function EditBiodata() {
 
             </div>
 
+            {/* Diet */}
+
+            <div className="form-group">
+
+              <label htmlFor="diet">
+                Diet
+              </label>
+
+              <select
+                id="diet"
+                name="diet"
+                value={formData.diet}
+                onChange={handleChange}
+              >
+
+                <option value="">
+                  Select Diet
+                </option>
+
+                <option value="Vegetarian">
+                  Vegetarian
+                </option>
+
+                <option value="Non-Vegetarian">
+                  Non-Vegetarian
+                </option>
+
+                <option value="Not Specified">
+                  Not Specified
+                </option>
+
+              </select>
+
+            </div>
+
             {/* Annual Income */}
 
             <div className="form-group">
@@ -553,6 +595,10 @@ function EditBiodata() {
                   Widowed
                 </option>
 
+                <option value="Not Specified">
+                  Not Specified
+                </option>
+
               </select>
 
             </div>
@@ -587,6 +633,10 @@ function EditBiodata() {
 
                 <option value="Aanshik">
                   Aanshik
+                </option>
+
+                <option value="Not Specified">
+                  Not Specified
                 </option>
 
               </select>
