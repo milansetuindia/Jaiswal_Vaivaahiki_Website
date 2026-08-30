@@ -145,6 +145,7 @@ async function uploadBiodata(
     const {
       name,
       age,
+      diet,
       income,
       gender,
       city,
@@ -257,6 +258,7 @@ async function uploadBiodata(
       createBiodataDocument({
         name,
         age,
+        diet,
         gender,
         income,
         city,
@@ -506,6 +508,7 @@ async function updateBiodata(
     const {
       name,
       age,
+      diet,
       income,
       gender,
       city,
@@ -536,6 +539,7 @@ async function updateBiodata(
     const updateData = {
       name,
       age: Number(age),
+      diet: diet || "",
       income:
         income !== undefined &&
         income !== ""
