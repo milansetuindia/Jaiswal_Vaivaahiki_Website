@@ -25,7 +25,7 @@ function Footer() {
         <div className="footer-brand">
 
           <h2>
-            Jaiswal Vaivaahiki
+            ✦ Jaiswal Vaivaahiki ✦
           </h2>
 
           <p>
