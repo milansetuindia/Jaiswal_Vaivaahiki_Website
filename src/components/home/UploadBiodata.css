@@ -1,0 +1,608 @@
+/* ======================================================
+   UPLOAD BIODATA
+   Jaiswal Vaivaahiki
+====================================================== */
+
+.upload-biodata {
+  width: min(1200px, 94%);
+
+  margin: 0 auto 80px;
+
+  padding: 65px 30px;
+
+  box-sizing: border-box;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fffaf5,
+      #ffffff
+    );
+
+  border-radius: 22px;
+
+  border: 1px solid #f0dddd;
+
+  box-shadow:
+    0 10px 30px rgba(80, 0, 0, 0.06);
+
+  text-align: center;
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+
+/* ======================================================
+   DECORATIVE CORNERS
+====================================================== */
+
+.upload-biodata::before {
+  content: "✦";
+
+  position: absolute;
+
+  top: 22px;
+  left: 28px;
+
+  color: #d6a64f;
+
+  font-size: 25px;
+
+  opacity: 0.7;
+}
+
+.upload-biodata::after {
+  content: "✦";
+
+  position: absolute;
+
+  bottom: 22px;
+  right: 28px;
+
+  color: #d6a64f;
+
+  font-size: 25px;
+
+  opacity: 0.7;
+}
+
+
+/* ======================================================
+   CONTENT
+====================================================== */
+
+.upload-biodata-content {
+  width: 100%;
+
+  max-width: 700px;
+
+  margin: 0 auto;
+
+  position: relative;
+
+  z-index: 1;
+}
+
+
+/* ======================================================
+   EYEBROW
+====================================================== */
+
+.upload-eyebrow {
+  display: inline-block;
+
+  color: #a00000;
+
+  font-size: 13px;
+
+  font-weight: 800;
+
+  letter-spacing: 2px;
+
+  margin-bottom: 12px;
+}
+
+
+/* ======================================================
+   HEADING
+====================================================== */
+
+.upload-biodata h2 {
+  margin: 0 0 15px;
+
+  color: #7d0000;
+
+  font-size: 36px;
+
+  line-height: 1.25;
+
+  font-weight: 800;
+}
+
+
+/* ======================================================
+   DESCRIPTION
+====================================================== */
+
+.upload-biodata p {
+  width: 100%;
+
+  max-width: 600px;
+
+  margin: 0 auto 25px;
+
+  color: #666;
+
+  font-size: 17px;
+
+  line-height: 1.7;
+}
+
+
+/* ======================================================
+   ACTION AREA
+====================================================== */
+
+.upload-number {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  margin: 0 12px 0 0;
+
+  color: #8b0000;
+
+  font-size: 22px;
+
+  font-weight: 800;
+
+  vertical-align: middle;
+}
+
+
+/* ======================================================
+   WHATSAPP NUMBER ICON
+====================================================== */
+
+.upload-whatsapp-icon {
+  color: #25d366;
+
+  font-size: 26px;
+
+  flex-shrink: 0;
+}
+
+
+/* ======================================================
+   WHATSAPP BUTTON
+====================================================== */
+
+.whatsapp-upload-btn {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  min-height: 50px;
+
+  padding: 14px 28px;
+
+  box-sizing: border-box;
+
+  background: #8b0000;
+
+  color: #ffffff;
+
+  border: 2px solid #8b0000;
+
+  border-radius: 9px;
+
+  text-decoration: none;
+
+  font-size: 16px;
+
+  font-weight: 700;
+
+  line-height: 1.2;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.2s ease,
+    box-shadow 0.25s ease;
+}
+
+
+/* ======================================================
+   WHATSAPP BUTTON ICON
+====================================================== */
+
+.whatsapp-button-icon {
+  font-size: 22px;
+
+  flex-shrink: 0;
+}
+
+
+/* ======================================================
+   BUTTON HOVER
+====================================================== */
+
+.whatsapp-upload-btn:hover {
+  background: #ffd000;
+
+  color: #7d0000;
+
+  border-color: #ffd000;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 18px rgba(80, 0, 0, 0.15);
+}
+
+
+/* ======================================================
+   BUTTON FOCUS
+====================================================== */
+
+.whatsapp-upload-btn:focus-visible {
+  outline: 3px solid rgba(139, 0, 0, 0.25);
+
+  outline-offset: 3px;
+}
+
+
+/* ======================================================
+   LARGE DESKTOP
+   1200px+
+====================================================== */
+
+@media (min-width: 1200px) {
+
+  .upload-biodata {
+    padding: 65px 40px;
+  }
+
+}
+
+
+/* ======================================================
+   LAPTOP
+   901px - 1199px
+====================================================== */
+
+@media (max-width: 1199px) {
+
+  .upload-biodata {
+    width: 94%;
+
+    padding: 60px 30px;
+  }
+
+  .upload-biodata h2 {
+    font-size: 34px;
+  }
+
+}
+
+
+/* ======================================================
+   TABLET
+   601px - 900px
+====================================================== */
+
+@media (max-width: 900px) {
+
+  .upload-biodata {
+    width: 94%;
+
+    padding: 55px 25px;
+
+    margin-bottom: 60px;
+  }
+
+  .upload-biodata h2 {
+    font-size: 32px;
+  }
+
+  .upload-biodata p {
+    font-size: 16px;
+
+    max-width: 580px;
+  }
+
+  .upload-number {
+    font-size: 21px;
+  }
+
+  .whatsapp-upload-btn {
+    padding: 13px 24px;
+
+    font-size: 15px;
+  }
+
+}
+
+
+/* ======================================================
+   MOBILE
+   481px - 600px
+====================================================== */
+
+@media (max-width: 600px) {
+
+  .upload-biodata {
+    width: 94%;
+
+    padding: 45px 20px;
+
+    margin-bottom: 50px;
+
+    border-radius: 18px;
+  }
+
+
+  /* -----------------------------------------------
+     DECORATIONS
+  ----------------------------------------------- */
+
+  .upload-biodata::before {
+    top: 15px;
+
+    left: 18px;
+
+    font-size: 20px;
+  }
+
+  .upload-biodata::after {
+    bottom: 15px;
+
+    right: 18px;
+
+    font-size: 20px;
+  }
+
+
+  /* -----------------------------------------------
+     EYEBROW
+  ----------------------------------------------- */
+
+  .upload-eyebrow {
+    font-size: 11px;
+
+    letter-spacing: 1.5px;
+
+    margin-bottom: 10px;
+  }
+
+
+  /* -----------------------------------------------
+     HEADING
+  ----------------------------------------------- */
+
+  .upload-biodata h2 {
+    font-size: 28px;
+
+    line-height: 1.25;
+
+    margin-bottom: 14px;
+  }
+
+
+  /* -----------------------------------------------
+     DESCRIPTION
+  ----------------------------------------------- */
+
+  .upload-biodata p {
+    font-size: 15px;
+
+    line-height: 1.6;
+
+    margin-bottom: 22px;
+  }
+
+
+  /* -----------------------------------------------
+     NUMBER
+  ----------------------------------------------- */
+
+  .upload-number {
+    margin: 0 0 15px;
+
+    font-size: 19px;
+
+    gap: 8px;
+  }
+
+  .upload-whatsapp-icon {
+    font-size: 23px;
+  }
+
+
+  /* -----------------------------------------------
+     BUTTON
+  ----------------------------------------------- */
+
+  .whatsapp-upload-btn {
+    width: 100%;
+
+    max-width: 340px;
+
+    min-height: 48px;
+
+    padding: 13px 16px;
+
+    font-size: 15px;
+
+    border-radius: 8px;
+  }
+
+}
+
+
+/* ======================================================
+   SMALL MOBILE
+   400px and below
+====================================================== */
+
+@media (max-width: 400px) {
+
+  .upload-biodata {
+    width: 96%;
+
+    padding: 38px 15px;
+
+    margin-bottom: 45px;
+
+    border-radius: 17px;
+  }
+
+
+  /* -----------------------------------------------
+     DECORATIONS
+  ----------------------------------------------- */
+
+  .upload-biodata::before {
+    top: 12px;
+
+    left: 14px;
+
+    font-size: 18px;
+  }
+
+  .upload-biodata::after {
+    bottom: 12px;
+
+    right: 14px;
+
+    font-size: 18px;
+  }
+
+
+  /* -----------------------------------------------
+     EYEBROW
+  ----------------------------------------------- */
+
+  .upload-eyebrow {
+    font-size: 10px;
+
+    letter-spacing: 1.2px;
+
+    margin-bottom: 9px;
+  }
+
+
+  /* -----------------------------------------------
+     HEADING
+  ----------------------------------------------- */
+
+  .upload-biodata h2 {
+    font-size: 25px;
+
+    line-height: 1.25;
+
+    margin-bottom: 12px;
+  }
+
+
+  /* -----------------------------------------------
+     DESCRIPTION
+  ----------------------------------------------- */
+
+  .upload-biodata p {
+    font-size: 14px;
+
+    line-height: 1.55;
+
+    margin-bottom: 20px;
+  }
+
+
+  /* -----------------------------------------------
+     NUMBER
+  ----------------------------------------------- */
+
+  .upload-number {
+    font-size: 18px;
+
+    margin-bottom: 14px;
+  }
+
+  .upload-whatsapp-icon {
+    font-size: 21px;
+  }
+
+
+  /* -----------------------------------------------
+     BUTTON
+  ----------------------------------------------- */
+
+  .whatsapp-upload-btn {
+    width: 100%;
+
+    max-width: 310px;
+
+    min-height: 47px;
+
+    padding: 12px 12px;
+
+    font-size: 14px;
+
+    gap: 8px;
+  }
+
+  .whatsapp-button-icon {
+    font-size: 20px;
+  }
+
+}
+
+
+/* ======================================================
+   BIODATA MAKER SECTION
+====================================================== */
+
+.biodata-maker-section {
+  margin: 22px 0;
+}
+
+.biodata-maker-section p {
+  margin-bottom: 12px;
+}
+
+
+/* ======================================================
+   CREATE BIODATA BUTTON
+====================================================== */
+
+.biodata-maker-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  padding: 12px 22px;
+
+  border-radius: 8px;
+
+  text-decoration: none;
+
+  font-weight: 600;
+
+  transition: 0.3s ease;
+}
+
+.biodata-maker-icon {
+  font-size: 16px;
+}
