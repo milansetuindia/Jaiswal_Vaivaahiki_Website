@@ -10,15 +10,19 @@ function Donation() {
   // ======================================================
 
   const upiId = "7050510511-5@axl";
+
   const payeeName = "Rambha Jaiswal";
 
 
   // ======================================================
   // CLOUDINARY QR CODE URL
+  // Automatically selects the best supported format
+  // Maximum width: 600px
+  // No q_auto to preserve QR code clarity
   // ======================================================
 
   const donationQr =
-    "https://res.cloudinary.com/f4hqnuko/image/upload/v1788069632/donation-qr.jpg";
+    "https://res.cloudinary.com/f4hqnuko/image/upload/f_auto,w_600/v1788069632/donation-qr.jpg";
 
 
   // ======================================================
@@ -86,6 +90,7 @@ function Donation() {
         );
 
         textArea.focus();
+
         textArea.select();
 
         document.execCommand(
@@ -124,6 +129,7 @@ function Donation() {
   return (
     <section className="donation-section">
 
+
       {/* ==================================================
           DECORATIVE SYMBOLS
       ================================================== */}
@@ -138,6 +144,7 @@ function Donation() {
 
 
       <div className="donation-content">
+
 
         {/* ==================================================
             EYEBROW
@@ -189,6 +196,7 @@ function Donation() {
                 src={donationQr}
                 alt="Scan QR code to support Jaiswal Vaivaahiki"
                 className="donation-qr-image"
+                decoding="async"
               />
 
             </div>
@@ -206,6 +214,7 @@ function Donation() {
           ================================================== */}
 
           <div className="donation-details">
+
 
             {/* ICON */}
 
@@ -244,9 +253,12 @@ function Donation() {
             </div>
 
 
-            {/* ACTION BUTTONS */}
+            {/* ==================================================
+                ACTION BUTTONS
+            ================================================== */}
 
             <div className="donation-actions">
+
 
               {/* COPY UPI ID */}
 
