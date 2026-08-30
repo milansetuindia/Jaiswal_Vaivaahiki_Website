@@ -11,6 +11,7 @@ function SearchSection() {
     gender: "",
     ageFrom: "",
     ageTo: "",
+    diet: "",
     incomeFrom: "",
     incomeTo: "",
     maritalStatus: "",
@@ -131,6 +132,35 @@ function SearchSection() {
             value={filters.ageTo}
             onChange={handleChange}
           />
+        </div>
+
+        {/* ==================================================
+            DIET
+        ================================================== */}
+
+        <div className="form-group">
+          <label htmlFor="diet">
+            Diet
+          </label>
+
+          <select
+            id="diet"
+            name="diet"
+            value={filters.diet}
+            onChange={handleChange}
+          >
+            <option value="">
+              All Diet Preferences
+            </option>
+
+            <option value="Vegetarian">
+              Vegetarian
+            </option>
+
+            <option value="Non-Vegetarian">
+              Non-Vegetarian
+            </option>
+          </select>
         </div>
 
         {/* ==================================================
