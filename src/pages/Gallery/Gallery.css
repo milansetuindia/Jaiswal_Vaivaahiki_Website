@@ -53,7 +53,6 @@
 
 .gallery-container {
   max-width: 1200px;
-
   margin: 0 auto;
 
   background: white;
@@ -76,8 +75,7 @@
 .gallery-grid {
   display: grid;
 
-  grid-template-columns:
-    repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr);
 
   gap: 25px;
 }
@@ -90,7 +88,12 @@
 .gallery-card {
   position: relative;
 
-  height: 280px;
+  /*
+    Responsive aspect ratio.
+    This removes the fixed height and prevents
+    unnecessary empty spaces around images.
+  */
+  aspect-ratio: 16 / 10;
 
   overflow: hidden;
 
@@ -126,6 +129,11 @@
 
   display: block;
 
+  /*
+    Fill the entire card without empty spaces.
+    The aspect ratio of the card closely matches
+    the wedding images.
+  */
   object-fit: cover;
 
   transition:
@@ -133,7 +141,7 @@
 }
 
 .gallery-card:hover .gallery-image {
-  transform: scale(1.06);
+  transform: scale(1.03);
 }
 
 
@@ -159,6 +167,8 @@
   color: white;
 
   box-sizing: border-box;
+
+  pointer-events: none;
 }
 
 .gallery-overlay h3 {
@@ -181,14 +191,9 @@
   }
 
   .gallery-grid {
-    grid-template-columns:
-      repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr);
 
     gap: 20px;
-  }
-
-  .gallery-card {
-    height: 250px;
   }
 
   .gallery-header h1 {
@@ -229,10 +234,6 @@
     grid-template-columns: 1fr;
 
     gap: 18px;
-  }
-
-  .gallery-card {
-    height: 260px;
   }
 
 }
