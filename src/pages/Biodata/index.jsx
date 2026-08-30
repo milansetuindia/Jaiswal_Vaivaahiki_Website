@@ -1,7 +1,13 @@
 // src/pages/Biodata/index.jsx
 
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
+
 import "./Biodata.css";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -12,6 +18,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 // ======================================================
 
 const getFileUrl = (filePath) => {
+
   if (!filePath) {
     return "";
   }
@@ -24,19 +31,34 @@ const getFileUrl = (filePath) => {
   }
 
   return `${API_URL}${filePath}`;
+
 };
 
 
+// ======================================================
+// BIODATA COMPONENT
+// ======================================================
+
 function Biodata() {
+
   const { id } = useParams();
 
-  const [biodata, setBiodata] = useState(null);
+  const location = useLocation();
 
-  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-  const [error, setError] = useState("");
 
-  const [viewingPdf, setViewingPdf] = useState(false);
+  const [biodata, setBiodata] =
+    useState(null);
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [error, setError] =
+    useState("");
+
+  const [viewingPdf, setViewingPdf] =
+    useState(false);
 
   const [downloadingPdf, setDownloadingPdf] =
     useState(false);
@@ -70,7 +92,7 @@ function Biodata() {
 
           throw new Error(
             result.message ||
-              "Failed to fetch biodata."
+            "Failed to fetch biodata."
           );
 
         }
@@ -90,7 +112,7 @@ function Biodata() {
 
         setError(
           err.message ||
-            "Unable to load biodata."
+          "Unable to load biodata."
         );
 
       } finally {
@@ -109,6 +131,83 @@ function Biodata() {
     }
 
   }, [id]);
+
+
+  // ======================================================
+// BACK TO PREVIOUS PAGE
+// ======================================================
+
+const handleBack = () => {
+
+  // ====================================================
+  // RETURN TO SEARCH PAGE
+  // ====================================================
+
+  if (location.state?.fromSearch) {
+
+    navigate(
+      "/search",
+      {
+        replace: true,
+
+        state: {
+          restoreSearch: true,
+
+          page:
+            location.state.page || 1,
+
+          scrollPosition:
+            location.state.scrollPosition,
+
+          selectedProfileId:
+            location.state.selectedProfileId,
+        },
+      }
+    );
+
+    return;
+
+  }
+
+
+  // ====================================================
+  // RETURN TO HOME PAGE
+  // ====================================================
+
+  if (location.state?.fromHome) {
+
+    navigate(
+      "/",
+      {
+        replace: true,
+
+        state: {
+          restoreHome: true,
+
+          page:
+            location.state.page || 1,
+
+          scrollPosition:
+            location.state.scrollPosition,
+
+          selectedProfileId:
+            location.state.selectedProfileId,
+        },
+      }
+    );
+
+    return;
+
+  }
+
+
+  // ====================================================
+  // FALLBACK
+  // ====================================================
+
+  navigate("/");
+
+};
 
 
   // ======================================================
@@ -450,6 +549,7 @@ function Biodata() {
   if (loading) {
 
     return (
+
       <div className="biodata-page">
 
         <div className="biodata-message">
@@ -465,6 +565,7 @@ function Biodata() {
         </div>
 
       </div>
+
     );
 
   }
@@ -477,6 +578,7 @@ function Biodata() {
   if (error) {
 
     return (
+
       <div className="biodata-page">
 
         <div className="biodata-message error">
@@ -489,13 +591,17 @@ function Biodata() {
             {error}
           </p>
 
-          <Link to="/search">
-            Back to Search
-          </Link>
+          <button
+            type="button"
+            onClick={handleBack}
+          >
+            ← Go Back
+          </button>
 
         </div>
 
       </div>
+
     );
 
   }
@@ -508,6 +614,7 @@ function Biodata() {
   if (!biodata) {
 
     return (
+
       <div className="biodata-page">
 
         <div className="biodata-message">
@@ -521,13 +628,17 @@ function Biodata() {
             or does not exist.
           </p>
 
-          <Link to="/search">
-            Back to Search
-          </Link>
+          <button
+            type="button"
+            onClick={handleBack}
+          >
+            ← Go Back
+          </button>
 
         </div>
 
       </div>
+
     );
 
   }
@@ -538,6 +649,7 @@ function Biodata() {
   // ======================================================
 
   return (
+
     <div className="biodata-page">
 
 
@@ -585,6 +697,18 @@ function Biodata() {
             {biodata.age
               ? `${biodata.age} Years`
               : "Not specified"}
+
+          </p>
+
+
+          <p>
+
+            <strong>
+              Diet:
+            </strong>{" "}
+
+            {biodata.diet ||
+              "Not specified"}
 
           </p>
 
@@ -794,9 +918,7 @@ function Biodata() {
           <div className="pdf-buttons">
 
 
-            {/* ==================================================
-                VIEW PDF
-            ================================================== */}
+            {/* VIEW PDF */}
 
             <button
               type="button"
@@ -812,9 +934,7 @@ function Biodata() {
             </button>
 
 
-            {/* ==================================================
-                DOWNLOAD PDF
-            ================================================== */}
+            {/* DOWNLOAD PDF */}
 
             <button
               type="button"
@@ -843,20 +963,25 @@ function Biodata() {
 
 
       {/* ==================================================
-          BACK TO SEARCH
+          BACK BUTTON
       ================================================== */}
 
       <div className="biodata-back">
 
-        <Link to="/search">
-          ← Back to Search
-        </Link>
+        <button
+          type="button"
+          onClick={handleBack}
+        >
+          ← Back
+        </button>
 
       </div>
 
 
     </div>
+
   );
+
 }
 
 
