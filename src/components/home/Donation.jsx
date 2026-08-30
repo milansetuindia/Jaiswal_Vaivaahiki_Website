@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import "./Donation.css";
-import donationQr from "../../assets/images/donation-qr.jpeg";
 
 function Donation() {
 
@@ -12,6 +11,14 @@ function Donation() {
 
   const upiId = "7050510511-5@axl";
   const payeeName = "Rambha Jaiswal";
+
+
+  // ======================================================
+  // CLOUDINARY QR CODE URL
+  // ======================================================
+
+  const donationQr =
+    "https://res.cloudinary.com/f4hqnuko/image/upload/v1788069632/donation-qr.jpg";
 
 
   // ======================================================
@@ -158,7 +165,8 @@ function Donation() {
         ================================================== */}
 
         <p className="donation-description donation-description-hindi">
-          इस वेबसाइट के निर्माण एवं सुचारु संचालन में हो रहे खर्च में आप‌ सभी‌ का सहयोग अपेक्षित है। स्वेच्छा से सहयोग करें।
+          इस वेबसाइट के निर्माण एवं सुचारु संचालन में हो रहे खर्च में
+          आप सभी का सहयोग अपेक्षित है। स्वेच्छा से सहयोग करें।
         </p>
 
 
