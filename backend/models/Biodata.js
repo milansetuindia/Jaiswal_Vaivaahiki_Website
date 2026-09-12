@@ -23,6 +23,8 @@ function createBiodataDocument(data) {
     education: data.education || "",
     occupation: data.occupation || "",
 
+    contactNumber: data.contactNumber || "",
+
     maritalStatus: data.maritalStatus || "",
     manglikStatus: data.manglikStatus || "",
     caste: data.caste || "",
