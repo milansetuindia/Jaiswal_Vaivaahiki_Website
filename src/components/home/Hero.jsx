@@ -30,7 +30,7 @@ function Hero() {
 
         <img
           src={heroImage}
-          alt="Jaiswal Vaivaahiki - Matrimonial Portal"
+          alt="Jaiswal Vaivaahiki - Matrimonial Website"
           className="hero-image"
           decoding="async"
         />
