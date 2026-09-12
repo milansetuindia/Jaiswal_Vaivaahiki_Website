@@ -12,6 +12,7 @@ function AddBiodata() {
     diet: "",
     income: "",
     gender: "",
+    contactNumber: "",
     maritalStatus: "",
     manglikStatus: "",
     caste: "",
@@ -98,6 +99,7 @@ function AddBiodata() {
       data.append("diet", formData.diet);
       data.append("income", formData.income);
       data.append("gender", formData.gender);
+      data.append("contactNumber", formData.contactNumber);
       data.append("maritalStatus", formData.maritalStatus);
       data.append("manglikStatus", formData.manglikStatus);
       data.append("caste", formData.caste);
@@ -150,6 +152,7 @@ function AddBiodata() {
         diet: "",
         income: "",
         gender: "",
+        contactNumber: "",
         maritalStatus: "",
         manglikStatus: "",
         caste: "",
@@ -321,6 +324,28 @@ function AddBiodata() {
                 placeholder="e.g. 10"
                 value={formData.income}
                 onChange={handleChange}
+              />
+
+            </div>
+
+            {/* Parent / Guardian Contact Number */}
+
+            <div className="form-group">
+
+              <label htmlFor="contactNumber">
+                Parent / Guardian Contact Number
+              </label>
+
+              <input
+                id="contactNumber"
+                name="contactNumber"
+                type="tel"
+                placeholder="Enter 10-digit WhatsApp number"
+                value={formData.contactNumber}
+                onChange={handleChange}
+                maxLength="10"
+                pattern="[0-9]{10}"
+                inputMode="numeric"
               />
 
             </div>
