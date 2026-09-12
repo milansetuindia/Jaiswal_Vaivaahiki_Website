@@ -171,8 +171,9 @@
 }
 
 .donation-qr-wrapper {
-  width: 210px;
-  height: 210px;
+  width: min(300px, 100%);
+  height: auto;
+  aspect-ratio: 1 / 1;
 
   padding: 10px;
 
@@ -615,9 +616,7 @@
 
   .donation-section {
     width: 94%;
-
     padding: 55px 25px;
-
     margin-bottom: 60px;
   }
 
@@ -631,17 +630,9 @@
 
   .donation-box {
     grid-template-columns: 1fr;
-
     gap: 30px;
-
     max-width: 600px;
-
     padding: 30px;
-  }
-
-  .donation-qr-wrapper {
-    width: 200px;
-    height: 200px;
   }
 
 }
@@ -718,11 +709,11 @@
   ================================================= */
 
   .donation-qr-wrapper {
-    width: min(240px, 78vw);
-    height: min(240px, 78vw);
+    width: min(300px, 100%);
+    height: auto;
+    aspect-ratio: 1 / 1;
 
     padding: 10px;
-
     border-radius: 16px;
   }
 
@@ -810,8 +801,9 @@
   /* BIGGER QR EVEN ON SMALL PHONES */
 
   .donation-qr-wrapper {
-    width: min(220px, 82vw);
-    height: min(220px, 82vw);
+    width: min(300px, 100%);
+    height: auto;
+    aspect-ratio: 1 / 1;
 
     padding: 9px;
   }
