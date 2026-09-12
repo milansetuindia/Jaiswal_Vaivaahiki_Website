@@ -9,9 +9,9 @@ function Donation() {
   // DONATION UPI DETAILS
   // ======================================================
 
-  const upiId = "7050510511-5@axl";
+  const upiId = "jaiswalvaivaahiki@ybl";
 
-  const payeeName = "Rambha Jaiswal";
+  const payeeName = "Munindra Kumar Jaiswal";
 
 
   // ======================================================
@@ -22,7 +22,8 @@ function Donation() {
   // ======================================================
 
   const donationQr =
-    "https://res.cloudinary.com/f4hqnuko/image/upload/f_auto,w_600/v1788069632/donation-qr.jpg";
+
+    "https://res.cloudinary.com/f4hqnuko/image/upload/f_auto,w_600/v1789208261/donation-qr1.jpg";
 
 
   // ======================================================
@@ -203,7 +204,7 @@ function Donation() {
 
 
             <p className="scan-text">
-              Scan to donate using any UPI app
+              Scan to contribute using any UPI app
             </p>
 
           </div>
@@ -301,7 +302,7 @@ function Donation() {
                 </span>
 
                 <span>
-                  Donate via UPI
+                  Contribute via UPI
                 </span>
 
               </a>
@@ -315,7 +316,7 @@ function Donation() {
 
             <span className="donation-note">
 
-              On mobile, Donate via UPI can open
+              On mobile, Contribute via UPI can open
               your UPI payment app.
 
               <br />
