@@ -208,7 +208,7 @@ function Contact() {
         </h2>
 
         <p>
-          A matrimonial portal for the Jaiswal community.
+          A matrimonial website for the Jaiswal community.
         </p>
 
       </section>
