@@ -7,7 +7,7 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
-
+import { FaWhatsapp } from "react-icons/fa";
 import "./Biodata.css";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -98,6 +98,8 @@ function Biodata() {
         }
 
 
+
+        console.log("BIODATA API RESPONSE:", result.biodata);
         setBiodata(
           result.biodata
         );
@@ -683,9 +685,17 @@ const handleBack = () => {
 
         <div className="profile-info">
 
-          <h1>
-            {biodata.name}
-          </h1>
+        <button
+          type="button"
+          onClick={handleBack}
+          className="biodata-back-btn biodata-top-back"
+        >
+          ← Back
+        </button>
+
+        <h1>
+          {biodata.name}
+        </h1>
 
 
           <p>
@@ -837,6 +847,31 @@ const handleBack = () => {
 
       </div>
 
+      {/* ==================================================
+          CONTACT / WHATSAPP
+      ================================================== */}
+
+      {biodata.contactNumber && (
+        <div className="biodata-contact-section">
+
+          <a
+            href={`https://wa.me/91${String(biodata.contactNumber).replace(/\D/g, "")}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="biodata-whatsapp-btn"
+          >
+            <span className="biodata-whatsapp-icon">
+              <FaWhatsapp />
+            </span>
+
+            <span>
+              Contact on WhatsApp
+            </span>
+          </a>
+
+        </div>
+      )}
+
 
       {/* ==================================================
           EDUCATION
@@ -967,14 +1002,13 @@ const handleBack = () => {
       ================================================== */}
 
       <div className="biodata-back">
-
         <button
           type="button"
           onClick={handleBack}
+          className="biodata-back-btn"
         >
           ← Back
         </button>
-
       </div>
 
 
