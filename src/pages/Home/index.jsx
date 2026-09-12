@@ -7,6 +7,7 @@ import TrustStats from "../../components/home/TrustStats";
 import Donation from "../../components/home/Donation";
 import UploadBiodata from "../../components/home/UploadBiodata";
 import SearchSection from "../../components/home/SearchSection";
+import SafetyNotice from "../../components/home/SafetyNotice";
 import LatestProfiles from "../../components/home/LatestProfiles";
 import Features from "../../components/home/Features";
 import HowItWorks from "../../components/home/HowItWorks";
@@ -25,6 +26,8 @@ function Home() {
       <UploadBiodata />
 
       <SearchSection />
+
+      <SafetyNotice />
 
       <LatestProfiles />
 
