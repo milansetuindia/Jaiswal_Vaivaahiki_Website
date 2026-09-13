@@ -744,7 +744,6 @@ function EditBiodata() {
                 placeholder="e.g. Patna"
                 value={formData.city}
                 onChange={handleChange}
-                required
               />
 
             </div>
