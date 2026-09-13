@@ -208,11 +208,15 @@
 
   text-decoration: none;
 
+  font-family: inherit;
+
   font-size: 16px;
 
   font-weight: 700;
 
   line-height: 1.2;
+
+  cursor: pointer;
 
   transition:
     background 0.25s ease,
@@ -555,7 +559,7 @@
 
     min-height: 47px;
 
-    padding: 12px 12px;
+    padding: 12px;
 
     font-size: 14px;
 
@@ -588,8 +592,11 @@
 
 .biodata-maker-btn {
   display: inline-flex;
+
   align-items: center;
+
   justify-content: center;
+
   gap: 10px;
 
   padding: 12px 22px;
@@ -605,4 +612,399 @@
 
 .biodata-maker-icon {
   font-size: 16px;
+}
+
+
+/* ======================================================
+   WHATSAPP SELECTION MODAL
+====================================================== */
+
+.whatsapp-modal-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 99999;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 20px;
+
+  box-sizing: border-box;
+
+  background: rgba(0, 0, 0, 0.55);
+
+  backdrop-filter: blur(3px);
+}
+
+
+/* ======================================================
+   MODAL
+====================================================== */
+
+.whatsapp-modal {
+  width: min(420px, 100%);
+
+  position: relative;
+
+  padding: 32px 28px 26px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border: 1px solid #f0dddd;
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.2);
+
+  text-align: center;
+
+  animation: whatsappModalAppear 0.2s ease-out;
+}
+
+
+/* ======================================================
+   MODAL ANIMATION
+====================================================== */
+
+@keyframes whatsappModalAppear {
+
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+}
+
+
+/* ======================================================
+   MODAL CLOSE
+====================================================== */
+
+.whatsapp-modal-close {
+  position: absolute;
+
+  top: 10px;
+  right: 12px;
+
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+
+  color: #777;
+
+  font-family: inherit;
+
+  font-size: 28px;
+
+  line-height: 1;
+
+  cursor: pointer;
+
+  border-radius: 50%;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.whatsapp-modal-close:hover {
+  background: #f7eeee;
+
+  color: #8b0000;
+}
+
+.whatsapp-modal-close:focus-visible {
+  outline: 2px solid #8b0000;
+
+  outline-offset: 2px;
+}
+
+
+/* ======================================================
+   MODAL ICON
+====================================================== */
+
+.whatsapp-modal-icon {
+  width: 58px;
+  height: 58px;
+
+  margin: 0 auto 15px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #eafaf0;
+
+  color: #25d366;
+
+  font-size: 32px;
+}
+
+
+/* ======================================================
+   MODAL HEADING
+====================================================== */
+
+.whatsapp-modal h3 {
+  margin: 0 0 8px;
+
+  color: #7d0000;
+
+  font-size: 24px;
+
+  font-weight: 800;
+}
+
+
+/* ======================================================
+   MODAL DESCRIPTION
+====================================================== */
+
+.whatsapp-modal-description {
+  margin: 0 0 20px !important;
+
+  color: #666 !important;
+
+  font-size: 14px !important;
+
+  line-height: 1.5 !important;
+}
+
+
+/* ======================================================
+   WHATSAPP OPTIONS
+====================================================== */
+
+.whatsapp-option-btn {
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  margin-bottom: 12px;
+
+  padding: 13px 16px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  color: #333;
+
+  border: 1px solid #e3d4d4;
+
+  border-radius: 10px;
+
+  font-family: inherit;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.whatsapp-option-btn:hover {
+  background: #fffaf5;
+
+  border-color: #a00000;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 5px 14px rgba(80, 0, 0, 0.08);
+}
+
+.whatsapp-option-btn:focus-visible {
+  outline: 2px solid #8b0000;
+
+  outline-offset: 2px;
+}
+
+
+/* ======================================================
+   OPTION ICON
+====================================================== */
+
+.whatsapp-option-icon {
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #eafaf0;
+
+  color: #25d366;
+
+  font-size: 23px;
+}
+
+
+/* ======================================================
+   OPTION TEXT
+====================================================== */
+
+.whatsapp-option-text {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.whatsapp-option-text strong {
+  color: #7d0000;
+
+  font-size: 16px;
+
+  font-weight: 700;
+}
+
+.whatsapp-option-text small {
+  color: #777;
+
+  font-size: 13px;
+}
+
+
+/* ======================================================
+   CANCEL
+====================================================== */
+
+.whatsapp-cancel-btn {
+  margin-top: 5px;
+
+  padding: 8px 18px;
+
+  border: none;
+
+  background: transparent;
+
+  color: #777;
+
+  font-family: inherit;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  border-radius: 6px;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.whatsapp-cancel-btn:hover {
+  color: #8b0000;
+
+  background: #f7eeee;
+}
+
+.whatsapp-cancel-btn:focus-visible {
+  outline: 2px solid #8b0000;
+
+  outline-offset: 2px;
+}
+
+
+/* ======================================================
+   MODAL MOBILE
+====================================================== */
+
+@media (max-width: 600px) {
+
+  .whatsapp-modal-overlay {
+    padding: 15px;
+  }
+
+  .whatsapp-modal {
+    padding: 30px 20px 22px;
+
+    border-radius: 16px;
+  }
+
+  .whatsapp-modal h3 {
+    font-size: 22px;
+  }
+
+  .whatsapp-option-btn {
+    padding: 12px 13px;
+  }
+
+}
+
+
+/* ======================================================
+   MODAL SMALL MOBILE
+====================================================== */
+
+@media (max-width: 400px) {
+
+  .whatsapp-modal {
+    padding: 28px 16px 20px;
+  }
+
+  .whatsapp-modal-icon {
+    width: 52px;
+    height: 52px;
+
+    font-size: 28px;
+  }
+
+  .whatsapp-modal h3 {
+    font-size: 20px;
+  }
+
+  .whatsapp-option-text strong {
+    font-size: 15px;
+  }
+
+  .whatsapp-option-text small {
+    font-size: 12px;
+  }
+
 }
