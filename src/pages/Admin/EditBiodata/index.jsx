@@ -529,7 +529,6 @@ function EditBiodata() {
                 placeholder="e.g. 10"
                 value={formData.income}
                 onChange={handleChange}
-                required
               />
 
             </div>
@@ -744,6 +743,7 @@ function EditBiodata() {
                 placeholder="e.g. Patna"
                 value={formData.city}
                 onChange={handleChange}
+                required
               />
 
             </div>
