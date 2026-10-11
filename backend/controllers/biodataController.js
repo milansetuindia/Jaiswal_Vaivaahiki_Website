@@ -148,6 +148,7 @@ async function uploadBiodata(
       diet,
       income,
       gender,
+      height,
       city,
       state,
       education,
@@ -170,6 +171,18 @@ async function uploadBiodata(
           "Name and age are required",
       });
     }
+
+
+    if (
+      height &&
+      !/^([3-8]) ft (1[01]|[0-9]) in$/.test(height)
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid height format",
+      });
+    }
+
 
     if (
       !req.files ||
@@ -261,6 +274,7 @@ async function uploadBiodata(
         age,
         diet,
         gender,
+        height,
         income,
         city,
         state,
@@ -513,6 +527,7 @@ async function updateBiodata(
       diet,
       income,
       gender,
+      height,
       city,
       state,
       education,
@@ -536,6 +551,21 @@ async function updateBiodata(
     }
 
     // ==================================================
+    // HEIGHT VALIDATION
+    // ==================================================
+
+    if (
+      height &&
+      !/^([3-8]) ft (1[01]|[0-9]) in$/.test(height)
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid height format",
+      });
+    }
+
+
+    // ==================================================
     // BASIC DATA
     // ==================================================
 
@@ -549,6 +579,7 @@ async function updateBiodata(
           ? Number(income)
           : null,
       gender: gender || "",
+      height: height || "",
 
       city: city || "",
       state: state || "",
