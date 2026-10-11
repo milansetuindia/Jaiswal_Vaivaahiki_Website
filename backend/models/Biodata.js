@@ -18,6 +18,15 @@ function createBiodataDocument(data) {
 
     gender: data.gender || "",
     height: data.height || "",
+
+    // ======================================================
+    // PER-PROFILE BUTTON VISIBILITY
+    // ======================================================
+
+    showWhatsapp: data.showWhatsapp !== false,
+    showViewPdf: data.showViewPdf !== false,
+    showDownloadPdf: data.showDownloadPdf !== false,
+
     city: data.city || "",
     state: data.state || "",
 
