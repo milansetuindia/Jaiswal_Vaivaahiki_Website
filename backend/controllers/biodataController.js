@@ -121,6 +121,20 @@ async function deleteLegacyLocalFile(
   }
 }
 
+
+
+// ======================================================
+// CONVERT FORM VISIBILITY VALUES TO BOOLEAN
+// ======================================================
+
+function parseVisibility(value) {
+  return value === undefined
+    ? true
+    : value === true || value === "true";
+}
+
+
+
 // ======================================================
 // UPLOAD BIODATA
 // ======================================================
@@ -149,6 +163,9 @@ async function uploadBiodata(
       income,
       gender,
       height,
+      showWhatsapp,
+      showViewPdf,
+      showDownloadPdf,
       city,
       state,
       education,
@@ -275,6 +292,9 @@ async function uploadBiodata(
         diet,
         gender,
         height,
+        showWhatsapp: parseVisibility(showWhatsapp),
+        showViewPdf: parseVisibility(showViewPdf),
+        showDownloadPdf: parseVisibility(showDownloadPdf),
         income,
         city,
         state,
@@ -528,6 +548,9 @@ async function updateBiodata(
       income,
       gender,
       height,
+      showWhatsapp,
+      showViewPdf,
+      showDownloadPdf,
       city,
       state,
       education,
@@ -580,6 +603,15 @@ async function updateBiodata(
           : null,
       gender: gender || "",
       height: height || "",
+
+      // ======================================================
+      // UPDATE BUTTON VISIBILITY
+      // ======================================================
+
+      showWhatsapp: parseVisibility(showWhatsapp),
+      showViewPdf: parseVisibility(showViewPdf),
+      showDownloadPdf: parseVisibility(showDownloadPdf),
+
 
       city: city || "",
       state: state || "",
