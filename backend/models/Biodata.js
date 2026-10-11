@@ -17,6 +17,7 @@ function createBiodataDocument(data) {
         : null,
 
     gender: data.gender || "",
+    height: data.height || "",
     city: data.city || "",
     state: data.state || "",
 
