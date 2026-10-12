@@ -3,6 +3,9 @@
 const express = require("express");
 const multer = require("multer");
 
+
+const { ObjectId } = require("mongodb");
+
 const adminAuth = require("../middleware/adminAuth");
 
 const {
@@ -155,6 +158,173 @@ router.get(
   "/:id",
   getBiodataById
 );
+
+
+
+// ======================================================
+// GET PRIVATE ADMIN REMARK
+// ======================================================
+
+router.get(
+  "/:id/admin-remark",
+  adminAuth,
+  async (req, res) => {
+    try {
+      const db = req.app.locals.db;
+      const { id } = req.params;
+
+      if (!db) {
+        return res.status(503).json({
+          success: false,
+          message: "Database unavailable",
+        });
+      }
+
+      if (!ObjectId.isValid(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid biodata ID",
+        });
+      }
+
+      const biodataId = new ObjectId(id);
+
+      const biodata = await db
+        .collection("biodatas")
+        .findOne(
+          { _id: biodataId },
+          { projection: { _id: 1 } }
+        );
+
+      if (!biodata) {
+        return res.status(404).json({
+          success: false,
+          message: "Biodata not found",
+        });
+      }
+
+      const remark = await db
+        .collection("adminRemarks")
+        .findOne({ biodataId });
+
+      return res.json({
+        success: true,
+        adminRemark: remark?.text || "",
+      });
+
+    } catch (error) {
+      console.error("Get admin remark error:", error);
+
+      return res.status(500).json({
+        success: false,
+        message: "Failed to load admin remark",
+      });
+    }
+  }
+);
+
+
+// ======================================================
+// SAVE / UPDATE PRIVATE ADMIN REMARK
+// ======================================================
+
+router.put(
+  "/:id/admin-remark",
+  adminAuth,
+  async (req, res) => {
+    try {
+      const db = req.app.locals.db;
+      const { id } = req.params;
+      const { adminRemark } = req.body;
+
+      if (!db) {
+        return res.status(503).json({
+          success: false,
+          message: "Database unavailable",
+        });
+      }
+
+      if (!ObjectId.isValid(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid biodata ID",
+        });
+      }
+
+      if (
+        typeof adminRemark !== "string" ||
+        adminRemark.length > 2000
+      ) {
+        return res.status(400).json({
+          success: false,
+          message: "Remark must be 2000 characters or less",
+        });
+      }
+
+      const biodataId = new ObjectId(id);
+
+      const biodata = await db
+        .collection("biodatas")
+        .findOne(
+          { _id: biodataId },
+          { projection: { _id: 1 } }
+        );
+
+      if (!biodata) {
+        return res.status(404).json({
+          success: false,
+          message: "Biodata not found",
+        });
+      }
+
+      const text = adminRemark.trim();
+
+      if (!text) {
+        await db
+          .collection("adminRemarks")
+          .deleteMany({ biodataId });
+
+        return res.json({
+          success: true,
+          message: "Admin remark cleared",
+          adminRemark: "",
+        });
+      }
+
+      await db
+        .collection("adminRemarks")
+        .updateOne(
+          { biodataId },
+          {
+            $set: {
+              text,
+              updatedAt: new Date(),
+              updatedBy: req.admin.username,
+            },
+            $setOnInsert: {
+              createdAt: new Date(),
+            },
+          },
+          { upsert: true }
+        );
+
+      return res.json({
+        success: true,
+        message: "Admin remark saved successfully",
+        adminRemark: text,
+      });
+
+    } catch (error) {
+      console.error("Save admin remark error:", error);
+
+      return res.status(500).json({
+        success: false,
+        message: "Failed to save admin remark",
+      });
+    }
+  }
+);
+
 
 // ======================================================
 // EXPORT ROUTER
