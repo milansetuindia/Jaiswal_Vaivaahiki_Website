@@ -1017,6 +1017,13 @@ async function deleteBiodata(
         _id: new ObjectId(id),
       });
 
+      await db
+        .collection("adminRemarks")
+        .deleteMany({
+          biodataId: new ObjectId(id),
+        });
+
+
     return res.json({
       success: true,
       message:
@@ -1158,6 +1165,14 @@ async function cleanupExpiredBiodatas(
         .deleteOne({
           _id: biodata._id,
         });
+
+
+      await db
+        .collection("adminRemarks")
+        .deleteMany({
+          biodataId: biodata._id,
+        });
+
 
       console.log(
         `Expired biodata deleted: ${
