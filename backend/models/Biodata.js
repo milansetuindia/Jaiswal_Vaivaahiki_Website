@@ -5,6 +5,8 @@ const { ObjectId } = require("mongodb");
 function createBiodataDocument(data) {
   return {
     _id: new ObjectId(),
+    profileNumber: data.profileNumber,
+
 
     name: data.name,
     age: Number(data.age),
