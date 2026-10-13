@@ -281,12 +281,40 @@ async function uploadBiodata(
       throw pdfError;
     }
 
+
+    // ======================================================
+    // GENERATE UNIQUE PROFILE NUMBER
+    // ======================================================
+
+    const counter = await db
+      .collection("counters")
+      .findOneAndUpdate(
+        { _id: "biodataProfileNumber" },
+        {
+          $inc: { sequence: 1 },
+        },
+        {
+          returnDocument: "after",
+        }
+      );
+
+    if (!counter) {
+      throw new Error(
+        "Profile number counter is not initialized."
+      );
+    }
+
+    const profileNumber =
+      `JV-${String(counter.sequence).padStart(3, "0")}`;
+
+
     // ==================================================
     // CREATE MONGODB DOCUMENT
     // ==================================================
 
     const document =
       createBiodataDocument({
+        profileNumber,
         name,
         age,
         diet,
