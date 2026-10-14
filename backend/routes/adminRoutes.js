@@ -1,341 +1,531 @@
 
-const express = require("express");
-const bcrypt = require("bcryptjs");
-const crypto = require("crypto");
-const nodemailer = require("nodemailer");
-const { rateLimit } = require("express-rate-limit");
+  // backend/routes/adminRoutes.js
 
-const adminAuth = require("../middleware/adminAuth");
+  const express = require("express");
+  const bcrypt = require("bcryptjs");
+  const crypto = require("crypto");
+  const { rateLimit } = require("express-rate-limit");
 
-const {
-  COOKIE_NAME,
-  SESSION_HOURS,
-  OTP_MINUTES,
-  randomToken,
-  sha256,
-  hashOtp,
-  cookieOptions,
-} = require("../utils/adminSecurity");
+  const adminAuth = require("../middleware/adminAuth");
 
-const router = express.Router();
+  const {
+    COOKIE_NAME,
+    SESSION_HOURS,
+    OTP_MINUTES,
+    randomToken,
+    sha256,
+    hashOtp,
+    cookieOptions,
+  } = require("../utils/adminSecurity");
 
+  const router = express.Router();
 
-function createCsrfToken(sessionToken) {
-  return crypto
-    .createHmac("sha256", process.env.OTP_SECRET)
-    .update(`csrf:${sessionToken}`)
-    .digest("hex");
-}
+  // ======================================================
+  // CREATE CSRF TOKEN
+  // ======================================================
 
-
-
-const loginLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  limit: 5,
-  standardHeaders: "draft-8",
-  legacyHeaders: false,
-  message: {
-    success: false,
-    message: "Too many attempts. Try again later.",
-  },
-});
-
-const otpLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  limit: 10,
-  standardHeaders: "draft-8",
-  legacyHeaders: false,
-  message: {
-    success: false,
-    message: "Too many verification attempts.",
-  },
-});
-
-const mailer = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT || 587),
-  secure: process.env.SMTP_SECURE === "true",
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASSWORD,
-  },
-});
-
-const validOrigin = (req) => {
-  const allowed = [
-    "https://jaiswal-vaivaahiki.netlify.app",
-    "http://localhost:5173",
-  ];
-
-  return allowed.includes(req.get("origin"));
-};
-
-// ======================================================
-// STEP 1: VERIFY ADMIN PASSWORD AND SEND OTP
-// ======================================================
-
-router.post("/login", loginLimiter, async (req, res) => {
-  try {
-    if (!validOrigin(req)) {
-      return res.sendStatus(403);
-    }
-
-    const { username, password } = req.body || {};
-
-    if (
-      typeof username !== "string" ||
-      typeof password !== "string" ||
-      username.length > 100 ||
-      password.length > 200
-    ) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid login request.",
-      });
-    }
-
-    const correctUsername =
-      username === process.env.ADMIN_USERNAME;
-
-    // Always check password hash to reduce
-    // differences in response behavior.
-    const correctPassword = await bcrypt.compare(
-      password,
-      process.env.ADMIN_PASSWORD_HASH
-    );
-
-    if (!correctUsername || !correctPassword) {
-      return res.status(401).json({
-        success: false,
-        message: "Invalid username or password.",
-      });
-    }
-
-    const db = req.app.locals.db;
-
-    const challengeId = randomToken(24);
-    const code = String(
-      crypto.randomInt(0, 1000000)
-    ).padStart(6, "0");
-
-    const expiresAt = new Date(
-      Date.now() + OTP_MINUTES * 60 * 1000
-    );
-
-    // Invalidate earlier pending challenges.
-    await db.collection("adminChallenges").deleteMany({
-      username,
-    });
-
-    await db.collection("adminChallenges").insertOne({
-      _id: challengeId,
-      username,
-      otpHash: hashOtp(challengeId, code),
-      attempts: 0,
-      expiresAt,
-      createdAt: new Date(),
-    });
-
-    try {
-      await mailer.sendMail({
-        from: process.env.SMTP_FROM,
-        to: process.env.ADMIN_EMAIL,
-        subject: "Jaiswal Vaivaahiki Admin Login OTP",
-        text:
-          `Your admin login OTP is ${code}.\n\n` +
-          `This code expires in ${OTP_MINUTES} minutes.\n` +
-          "Do not share this code with anyone.",
-      });
-    } catch (mailError) {
-      await db.collection("adminChallenges").deleteOne({
-        _id: challengeId,
-      });
-      throw mailError;
-    }
-
-    return res.json({
-      success: true,
-      requiresOtp: true,
-      challengeId,
-      message: "Verification code sent to admin email.",
-    });
-
-  } catch (error) {
-    console.error("Admin login error:", error);
-
-    return res.status(500).json({
-      success: false,
-      message: "Unable to process login.",
-    });
+  function createCsrfToken(sessionToken) {
+    return crypto
+      .createHmac("sha256", process.env.OTP_SECRET)
+      .update(`csrf:${sessionToken}`)
+      .digest("hex");
   }
-});
 
-// ======================================================
-// STEP 2: VERIFY OTP AND CREATE ADMIN SESSION
-// ======================================================
+  // ======================================================
+  // LOGIN RATE LIMITING
+  // ======================================================
 
-router.post("/verify-otp", otpLimiter, async (req, res) => {
-  try {
-    if (!validOrigin(req)) {
-      return res.sendStatus(403);
-    }
+  const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 5,
+    standardHeaders: "draft-8",
+    legacyHeaders: false,
+    message: {
+      success: false,
+      message: "Too many attempts. Try again later.",
+    },
+  });
 
-    const { challengeId, otp } = req.body || {};
+  // ======================================================
+  // OTP VERIFICATION RATE LIMITING
+  // ======================================================
 
-    if (
-      typeof challengeId !== "string" ||
-      !/^[a-f0-9]{48}$/.test(challengeId) ||
-      typeof otp !== "string" ||
-      !/^\d{6}$/.test(otp)
-    ) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid verification request.",
-      });
-    }
+  const otpLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 10,
+    standardHeaders: "draft-8",
+    legacyHeaders: false,
+    message: {
+      success: false,
+      message: "Too many verification attempts.",
+    },
+  });
 
-    const db = req.app.locals.db;
-    const challenges = db.collection("adminChallenges");
+  // ======================================================
+  // SEND ADMIN OTP USING BREVO HTTPS API
+  // WORKS WITH RENDER FREE
+  // REQUIRES NODE.JS 18+
+  // ======================================================
 
-    // Atomically consume one verification attempt.
-    const challenge = await challenges.findOneAndUpdate(
+  async function sendAdminOtpEmail(code) {
+    const response = await fetch(
+      "https://api.brevo.com/v3/smtp/email",
       {
-        _id: challengeId,
-        expiresAt: { $gt: new Date() },
-        attempts: { $lt: 5 },
-      },
-      { $inc: { attempts: 1 } },
-      { returnDocument: "after" }
-    );
+        method: "POST",
 
-    if (!challenge) {
-      return res.status(401).json({
-        success: false,
-        message: "OTP invalid, expired or locked.",
-      });
-    }
+        headers: {
+          "api-key": process.env.BREVO_API_KEY,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
 
-    const suppliedHash = Buffer.from(
-      hashOtp(challengeId, otp),
-      "hex"
-    );
+        body: JSON.stringify({
+          sender: {
+            name:
+              process.env.BREVO_SENDER_NAME ||
+              "Jaiswal Vaivaahiki",
 
-    const expectedHash = Buffer.from(
-      challenge.otpHash,
-      "hex"
-    );
+            email: process.env.BREVO_SENDER_EMAIL,
+          },
 
-    const valid = crypto.timingSafeEqual(
-      suppliedHash,
-      expectedHash
-    );
+          to: [
+            {
+              email: process.env.ADMIN_EMAIL,
+            },
+          ],
 
-    if (!valid) {
-      return res.status(401).json({
-        success: false,
-        message: "Invalid OTP.",
-      });
-    }
+          subject:
+            "Jaiswal Vaivaahiki - Admin Login OTP",
 
-    // Only one concurrent verification can consume
-    // this challenge and issue a session.
-    const consumed = await challenges.deleteOne({
-      _id: challengeId,
-      otpHash: challenge.otpHash,
-    });
+          textContent:
+            `🙏 Namaste,\n\n` +
+            `Your Jaiswal Vaivaahiki Admin Login OTP is: ${code}\n\n` +
+            `This code will expire in ${OTP_MINUTES} minutes.\n\n` +
+            "Do not share this OTP with anyone.\n\n" +
+            "If you did not request this login, " +
+            "please secure your administrator account.",
+        }),
 
-    if (consumed.deletedCount !== 1) {
-      return res.status(401).json({
-        success: false,
-        message: "OTP already used.",
-      });
-    }
-
-    const token = randomToken();
-    const csrfToken = createCsrfToken(token);
-
-    const sessionDuration =
-      SESSION_HOURS * 60 * 60 * 1000;
-
-    await db.collection("adminSessions").insertOne({
-      tokenHash: sha256(token),
-      csrfHash: sha256(csrfToken),
-      username: challenge.username,
-      role: "admin",
-      createdAt: new Date(),
-      expiresAt: new Date(
-        Date.now() + sessionDuration
-      ),
-    });
-
-    res.cookie(
-      COOKIE_NAME,
-      token,
-      {
-        ...cookieOptions(),
-        maxAge: sessionDuration,
+        signal: AbortSignal.timeout(10000),
       }
     );
 
-    return res.json({
-      success: true,
-      message: "Admin login successful.",
-      csrfToken,
-      admin: {
-        username: challenge.username,
-        role: "admin",
-      },
-    });
+    if (!response.ok) {
+      const errorBody = await response.text();
 
-  } catch (error) {
-    console.error("OTP verification error:", error);
+      console.error(
+        "Brevo OTP email failed:",
+        response.status,
+        errorBody
+      );
 
-    return res.status(500).json({
-      success: false,
-      message: "OTP verification failed.",
-    });
+      throw new Error(
+        "Failed to send admin OTP email"
+      );
+    }
+
+    // API accepted the message.
+    // Actual inbox delivery must be checked separately.
+    return await response.json();
   }
-});
 
-// ======================================================
-// CHECK EXISTING SESSION
-// ======================================================
+  // ======================================================
+  // VALIDATE FRONTEND ORIGIN
+  // ======================================================
 
-router.get("/me", adminAuth, (req, res) => {
-  return res.json({
-    success: true,
-    csrfToken: createCsrfToken(req.sessionToken),
-    admin: req.admin,
-  });
-});
+  const validOrigin = (req) => {
+    const allowed = [
+      "https://jaiswal-vaivaahiki.netlify.app",
+      "http://localhost:5173",
+    ];
 
-// ======================================================
-// LOGOUT
-// ======================================================
+    return allowed.includes(req.get("origin"));
+  };
 
-router.post("/logout", adminAuth, async (req, res) => {
-  try {
-    await req.app.locals.db
-      .collection("adminSessions")
-      .deleteOne({
-        tokenHash: req.sessionTokenHash,
+  // ======================================================
+  // STEP 1: VERIFY ADMIN PASSWORD AND SEND OTP
+  // ======================================================
+
+  router.post(
+    "/login",
+    loginLimiter,
+    async (req, res) => {
+      try {
+        if (!validOrigin(req)) {
+          return res.sendStatus(403);
+        }
+
+        const { username, password } = req.body || {};
+
+        if (
+          typeof username !== "string" ||
+          typeof password !== "string" ||
+          username.length > 100 ||
+          password.length > 200
+        ) {
+          return res.status(400).json({
+            success: false,
+            message: "Invalid login request.",
+          });
+        }
+
+        // ==================================================
+        // VERIFY USERNAME
+        // ==================================================
+
+        const correctUsername =
+          username === process.env.ADMIN_USERNAME;
+
+        // ==================================================
+        // VERIFY HASHED PASSWORD
+        // ==================================================
+
+        const correctPassword = await bcrypt.compare(
+          password,
+          process.env.ADMIN_PASSWORD_HASH
+        );
+
+        if (!correctUsername || !correctPassword) {
+          return res.status(401).json({
+            success: false,
+            message: "Invalid username or password.",
+          });
+        }
+
+        const db = req.app.locals.db;
+
+        // ==================================================
+        // GENERATE SIX-DIGIT OTP
+        // ==================================================
+
+        const challengeId = randomToken(24);
+
+        const code = String(
+          crypto.randomInt(0, 1000000)
+        ).padStart(6, "0");
+
+        const expiresAt = new Date(
+          Date.now() + OTP_MINUTES * 60 * 1000
+        );
+
+        // ==================================================
+        // INVALIDATE PREVIOUS OTP CHALLENGES
+        // ==================================================
+
+        await db
+          .collection("adminChallenges")
+          .deleteMany({
+            username,
+          });
+
+        // ==================================================
+        // SAVE HASHED OTP IN MONGODB
+        // ==================================================
+
+        await db
+          .collection("adminChallenges")
+          .insertOne({
+            _id: challengeId,
+            username,
+            otpHash: hashOtp(challengeId, code),
+            attempts: 0,
+            expiresAt,
+            createdAt: new Date(),
+          });
+
+        // ==================================================
+        // SEND OTP THROUGH BREVO HTTPS API
+        // ==================================================
+
+        try {
+          await sendAdminOtpEmail(code);
+
+        } catch (mailError) {
+          // Remove challenge if email submission fails.
+
+          await db
+            .collection("adminChallenges")
+            .deleteOne({
+              _id: challengeId,
+            });
+
+          throw mailError;
+        }
+
+        // ==================================================
+        // OTP SENT SUCCESSFULLY
+        // ==================================================
+
+        return res.json({
+          success: true,
+          requiresOtp: true,
+          challengeId,
+          message:
+            "Verification code sent to admin email.",
+        });
+
+      } catch (error) {
+        console.error(
+          "Admin login error:",
+          error
+        );
+
+        return res.status(500).json({
+          success: false,
+          message: "Unable to process login.",
+        });
+      }
+    }
+  );
+
+  // ======================================================
+  // STEP 2: VERIFY OTP AND CREATE ADMIN SESSION
+  // ======================================================
+
+  router.post(
+    "/verify-otp",
+    otpLimiter,
+    async (req, res) => {
+      try {
+        if (!validOrigin(req)) {
+          return res.sendStatus(403);
+        }
+
+        const { challengeId, otp } = req.body || {};
+
+        if (
+          typeof challengeId !== "string" ||
+          !/^[a-f0-9]{48}$/.test(challengeId) ||
+          typeof otp !== "string" ||
+          !/^\d{6}$/.test(otp)
+        ) {
+          return res.status(400).json({
+            success: false,
+            message: "Invalid verification request.",
+          });
+        }
+
+        const db = req.app.locals.db;
+
+        const challenges =
+          db.collection("adminChallenges");
+
+        // ==================================================
+        // VALIDATE OTP CHALLENGE AND COUNT ATTEMPT
+        // ==================================================
+
+        const challenge =
+          await challenges.findOneAndUpdate(
+            {
+              _id: challengeId,
+              expiresAt: {
+                $gt: new Date(),
+              },
+              attempts: {
+                $lt: 5,
+              },
+            },
+
+            {
+              $inc: {
+                attempts: 1,
+              },
+            },
+
+            {
+              returnDocument: "after",
+            }
+          );
+
+        if (!challenge) {
+          return res.status(401).json({
+            success: false,
+            message:
+              "OTP invalid, expired or locked.",
+          });
+        }
+
+        // ==================================================
+        // COMPARE OTP SECURELY
+        // ==================================================
+
+        const suppliedHash = Buffer.from(
+          hashOtp(challengeId, otp),
+          "hex"
+        );
+
+        const expectedHash = Buffer.from(
+          challenge.otpHash,
+          "hex"
+        );
+
+        const valid = crypto.timingSafeEqual(
+          suppliedHash,
+          expectedHash
+        );
+
+        if (!valid) {
+          return res.status(401).json({
+            success: false,
+            message: "Invalid OTP.",
+          });
+        }
+
+        // ==================================================
+        // CONSUME OTP (PREVENT REUSE)
+        // ==================================================
+
+        const consumed =
+          await challenges.deleteOne({
+            _id: challengeId,
+            otpHash: challenge.otpHash,
+          });
+
+        if (consumed.deletedCount !== 1) {
+          return res.status(401).json({
+            success: false,
+            message: "OTP already used.",
+          });
+        }
+
+        // ==================================================
+        // GENERATE SECURE ADMIN SESSION
+        // ==================================================
+
+        const token = randomToken();
+
+        const csrfToken = createCsrfToken(token);
+
+        const sessionDuration =
+          SESSION_HOURS * 60 * 60 * 1000;
+
+        // ==================================================
+        // SAVE SESSION IN MONGODB
+        // ==================================================
+
+        await db
+          .collection("adminSessions")
+          .insertOne({
+            tokenHash: sha256(token),
+            csrfHash: sha256(csrfToken),
+            username: challenge.username,
+            role: "admin",
+            createdAt: new Date(),
+            expiresAt: new Date(
+              Date.now() + sessionDuration
+            ),
+          });
+
+        // ==================================================
+        // SEND SECURE SESSION COOKIE
+        // ==================================================
+
+        res.cookie(
+          COOKIE_NAME,
+          token,
+          {
+            ...cookieOptions(),
+            maxAge: sessionDuration,
+          }
+        );
+
+        // ==================================================
+        // LOGIN SUCCESS
+        // ==================================================
+
+        return res.json({
+          success: true,
+          message: "Admin login successful.",
+          csrfToken,
+
+          admin: {
+            username: challenge.username,
+            role: "admin",
+          },
+        });
+
+      } catch (error) {
+        console.error(
+          "OTP verification error:",
+          error
+        );
+
+        return res.status(500).json({
+          success: false,
+          message: "OTP verification failed.",
+        });
+      }
+    }
+  );
+
+  // ======================================================
+  // CHECK EXISTING ADMIN SESSION
+  // ======================================================
+
+  router.get(
+    "/me",
+    adminAuth,
+    (req, res) => {
+      return res.json({
+        success: true,
+        csrfToken: createCsrfToken(
+          req.sessionToken
+        ),
+        admin: req.admin,
       });
+    }
+  );
 
-    res.clearCookie(COOKIE_NAME, cookieOptions());
+  // ======================================================
+  // ADMIN LOGOUT
+  // ======================================================
 
-    return res.json({
-      success: true,
-      message: "Logged out successfully.",
-    });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Logout failed.",
-    });
-  }
-});
+  router.post(
+    "/logout",
+    adminAuth,
+    async (req, res) => {
+      try {
+        // ==================================================
+        // DELETE SESSION FROM MONGODB
+        // ==================================================
 
-module.exports = router;
+        await req.app.locals.db
+          .collection("adminSessions")
+          .deleteOne({
+            tokenHash: req.sessionTokenHash,
+          });
 
+        // ==================================================
+        // CLEAR SESSION COOKIE
+        // ==================================================
 
+        res.clearCookie(
+          COOKIE_NAME,
+          cookieOptions()
+        );
 
+        return res.json({
+          success: true,
+          message:
+            "Logged out successfully.",
+        });
+
+      } catch (error) {
+        console.error(
+          "Admin logout error:",
+          error
+        );
+
+        return res.status(500).json({
+          success: false,
+          message: "Logout failed.",
+        });
+      }
+    }
+  );
+
+  // ======================================================
+  // EXPORT ROUTER
+  // ======================================================
+
+  module.exports = router;
