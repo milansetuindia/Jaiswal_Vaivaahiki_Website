@@ -210,17 +210,18 @@ async function startServer() {
 
 
 
+
 const requiredSecurityVariables = [
   "MONGODB_URI",
   "ADMIN_USERNAME",
   "ADMIN_PASSWORD_HASH",
   "ADMIN_EMAIL",
   "OTP_SECRET",
-  "SMTP_HOST",
-  "SMTP_USER",
-  "SMTP_PASSWORD",
-  "SMTP_FROM",
+  "BREVO_API_KEY",
+  "BREVO_SENDER_EMAIL",
+  "BREVO_SENDER_NAME",
 ];
+
 
 for (const name of requiredSecurityVariables) {
   if (!process.env[name]) {
