@@ -1136,3 +1136,63 @@
   }
 
 }
+
+
+
+/* ==================================================
+   CONTACT ADMIN BUTTON
+================================================== */
+
+.contact-admin-btn {
+  background: #006b3c;
+  color: #ffffff;
+  margin-top: 0;
+}
+
+.contact-admin-btn:hover {
+  background: #00532f;
+}
+
+
+
+
+
+/* ======================================================
+   RESPONSIVE BACK BUTTON POSITION
+====================================================== */
+
+/* Desktop: Keep original back button position */
+
+.biodata-mobile-back {
+  display: none;
+}
+
+/* Mobile and Tablet: Show back button above photo */
+
+@media (max-width: 1023px) {
+
+  .biodata-mobile-back {
+    display: inline-flex;
+    align-self: flex-start;
+    margin-bottom: 0;
+  }
+
+  .biodata-top-back {
+    display: none;
+  }
+
+}
+
+/* Desktop: Keep existing back button */
+
+@media (min-width: 1024px) {
+
+  .biodata-mobile-back {
+    display: none;
+  }
+
+  .biodata-top-back {
+    display: inline-flex;
+  }
+
+}

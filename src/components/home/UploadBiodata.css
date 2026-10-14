@@ -590,25 +590,44 @@
    CREATE BIODATA BUTTON
 ====================================================== */
 
+
+/* ======================================================
+   CREATE YOUR BIODATA - RED BUTTON
+====================================================== */
+
 .biodata-maker-btn {
   display: inline-flex;
-
   align-items: center;
-
   justify-content: center;
-
   gap: 10px;
 
-  padding: 12px 22px;
+  background-color: #990000;
+  color: #ffffff;
 
+  padding: 12px 24px;
+  border: none;
   border-radius: 8px;
 
+  font-size: 15px;
+  font-weight: 1000;
   text-decoration: none;
 
-  font-weight: 600;
-
-  transition: 0.3s ease;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
+
+.biodata-maker-btn:hover {
+  background-color: #700000;
+  color: #ffffff;
+}
+
+/* Keep text and icon white */
+
+.biodata-maker-btn span,
+.biodata-maker-btn svg {
+  color: #ffffff;
+}
+
 
 .biodata-maker-icon {
   font-size: 16px;
@@ -1008,3 +1027,8 @@
   }
 
 }
+
+
+
+
+

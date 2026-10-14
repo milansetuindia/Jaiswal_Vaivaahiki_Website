@@ -1,62 +1,102 @@
-// backend/middleware/adminAuth.js
 
-const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 
-function adminAuth(req, res, next) {
+const {
+  COOKIE_NAME,
+  sha256,
+} = require("../utils/adminSecurity");
+
+function safeEqual(a, b) {
+  if (
+    typeof a !== "string" ||
+    typeof b !== "string" ||
+    a.length !== b.length
+  ) {
+    return false;
+  }
+
+  return crypto.timingSafeEqual(
+    Buffer.from(a),
+    Buffer.from(b)
+  );
+}
+
+async function adminAuth(req, res, next) {
   try {
-    const authHeader = req.headers.authorization;
-
-    if (!authHeader) {
-      return res.status(401).json({
-        success: false,
-        message: "Admin authentication required",
-      });
-    }
-
-    if (!authHeader.startsWith("Bearer ")) {
-      return res.status(401).json({
-        success: false,
-        message: "Invalid authentication format",
-      });
-    }
-
-    const token = authHeader.substring(7);
-
-    if (!token) {
-      return res.status(401).json({
-        success: false,
-        message: "Admin authentication required",
-      });
-    }
-
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET
-    );
+    const token = req.cookies?.[COOKIE_NAME];
 
     if (
-      !decoded ||
-      decoded.role !== "admin"
+      typeof token !== "string" ||
+      !/^[a-f0-9]{64}$/.test(token)
     ) {
-      return res.status(403).json({
+      return res.status(401).json({
         success: false,
-        message: "Admin access required",
+        message: "Admin login required.",
       });
     }
 
-    req.admin = decoded;
+    const tokenHash = sha256(token);
+
+    const session = await req.app.locals.db
+      .collection("adminSessions")
+      .findOne({
+        tokenHash,
+        role: "admin",
+        expiresAt: { $gt: new Date() },
+      });
+
+    if (!session) {
+      return res.status(401).json({
+        success: false,
+        message: "Session expired. Please log in.",
+      });
+    }
+
+    // Protect all requests that change data.
+    if (
+      ["POST", "PUT", "PATCH", "DELETE"]
+        .includes(req.method)
+    ) {
+      const allowedOrigins = [
+        "https://jaiswal-vaivaahiki.netlify.app",
+        "http://localhost:5173",
+      ];
+
+      if (!allowedOrigins.includes(req.get("origin"))) {
+        return res.sendStatus(403);
+      }
+
+      const csrf = req.get("x-admin-csrf");
+
+      if (
+        !safeEqual(
+          sha256(typeof csrf === "string" ? csrf : ""),
+          session.csrfHash
+        )
+      ) {
+        return res.status(403).json({
+          success: false,
+          message: "Invalid security token.",
+        });
+      }
+    }
+
+    req.admin = {
+      username: session.username,
+      role: "admin",
+    };
+
+    req.sessionToken = token;
+    req.sessionTokenHash = tokenHash;
 
     next();
 
   } catch (error) {
-    console.error(
-      "Admin authentication error:",
-      error.message
-    );
+    console.error("Admin session error:", error);
 
-    return res.status(401).json({
+    return res.status(500).json({
       success: false,
-      message: "Invalid or expired admin token",
+      message: "Authentication check failed.",
     });
   }
 }

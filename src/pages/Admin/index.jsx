@@ -5,6 +5,13 @@ import {
   Link,
   useNavigate,
 } from "react-router-dom";
+
+
+import {
+  adminFetch,
+  logoutAdmin,
+} from "../../utils/adminApi";
+
 import "./Admin.css";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -87,24 +94,23 @@ function Admin() {
   // LOGOUT
   // ======================================================
 
-  const handleLogout = () => {
-    // Remove admin authentication data
-    localStorage.removeItem(
-      "adminToken"
-    );
 
-    localStorage.removeItem(
-      "adminUsername"
-    );
+  const handleLogout = async () => {
+    try {
+      await logoutAdmin();
 
-    // Redirect to admin login
-    navigate(
-      "/admin/login",
-      {
+      navigate("/admin/login", {
         replace: true,
-      }
-    );
+      });
+    } catch (error) {
+      console.error("Logout error:", error);
+
+      alert(
+        "Unable to log out securely. Please try again."
+      );
+    }
   };
+
 
   // ======================================================
   // DELETE BIODATA
@@ -121,18 +127,14 @@ function Admin() {
     }
 
     try {
-      const response = await fetch(
-        `${API_URL}/api/biodatas/${id}`,
+
+      const response = await adminFetch(
+        `/api/biodatas/${id}`,
         {
           method: "DELETE",
-
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem(
-              "adminToken"
-            )}`,
-          },
         }
       );
+
 
       const result =
         await response.json();

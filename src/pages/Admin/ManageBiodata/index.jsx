@@ -6,6 +6,9 @@ import {
   useState,
 } from "react";
 
+
+import { adminFetch } from "../../../utils/adminApi";
+
 import { Link } from "react-router-dom";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -109,6 +112,8 @@ function ManageBiodata() {
       (biodata) => {
 
         const searchableText = [
+
+          biodata.profileNumber,
 
           biodata.name,
 
@@ -236,20 +241,14 @@ function ManageBiodata() {
 
     try {
 
-      const response =
-        await fetch(
-          `${API_URL}/api/biodatas/${id}`,
-          {
-            method: "DELETE",
 
-            headers: {
-              Authorization:
-                `Bearer ${localStorage.getItem(
-                  "adminToken"
-                )}`,
-            },
-          }
-        );
+      const response = await adminFetch(
+        `/api/biodatas/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
 
 
       const result =
@@ -676,9 +675,22 @@ function ManageBiodata() {
                         {/* NAME */}
 
                         <span>
-                          {biodata.name ||
-                            "Not specified"}
+                          <strong>
+                            {biodata.name || "Not specified"}
+                          </strong>
+
+                          <small
+                            style={{
+                              display: "block",
+                              marginTop: "5px",
+                              color: "#8b0000",
+                              fontWeight: "700",
+                            }}
+                          >
+                            {biodata.profileNumber || "Not assigned"}
+                          </small>
                         </span>
+
 
 
                         {/* AGE */}

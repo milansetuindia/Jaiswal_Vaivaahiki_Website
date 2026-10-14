@@ -1,8 +1,11 @@
 // src/pages/Admin/EditBiodata/index.jsx
 
+
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { adminFetch } from "../../../utils/adminApi";
 import "./EditBiodata.css";
+
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -31,6 +34,11 @@ function EditBiodata() {
     diet: "",
     income: "",
     gender: "",
+    heightFeet: "",
+    heightInches: "",
+    showWhatsapp: true,
+    showViewPdf: true,
+    showDownloadPdf: true,
     contactNumber: "",
     maritalStatus: "",
     manglikStatus: "",
@@ -51,6 +59,18 @@ function EditBiodata() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+
+
+
+  // ======================================================
+  // PRIVATE ADMIN REMARK STATE
+  // ======================================================
+
+  const [adminRemark, setAdminRemark] = useState("");
+  const [remarkLoading, setRemarkLoading] = useState(true);
+  const [remarkSaving, setRemarkSaving] = useState(false);
+  const [remarkError, setRemarkError] = useState("");
+  const [remarkSuccess, setRemarkSuccess] = useState("");
 
   // ======================================================
   // FETCH EXISTING BIODATA
@@ -77,12 +97,34 @@ function EditBiodata() {
 
         const biodata = result.biodata;
 
+        const savedHeight = String(
+          biodata.height || ""
+        );
+
+        const heightMatch = savedHeight.match(
+          /^([3-8]) ft (1[01]|[0-9]) in$/
+        );
+
+        const heightFeet = heightMatch
+          ? heightMatch[1]
+          : "";
+
+        const heightInches = heightMatch
+          ? heightMatch[2]
+          : "";
+
+
         setFormData({
           name: biodata.name || "",
           age: biodata.age || "",
           diet: biodata.diet || "",
           income: biodata.income ?? "",
           gender: biodata.gender || "",
+          heightFeet: heightFeet,
+          heightInches: heightInches,
+          showWhatsapp: biodata.showWhatsapp !== false,
+          showViewPdf: biodata.showViewPdf !== false,
+          showDownloadPdf: biodata.showDownloadPdf !== false,
           contactNumber: biodata.contactNumber || "",
           maritalStatus:
             biodata.maritalStatus || "",
@@ -124,6 +166,58 @@ function EditBiodata() {
       fetchBiodata();
     }
   }, [id]);
+
+
+  // ======================================================
+  // FETCH PRIVATE ADMIN REMARK
+  // ======================================================
+
+  useEffect(() => {
+    let active = true;
+
+    const fetchAdminRemark = async () => {
+      try {
+        setRemarkLoading(true);
+        setRemarkError("");
+
+
+        const response = await adminFetch(
+          `/api/biodatas/${id}/admin-remark`
+        );
+
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            result.message || "Unable to load admin remark"
+          );
+        }
+
+        if (active) {
+          setAdminRemark(result.adminRemark || "");
+        }
+
+      } catch (error) {
+        if (active) {
+          setRemarkError(error.message);
+        }
+      } finally {
+        if (active) {
+          setRemarkLoading(false);
+        }
+      }
+    };
+
+    if (id) {
+      fetchAdminRemark();
+    }
+
+    return () => {
+      active = false;
+    };
+  }, [id]);
+
 
 
   // ======================================================
@@ -198,6 +292,50 @@ function EditBiodata() {
     setPdf(file);
   };
 
+  // ======================================================
+  // SAVE PRIVATE ADMIN REMARK
+  // ======================================================
+
+  const saveAdminRemark = async () => {
+      try {
+        setRemarkSaving(true);
+        setRemarkError("");
+        setRemarkSuccess("");
+
+
+        const response = await adminFetch(
+          `/api/biodatas/${id}/admin-remark`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              adminRemark,
+            }),
+          }
+        );
+
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            result.message || "Failed to save admin remark"
+          );
+        }
+
+        setAdminRemark(result.adminRemark || "");
+        setRemarkSuccess(result.message);
+
+      } catch (error) {
+        setRemarkError(error.message);
+      } finally {
+        setRemarkSaving(false);
+      }
+  };
+
+
 
   // ======================================================
   // UPDATE BIODATA
@@ -243,6 +381,15 @@ function EditBiodata() {
         formData.gender
       );
 
+      const height =
+        formData.heightFeet !== "" &&
+        formData.heightInches !== ""
+          ? `${formData.heightFeet} ft ${formData.heightInches} in`
+          : "";
+
+        data.append("height", height);
+
+
       data.append(
         "maritalStatus",
         formData.maritalStatus
@@ -276,6 +423,14 @@ function EditBiodata() {
       );
 
 
+      data.append("showWhatsapp",String(formData.showWhatsapp));
+
+      data.append("showViewPdf",String(formData.showViewPdf));
+
+      data.append("showDownloadPdf",String(formData.showDownloadPdf));
+
+
+
       // Only replace photo if
       // a new photo was selected
       if (photo) {
@@ -296,20 +451,15 @@ function EditBiodata() {
       }
 
 
-      const response = await fetch(
-        `${API_URL}/api/biodatas/${id}`,
+
+      const response = await adminFetch(
+        `/api/biodatas/${id}`,
         {
           method: "PUT",
-
-          headers: {
-              Authorization: `Bearer ${localStorage.getItem(
-                "adminToken"
-              )}`,
-            },
-
           body: data,
         }
       );
+
 
       const result =
         await response.json();
@@ -589,6 +739,77 @@ function EditBiodata() {
             </div>
 
 
+            {/* ==================================================
+                HEIGHT - FEET AND INCHES
+            ================================================== */}
+
+            <div className="form-group">
+
+              <label htmlFor="heightFeet">
+                Height (Feet & Inches)
+              </label>
+
+              <div
+                style={{
+                  display: "flex",
+                  gap: "12px",
+                }}
+              >
+
+                {/* FEET */}
+
+                <select
+                  id="heightFeet"
+                  name="heightFeet"
+                  value={formData.heightFeet}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">
+                    Select Feet
+                  </option>
+
+                  {Array.from(
+                    { length: 6 },
+                    (_, index) => index + 3
+                  ).map((feet) => (
+                    <option key={feet} value={feet}>
+                      {feet} ft
+                    </option>
+                  ))}
+
+                </select>
+
+                {/* INCHES */}
+
+                <select
+                  id="heightInches"
+                  name="heightInches"
+                  value={formData.heightInches}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">
+                    Select Inches
+                  </option>
+
+                  {Array.from(
+                    { length: 12 },
+                    (_, index) => index
+                  ).map((inches) => (
+                    <option key={inches} value={inches}>
+                      {inches} in
+                    </option>
+                  ))}
+
+                </select>
+
+              </div>
+
+            </div>
+
+
+
             {/* Marital Status */}
 
             <div className="form-group">
@@ -611,8 +832,8 @@ function EditBiodata() {
                   Select marital status
                 </option>
 
-                <option value="Never Married">
-                  Never Married
+                <option value="Unmarried">
+                  Unmarried
                 </option>
 
                 <option value="Divorced">
@@ -809,6 +1030,75 @@ function EditBiodata() {
 
             </div>
 
+
+            {/* ==================================================
+                PER-PROFILE BUTTON VISIBILITY
+            ================================================== */}
+
+            <div className="form-group">
+              <label htmlFor="showWhatsapp">
+                Contact on WhatsApp
+              </label>
+
+              <select
+                id="showWhatsapp"
+                name="showWhatsapp"
+                value={String(formData.showWhatsapp)}
+                onChange={(event) =>
+                  setFormData((previous) => ({
+                    ...previous,
+                    showWhatsapp: event.target.value === "true",
+                  }))
+                }
+              >
+                <option value="true">Show Button</option>
+                <option value="false">Hide Button</option>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="showViewPdf">
+                View Biodata PDF
+              </label>
+
+              <select
+                id="showViewPdf"
+                name="showViewPdf"
+                value={String(formData.showViewPdf)}
+                onChange={(event) =>
+                  setFormData((previous) => ({
+                    ...previous,
+                    showViewPdf: event.target.value === "true",
+                  }))
+                }
+              >
+                <option value="true">Show Button</option>
+                <option value="false">Hide Button</option>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="showDownloadPdf">
+                Download Biodata PDF
+              </label>
+
+              <select
+                id="showDownloadPdf"
+                name="showDownloadPdf"
+                value={String(formData.showDownloadPdf)}
+                onChange={(event) =>
+                  setFormData((previous) => ({
+                    ...previous,
+                    showDownloadPdf: event.target.value === "true",
+                  }))
+                }
+              >
+                <option value="true">Show Button</option>
+                <option value="false">Hide Button</option>
+              </select>
+            </div>
+
+
           </div>
 
         </div>
@@ -972,6 +1262,86 @@ function EditBiodata() {
         </div>
 
       </form>
+
+      {/* ==================================================
+            PRIVATE ADMIN REMARK
+      ================================================== */}
+
+      <div className="form-section admin-remark-section">
+
+        <h2>
+            🔒 Private Admin Remark
+        </h2>
+
+        <p className="form-help">
+            This note is visible only to administrators.
+            It will not appear on the public biodata profile.
+        </p>
+
+        <div className="form-group">
+
+          <label htmlFor="adminRemark">
+              Admin Notes
+          </label>
+
+          <textarea
+            id="adminRemark"
+            name="adminRemark"
+            rows={5}
+            maxLength={2000}
+            placeholder="Write a private note for this biodata..."
+            value={adminRemark}
+            onChange={(event) => {
+                setAdminRemark(event.target.value);
+                setRemarkSuccess("");
+            }}
+              disabled={remarkLoading || remarkSaving}
+            style={{
+                width: "100%",
+                padding: "12px",
+                border: "1px solid #ccc",
+                borderRadius: "8px",
+                boxSizing: "border-box",
+                font: "inherit",
+                resize: "vertical",
+            }}
+        />
+
+          <small>
+              {adminRemark.length}/2000 characters
+          </small>
+
+        </div>
+
+        {remarkLoading && (
+            <p>Loading private remark...</p>
+        )}
+
+        {remarkError && (
+            <p style={{ color: "#b00020" }}>
+              {remarkError}
+            </p>
+        )}
+
+        {remarkSuccess && (
+            <p style={{ color: "#006b3c" }}>
+              {remarkSuccess}
+            </p>
+        )}
+
+        <button
+          type="button"
+          className="upload-biodata-btn"
+          onClick={saveAdminRemark}
+          disabled={remarkLoading || remarkSaving}
+        >
+          {remarkSaving
+              ? "Saving Remark..."
+              : "Save Admin Remark"}
+        </button>
+
+      </div>
+
 
     </div>
   );
