@@ -36,3 +36,5 @@ backend/uploads/
 *.njsproj
 *.sln
 *.sw?
+
+*.lnk

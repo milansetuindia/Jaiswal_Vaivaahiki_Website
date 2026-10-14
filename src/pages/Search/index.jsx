@@ -368,17 +368,24 @@ function Search() {
 
           // SEARCH
 
+
+
           const matchesSearch =
             !searchText ||
-            person.name
-              ?.toLowerCase()
+            String(person.profileNumber || "")
+              .toLowerCase()
               .includes(searchText) ||
-            person.education
-              ?.toLowerCase()
+            String(person.name || "")
+              .toLowerCase()
               .includes(searchText) ||
-            person.occupation
-              ?.toLowerCase()
+            String(person.education || "")
+              .toLowerCase()
+              .includes(searchText) ||
+            String(person.occupation || "")
+              .toLowerCase()
               .includes(searchText);
+
+
 
 
           // GENDER
@@ -1345,8 +1352,8 @@ function Search() {
               All
             </option>
 
-            <option value="Never Married">
-              Never Married
+            <option value="Unmarried">
+              Unmarried
             </option>
 
             <option value="Divorced">
@@ -1700,6 +1707,13 @@ function Search() {
                       <h3>
                         {person.name}
                       </h3>
+
+
+                      <p className="search-profile-number">
+                        <strong>Profile Number:</strong>{" "}
+                        {person.profileNumber || "Not assigned"}
+                      </p>
+
 
 
                       <div className="search-profile-info">

@@ -63,12 +63,7 @@ function Biodata() {
   const [downloadingPdf, setDownloadingPdf] =
     useState(false);
 
-  // ======================================================
-  // WHATSAPP CONTACT POPUP
-  // ======================================================
 
-  const [showWhatsappOptions, setShowWhatsappOptions] =
-    useState(false);
 
 
   // ======================================================
@@ -219,69 +214,64 @@ const handleBack = () => {
 };
 
 
-// ======================================================
-// WHATSAPP CONTACT
-// ======================================================
 
-const cleanContactNumber = String(
-  biodata?.contactNumber || ""
-).replace(/\D/g, "");
+  // ======================================================
+  // WHATSAPP CONTACT - DIRECT BUSINESS LINK
+  // ======================================================
 
-
-const whatsappMessage =
-  "Hello, I am interested in your biodata on Jaiswal Vaivaahiki. I would like to know more about the profile.";
+  const cleanContactNumber = String(
+    biodata?.contactNumber || ""
+  ).replace(/\D/g, "");
 
 
-const biodataWhatsappUrl =
-  `https://wa.me/91${cleanContactNumber}?text=${encodeURIComponent(
-    whatsappMessage
-  )}`;
+  const whatsappMessage =
+    `🙏 Namaste,
+
+  This message is regarding your biodata profile listed on the Jaiswal Vaivaahiki website.`;
 
 
-const biodataWhatsappBusinessUrl =
-  `whatsapp://send?phone=91${cleanContactNumber}&text=${encodeURIComponent(
-    whatsappMessage
-  )}`;
+  // ======================================================
+  // WHATSAPP BUSINESS URL
+  // ======================================================
+
+  const biodataWhatsappBusinessUrl =
+    `whatsapp://send?phone=91${cleanContactNumber}&text=${encodeURIComponent(
+      whatsappMessage
+    )}`;
+
+  // ======================================================
+  // OPEN WHATSAPP DIRECTLY
+  // ======================================================
+
+  const openWhatsappBusiness = () => {
+    window.location.href = biodataWhatsappBusinessUrl;
+  };
+
+  // ======================================================
+  // CONTACT ADMIN FOR ANY QUERY
+  // ======================================================
+
+  const adminWhatsappNumber = "917050510511";
 
 
-// ======================================================
-// CLOSE WHATSAPP OPTIONS
-// ======================================================
 
-const closeWhatsappOptions = () => {
-  setShowWhatsappOptions(false);
-};
+  const adminWhatsappMessage =
+    `🙏 Namaste Jaiswal Vaivaahiki Admin,
 
+  I have a query regarding Profile Number: ${biodata?.profileNumber || "Not assigned"} on Jaiswal Vaivaahiki.
 
-// ======================================================
-// OPEN WHATSAPP
-// ======================================================
-
-const openWhatsapp = () => {
-
-  setShowWhatsappOptions(false);
-
-  window.open(
-    biodataWhatsappUrl,
-    "_blank",
-    "noopener,noreferrer"
-  );
-
-};
+  Please help me.`;
 
 
-// ======================================================
-// OPEN WHATSAPP BUSINESS
-// ======================================================
 
-const openWhatsappBusiness = () => {
+  const adminWhatsappUrl =
+    `whatsapp://send?phone=${adminWhatsappNumber}&text=${encodeURIComponent(
+      adminWhatsappMessage
+    )}`;
 
-  setShowWhatsappOptions(false);
-
-  window.location.href =
-    biodataWhatsappBusinessUrl;
-
-};
+  const contactAdmin = () => {
+    window.location.href = adminWhatsappUrl;
+  };
 
 
 
@@ -733,9 +723,21 @@ const openWhatsappBusiness = () => {
           PROFILE HEADER
       ================================================== */}
 
+
       <div className="profile-header">
 
+        {/* BACK BUTTON - MOBILE AND TABLET ONLY */}
+
+        <button
+          type="button"
+          onClick={handleBack}
+          className="biodata-back-btn biodata-mobile-back"
+        >
+          ← Back
+        </button>
+
         <div className="profile-photo-container">
+
 
           {biodata.photo ? (
 
@@ -770,6 +772,14 @@ const openWhatsappBusiness = () => {
         <h1>
           {biodata.name}
         </h1>
+
+        {/* PROFILE NUMBER */}
+
+        <p className="biodata-profile-number">
+          <strong>Profile Number:</strong>{" "}
+          {biodata.profileNumber || "Not assigned"}
+        </p>
+
 
 
           <p>
@@ -812,6 +822,37 @@ const openWhatsappBusiness = () => {
           </p>
 
 
+          {/* ==================================================
+              EDUCATION / QUALIFICATION
+          ================================================== */}
+
+          <p>
+            <strong>
+              Qualification:
+            </strong>{" "}
+
+            {biodata.education ||
+              "Not specified"}
+          </p>
+
+
+          {/* ==================================================
+              OCCUPATION / PROFESSION
+          ================================================== */}
+
+          <p>
+            <strong>
+              Profession:
+            </strong>{" "}
+
+            {biodata.occupation ||
+              "Not specified"}
+          </p>
+
+
+
+
+
           <p>
 
             <strong>
@@ -822,6 +863,22 @@ const openWhatsappBusiness = () => {
               "Not specified"}
 
           </p>
+
+
+
+          {/* ==================================================
+              HEIGHT
+          ================================================== */}
+
+          <p>
+            <strong>
+              Height:
+            </strong>{" "}
+
+            {biodata.height ||
+              "Not specified"}
+          </p>
+
 
 
           <p>
@@ -921,18 +978,22 @@ const openWhatsappBusiness = () => {
 
       </div>
 
+
       {/* ==================================================
           CONTACT / WHATSAPP
       ================================================== */}
 
-      {biodata.contactNumber && (
+
+      {biodata.contactNumber &&
+          biodata.showWhatsapp !== false && (
+
         <div className="biodata-contact-section">
 
           <button
             type="button"
             className="biodata-whatsapp-btn"
-            onClick={() => setShowWhatsappOptions(true)}
-            aria-label="Choose WhatsApp to contact this profile"
+            onClick={openWhatsappBusiness}
+            aria-label="Contact this profile on WhatsApp"
           >
 
             <span className="biodata-whatsapp-icon">
@@ -950,127 +1011,98 @@ const openWhatsappBusiness = () => {
 
 
       {/* ==================================================
-          EDUCATION
+            CONTACT ADMIN BUTTON
       ================================================== */}
 
-      <div className="section">
+      <div className="biodata-contact-section">
 
-        <h2>
-          Education
-        </h2>
+        <button
+          type="button"
+          className="biodata-whatsapp-btn contact-admin-btn"
+          onClick={contactAdmin}
+          aria-label="Contact admin for any query"
+        >
+          <span className="biodata-whatsapp-icon">
+              <FaWhatsapp />
+          </span>
 
-
-        <div className="details-grid">
-
-          <p>
-
-            <strong>
-              Qualification:
-            </strong>{" "}
-
-            {biodata.education ||
-              "Not specified"}
-
-          </p>
-
-        </div>
+          <span>
+              Contact Admin for Any Query
+          </span>
+        </button>
 
       </div>
 
 
-      {/* ==================================================
-          OCCUPATION
-      ================================================== */}
-
-      <div className="section">
-
-        <h2>
-          Occupation
-        </h2>
 
 
-        <div className="details-grid">
-
-          <p>
-
-            <strong>
-              Profession:
-            </strong>{" "}
-
-            {biodata.occupation ||
-              "Not specified"}
-
-          </p>
-
-        </div>
-
-      </div>
 
 
-      {/* ==================================================
-          BIODATA PDF
-      ================================================== */}
-
-      <div className="section">
-
-        <h2>
-          Biodata PDF
-        </h2>
 
 
-        <p>
-          View or download the complete
-          biodata document.
-        </p>
+        {/* ==================================================
+            BIODATA PDF - ADMIN VISIBILITY SETTINGS
+        ================================================== */}
 
+        {biodata.biodataPdf &&
+          (
+            biodata.showViewPdf !== false ||
+            biodata.showDownloadPdf !== false
+          ) && (
 
-        {biodata.biodataPdf ? (
+            <div className="section">
 
-          <div className="pdf-buttons">
+              <h2>
+                Biodata PDF
+              </h2>
 
+              <p>
+                View or download the complete biodata document.
+              </p>
 
-            {/* VIEW PDF */}
+              <div className="pdf-buttons">
 
-            <button
-              type="button"
-              onClick={handleViewPdf}
-              className="pdf-btn view-pdf-btn"
-              disabled={viewingPdf}
-            >
+                {/* VIEW PDF BUTTON */}
 
-              {viewingPdf
-                ? "Opening PDF..."
-                : "View Biodata PDF"}
+                {biodata.showViewPdf !== false && (
 
-            </button>
+                  <button
+                    type="button"
+                    onClick={handleViewPdf}
+                    className="pdf-btn view-pdf-btn"
+                    disabled={viewingPdf}
+                  >
+                    {viewingPdf
+                      ? "Opening PDF..."
+                      : "View Biodata PDF"}
+                  </button>
 
+                )}
 
-            {/* DOWNLOAD PDF */}
+                {/* DOWNLOAD PDF BUTTON */}
 
-            <button
-              type="button"
-              onClick={handleDownloadPdf}
-              className="pdf-btn download-pdf-btn"
-              disabled={downloadingPdf}
-            >
+                {biodata.showDownloadPdf !== false && (
 
-              {downloadingPdf
-                ? "Downloading..."
-                : "Download Biodata PDF"}
+                  <button
+                    type="button"
+                    onClick={handleDownloadPdf}
+                    className="pdf-btn download-pdf-btn"
+                    disabled={downloadingPdf}
+                  >
+                    {downloadingPdf
+                      ? "Downloading..."
+                      : "Download Biodata PDF"}
+                  </button>
 
-            </button>
+                )}
 
-          </div>
+              </div>
 
-        ) : (
-
-          <p>
-            Biodata PDF is not available.
-          </p>
+            </div>
 
         )}
 
-      </div>
+
 
 
       {/* ==================================================
@@ -1087,148 +1119,8 @@ const openWhatsappBusiness = () => {
         </button>
       </div>
 
-
-      {/* ====================================================
-          WHATSAPP SELECTION MODAL
-      ==================================================== */}
-
-      {showWhatsappOptions && (
-        <div
-          className="biodata-whatsapp-modal-overlay"
-          onClick={closeWhatsappOptions}
-        >
-
-          <div
-            className="biodata-whatsapp-modal"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="biodata-whatsapp-modal-title"
-            onClick={(event) => event.stopPropagation()}
-          >
-
-            {/* ==================================================
-                CLOSE BUTTON
-            ================================================== */}
-
-            <button
-              type="button"
-              className="biodata-whatsapp-modal-close"
-              onClick={closeWhatsappOptions}
-              aria-label="Close"
-            >
-              ×
-            </button>
-
-
-            {/* ==================================================
-                MODAL ICON
-            ================================================== */}
-
-            <div className="biodata-whatsapp-modal-icon">
-              <FaWhatsapp />
-            </div>
-
-
-            {/* ==================================================
-                HEADING
-            ================================================== */}
-
-            <h3 id="biodata-whatsapp-modal-title">
-              Choose WhatsApp
-            </h3>
-
-
-            {/* ==================================================
-                DESCRIPTION
-            ================================================== */}
-
-            <p className="biodata-whatsapp-modal-description">
-              Select how you want to contact this profile.
-            </p>
-
-
-            {/* ==================================================
-                WHATSAPP
-            ================================================== */}
-
-            <button
-              type="button"
-              className="biodata-whatsapp-option-btn"
-              onClick={openWhatsapp}
-            >
-
-              <span className="biodata-whatsapp-option-icon">
-                <FaWhatsapp />
-              </span>
-
-              <span className="biodata-whatsapp-option-text">
-
-                <strong>
-                  WhatsApp
-                </strong>
-
-                <small>
-                  Open WhatsApp Messenger
-                </small>
-
-              </span>
-
-            </button>
-
-
-            {/* ==================================================
-                WHATSAPP BUSINESS
-            ================================================== */}
-
-            <button
-              type="button"
-              className="biodata-whatsapp-option-btn"
-              onClick={openWhatsappBusiness}
-            >
-
-              <span className="biodata-whatsapp-option-icon">
-                <FaWhatsapp />
-              </span>
-
-              <span className="biodata-whatsapp-option-text">
-
-                <strong>
-                  WhatsApp Business
-                </strong>
-
-                <small>
-                  Open WhatsApp Business
-                </small>
-
-              </span>
-
-            </button>
-
-
-            {/* ==================================================
-                CANCEL
-            ================================================== */}
-
-            <button
-              type="button"
-              className="biodata-whatsapp-cancel-btn"
-              onClick={closeWhatsappOptions}
-            >
-              Cancel
-            </button>
-
-          </div>
-
-        </div>
-      )}
-
-
     </div>
-
   );
-
 }
-
-
 
 export default Biodata;

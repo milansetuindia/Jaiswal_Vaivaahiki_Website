@@ -1,91 +1,47 @@
-// src/components/admin/ProtectedAdminRoute.jsx
 
+import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
-function isTokenExpired(token) {
-  try {
-    // JWT has three parts:
-    // header.payload.signature
-
-    const parts = token.split(".");
-
-    if (parts.length !== 3) {
-      return true;
-    }
-
-    const payload = parts[1];
-
-    // Convert Base64URL to normal Base64
-    const base64 = payload
-      .replace(/-/g, "+")
-      .replace(/_/g, "/");
-
-    const jsonPayload = decodeURIComponent(
-      atob(base64)
-        .split("")
-        .map(
-          (character) =>
-            "%" +
-            (
-              "00" +
-              character
-                .charCodeAt(0)
-                .toString(16)
-            ).slice(-2)
-        )
-        .join("")
-    );
-
-    const decoded = JSON.parse(jsonPayload);
-
-    // JWT exp is stored in seconds
-    if (!decoded.exp) {
-      return true;
-    }
-
-    const currentTime = Math.floor(
-      Date.now() / 1000
-    );
-
-    return decoded.exp <= currentTime;
-
-  } catch (error) {
-    console.error(
-      "JWT validation error:",
-      error
-    );
-
-    return true;
-  }
-}
+import {
+  checkAdminSession,
+} from "../../utils/adminApi";
 
 function ProtectedAdminRoute() {
-  const token =
-    localStorage.getItem("adminToken");
+  const [status, setStatus] = useState("checking");
 
-  // No token
-  if (!token) {
+  useEffect(() => {
+    let active = true;
+
+    checkAdminSession().then((valid) => {
+      if (active) {
+        setStatus(
+          valid ? "authenticated" : "unauthenticated"
+        );
+      }
+    });
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  if (status === "checking") {
     return (
-      <Navigate
-        to="/admin/login"
-        replace
-      />
+      <div style={{
+        padding: "40px",
+        textAlign: "center",
+      }}>
+        Verifying admin session...
+      </div>
     );
   }
 
-  // Token exists but has expired
-  if (isTokenExpired(token)) {
-    localStorage.removeItem("adminToken");
-
+  if (status === "unauthenticated") {
     return (
-      <Navigate
-        to="/admin/login"
-        replace
-      />
+      <Navigate to="/admin/login" replace />
     );
   }
 
-  // Token exists and is not expired
   return <Outlet />;
 }
 

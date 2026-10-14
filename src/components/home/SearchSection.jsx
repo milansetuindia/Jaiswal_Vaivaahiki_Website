@@ -8,12 +8,14 @@ function SearchSection() {
   const navigate = useNavigate();
 
   const [filters, setFilters] = useState({
+    search: "",
     gender: "",
     ageFrom: "",
     ageTo: "",
     diet: "",
     incomeFrom: "",
     incomeTo: "",
+
     maritalStatus: "",
     manglikStatus: "",
     education: "",
@@ -60,6 +62,28 @@ function SearchSection() {
         className="search-form"
         onSubmit={handleSubmit}
       >
+
+        {/* ==================================================
+            GENERAL SEARCH
+        ================================================== */}
+
+        <div className="form-group">
+
+          <label htmlFor="homeSearch">
+            Search by Name, Education, Occupation or Profile Number
+          </label>
+
+          <input
+            id="homeSearch"
+            name="search"
+            type="text"
+            placeholder="Enter name, education, occupation or JV-001"
+            value={filters.search}
+            onChange={handleChange}
+          />
+
+        </div>
+
 
         {/* ==================================================
             GENDER
@@ -227,8 +251,8 @@ function SearchSection() {
               All
             </option>
 
-            <option value="Never Married">
-              Never Married
+            <option value="Unmarried">
+              Unmarried
             </option>
 
             <option value="Divorced">

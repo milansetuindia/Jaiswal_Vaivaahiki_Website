@@ -1,7 +1,10 @@
 // src/pages/Admin/AddBiodata/index.jsx
 
+
 import { useState } from "react";
+import { adminFetch } from "../../../utils/adminApi";
 import "./AddBiodata.css";
+
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -12,6 +15,11 @@ function AddBiodata() {
     diet: "",
     income: "",
     gender: "",
+    heightFeet: "",
+    showWhatsapp: true,
+    showViewPdf: true,
+    showDownloadPdf: true,
+    heightInches: "",
     contactNumber: "",
     maritalStatus: "",
     manglikStatus: "",
@@ -99,6 +107,10 @@ function AddBiodata() {
       data.append("diet", formData.diet);
       data.append("income", formData.income);
       data.append("gender", formData.gender);
+      const height =
+        `${formData.heightFeet} ft ${formData.heightInches} in`;
+
+      data.append("height", height);
       data.append("contactNumber", formData.contactNumber);
       data.append("maritalStatus", formData.maritalStatus);
       data.append("manglikStatus", formData.manglikStatus);
@@ -109,6 +121,13 @@ function AddBiodata() {
       data.append("education", formData.education);
       data.append("occupation", formData.occupation);
 
+      data.append("showWhatsapp",String(formData.showWhatsapp));
+
+      data.append("showViewPdf",String(formData.showViewPdf));
+
+      data.append("showDownloadPdf",String(formData.showDownloadPdf));
+
+
       // ==========================================
       // FILES
       // ==========================================
@@ -116,18 +135,15 @@ function AddBiodata() {
       data.append("photo", photo);
       data.append("biodataPdf", pdf);
 
-      const response = await fetch(
-        `${API_URL}/api/biodatas/upload`,
+
+      const response = await adminFetch(
+        "/api/biodatas/upload",
         {
           method: "POST",
-
-          headers: {
-              Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
-            },
-
           body: data,
         }
       );
+
 
       const result = await response.json();
 
@@ -152,6 +168,11 @@ function AddBiodata() {
         diet: "",
         income: "",
         gender: "",
+        heightFeet: "",
+        heightInches: "",
+        showWhatsapp: true,
+        showViewPdf: true,
+        showDownloadPdf: true,
         contactNumber: "",
         maritalStatus: "",
         manglikStatus: "",
@@ -384,6 +405,83 @@ function AddBiodata() {
             </div>
 
 
+            {/* ==================================================
+                HEIGHT - FEET AND INCHES
+            ================================================== */}
+
+            <div className="form-group">
+
+              <label htmlFor="heightFeet">
+                Height (Feet & Inches)
+              </label>
+
+              <div
+                style={{
+                  display: "flex",
+                  gap: "12px",
+                }}
+              >
+
+                {/* FEET */}
+
+                <select
+                  id="heightFeet"
+                  name="heightFeet"
+                  value={formData.heightFeet}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">
+                    Select Feet
+                  </option>
+
+                  {Array.from(
+                    { length: 6 },
+                    (_, index) => index + 3
+                  ).map((feet) => (
+                    <option
+                      key={feet}
+                      value={feet}
+                    >
+                      {feet} ft
+                    </option>
+                  ))}
+
+                </select>
+
+                {/* INCHES */}
+
+                <select
+                  id="heightInches"
+                  name="heightInches"
+                  value={formData.heightInches}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">
+                    Select Inches
+                  </option>
+
+                  {Array.from(
+                    { length: 12 },
+                    (_, index) => index
+                  ).map((inches) => (
+                    <option
+                      key={inches}
+                      value={inches}
+                    >
+                      {inches} in
+                    </option>
+                  ))}
+
+                </select>
+
+              </div>
+
+            </div>
+
+
+
             {/* Marital Status */}
 
             <div className="form-group">
@@ -404,8 +502,8 @@ function AddBiodata() {
                   Select marital status
                 </option>
 
-                <option value="Never Married">
-                  Never Married
+                <option value="Unmarried">
+                  Unmarried
                 </option>
 
                 <option value="Divorced">
@@ -603,6 +701,75 @@ function AddBiodata() {
               />
 
             </div>
+
+
+            {/* ==================================================
+                PER-PROFILE BUTTON VISIBILITY
+            ================================================== */}
+
+            <div className="form-group">
+              <label htmlFor="showWhatsapp">
+                Contact on WhatsApp
+              </label>
+
+              <select
+                id="showWhatsapp"
+                name="showWhatsapp"
+                value={String(formData.showWhatsapp)}
+                onChange={(event) =>
+                  setFormData((previous) => ({
+                    ...previous,
+                    showWhatsapp: event.target.value === "true",
+                  }))
+                }
+              >
+                <option value="true">Show Button</option>
+                <option value="false">Hide Button</option>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="showViewPdf">
+                View Biodata PDF
+              </label>
+
+              <select
+                id="showViewPdf"
+                name="showViewPdf"
+                value={String(formData.showViewPdf)}
+                onChange={(event) =>
+                  setFormData((previous) => ({
+                    ...previous,
+                    showViewPdf: event.target.value === "true",
+                  }))
+                }
+              >
+                <option value="true">Show Button</option>
+                <option value="false">Hide Button</option>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="showDownloadPdf">
+                Download Biodata PDF
+              </label>
+
+              <select
+                id="showDownloadPdf"
+                name="showDownloadPdf"
+                value={String(formData.showDownloadPdf)}
+                onChange={(event) =>
+                  setFormData((previous) => ({
+                    ...previous,
+                    showDownloadPdf: event.target.value === "true",
+                  }))
+                }
+              >
+                <option value="true">Show Button</option>
+                <option value="false">Hide Button</option>
+              </select>
+            </div>
+
 
           </div>
 

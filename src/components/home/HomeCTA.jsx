@@ -61,8 +61,8 @@ function HomeCTA() {
 
         <p>
           Explore suitable matrimonial profiles
-          from the Jaiswal community and take
-          the first step toward finding a
+          from the Kalar, Kalwar &amp; Kalal communities
+          and take the first step toward finding a
           compatible life partner.
         </p>
 
