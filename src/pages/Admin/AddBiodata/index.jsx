@@ -107,10 +107,15 @@ function AddBiodata() {
       data.append("diet", formData.diet);
       data.append("income", formData.income);
       data.append("gender", formData.gender);
+
       const height =
-        `${formData.heightFeet} ft ${formData.heightInches} in`;
+        formData.heightFeet !== "" &&
+        formData.heightInches !== ""
+          ? `${formData.heightFeet} ft ${formData.heightInches} in`
+          : "";
 
       data.append("height", height);
+
       data.append("contactNumber", formData.contactNumber);
       data.append("maritalStatus", formData.maritalStatus);
       data.append("manglikStatus", formData.manglikStatus);
@@ -429,7 +434,6 @@ function AddBiodata() {
                   name="heightFeet"
                   value={formData.heightFeet}
                   onChange={handleChange}
-                  required
                 >
                   <option value="">
                     Select Feet
@@ -456,7 +460,6 @@ function AddBiodata() {
                   name="heightInches"
                   value={formData.heightInches}
                   onChange={handleChange}
-                  required
                 >
                   <option value="">
                     Select Inches
@@ -495,7 +498,6 @@ function AddBiodata() {
                 name="maritalStatus"
                 value={formData.maritalStatus}
                 onChange={handleChange}
-                required
               >
 
                 <option value="">
