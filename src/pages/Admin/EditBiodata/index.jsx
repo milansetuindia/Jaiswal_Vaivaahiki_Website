@@ -763,7 +763,6 @@ function EditBiodata() {
                   name="heightFeet"
                   value={formData.heightFeet}
                   onChange={handleChange}
-                  required
                 >
                   <option value="">
                     Select Feet
@@ -787,7 +786,6 @@ function EditBiodata() {
                   name="heightInches"
                   value={formData.heightInches}
                   onChange={handleChange}
-                  required
                 >
                   <option value="">
                     Select Inches
@@ -825,7 +823,6 @@ function EditBiodata() {
                   formData.maritalStatus
                 }
                 onChange={handleChange}
-                required
               >
 
                 <option value="">
