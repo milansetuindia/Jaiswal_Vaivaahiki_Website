@@ -133,14 +133,18 @@
   // VALIDATE FRONTEND ORIGIN
   // ======================================================
 
+
   const validOrigin = (req) => {
     const allowed = [
-      "https://jaiswal-vaivaahiki.netlify.app",
       "http://localhost:5173",
+      "https://jaiswal-vaivaahiki.netlify.app",
+      "https://jaiswal-vaivaahiki.com",
+      "https://www.jaiswal-vaivaahiki.com",
     ];
 
     return allowed.includes(req.get("origin"));
   };
+
 
   // ======================================================
   // STEP 1: VERIFY ADMIN PASSWORD AND SEND OTP
