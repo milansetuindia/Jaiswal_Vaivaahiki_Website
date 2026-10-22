@@ -43,11 +43,14 @@ const MONGODB_URI = process.env.MONGODB_URI;
 
 app.use(helmet());
 
+
 app.use(
   cors({
     origin: [
       "http://localhost:5173",
       "https://jaiswal-vaivaahiki.netlify.app",
+      "https://jaiswal-vaivaahiki.com",
+      "https://www.jaiswal-vaivaahiki.com",
     ],
     credentials: true,
     allowedHeaders: [
@@ -64,6 +67,7 @@ app.use(
     ],
   })
 );
+
 
 app.use(express.json({ limit: "20kb" }));
 app.use(cookieParser());
