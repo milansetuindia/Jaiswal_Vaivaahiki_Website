@@ -6,6 +6,7 @@ import Hero from "../../components/home/Hero";
 import TrustStats from "../../components/home/TrustStats";
 import Donation from "../../components/home/Donation";
 import UploadBiodata from "../../components/home/UploadBiodata";
+import UserAccess from "../../components/home/UserAccess";
 import SearchSection from "../../components/home/SearchSection";
 import SafetyNotice from "../../components/home/SafetyNotice";
 import LatestProfiles from "../../components/home/LatestProfiles";
@@ -24,6 +25,8 @@ function Home() {
       <Donation />
 
       <UploadBiodata />
+
+      <UserAccess />
 
       <SearchSection />
 

@@ -60,6 +60,11 @@ function EditBiodata() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
+  const [submissionSource, setSubmissionSource] = useState("");
+  const [approvalStatus, setApprovalStatus] = useState("");
+  const [approvalLoading, setApprovalLoading] = useState(false);
+
+
 
 
   // ======================================================
@@ -82,9 +87,11 @@ function EditBiodata() {
         setLoading(true);
         setError("");
 
-        const response = await fetch(
-          `${API_URL}/api/biodatas/${id}`
+
+        const response = await adminFetch(
+          `/api/biodatas/admin/${id}`
         );
+
 
         const result = await response.json();
 
@@ -96,6 +103,16 @@ function EditBiodata() {
         }
 
         const biodata = result.biodata;
+
+
+        setSubmissionSource(
+          biodata.submissionSource || "admin"
+        );
+
+        setApprovalStatus(
+          biodata.approvalStatus || "approved"
+        );
+
 
         const savedHeight = String(
           biodata.height || ""
@@ -475,9 +492,7 @@ function EditBiodata() {
         "Biodata updated successfully."
       );
 
-      navigate(
-        `/biodata/${id}`
-      );
+      navigate("/admin/biodata/manage");
 
     } catch (err) {
       console.error(
@@ -494,6 +509,72 @@ function EditBiodata() {
       setSaving(false);
     }
   };
+
+
+  // ======================================================
+  // ADMIN APPROVE / REJECT USER BIODATA
+  // ======================================================
+
+  const handleApproval = async (status) => {
+    const confirmed = window.confirm(
+      status === "approved"
+        ? "Approve this biodata for public listing?"
+        : "Reject this biodata submission?"
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      setApprovalLoading(true);
+
+      const response = await adminFetch(
+        `/api/biodatas/admin/${id}/approval`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            status,
+          }),
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          result.message ||
+            "Failed to update approval status."
+        );
+      }
+
+      setApprovalStatus(status);
+
+      alert(
+        status === "approved"
+          ? "Biodata approved successfully!"
+          : "Biodata rejected successfully!"
+      );
+
+    } catch (error) {
+      console.error(
+        "Biodata approval error:",
+        error
+      );
+
+      alert(
+        error.message ||
+          "Something went wrong."
+      );
+
+    } finally {
+      setApprovalLoading(false);
+    }
+  };
+
 
 
   // ======================================================
@@ -559,6 +640,7 @@ function EditBiodata() {
       </div>
 
 
+
       {/* Error */}
 
       {error && (
@@ -567,11 +649,90 @@ function EditBiodata() {
         </div>
       )}
 
+      {/* =========================================
+          USER BIODATA APPROVAL CONTROLS
+      ========================================= */}
+
+      {submissionSource === "user" && (
+        <div
+          className="form-section"
+          style={{
+            padding: "20px",
+            marginBottom: "20px",
+            border: "1px solid #ddd",
+            borderRadius: "10px",
+          }}
+        >
+          <h2>User Submission Review</h2>
+
+          <p>
+            <strong>Current Status:</strong>{" "}
+            {approvalStatus.toUpperCase()}
+          </p>
+
+          <p>
+            The administrator can review,
+            edit, approve or reject this
+            user-submitted biodata.
+          </p>
+
+          <p>
+            Contact on WhatsApp, View PDF
+            and Download PDF visibility
+            are controlled separately
+            using the existing dropdowns.
+          </p>
+
+          <div
+            style={{
+              display: "flex",
+              gap: "12px",
+              flexWrap: "wrap",
+              marginTop: "15px",
+            }}
+          >
+            <button
+              type="button"
+              className="upload-biodata-btn"
+              disabled={
+                approvalLoading ||
+                approvalStatus === "approved"
+              }
+              onClick={() =>
+                handleApproval("approved")
+              }
+            >
+              {approvalLoading
+                ? "Processing..."
+                : "Approve Biodata"}
+            </button>
+
+            <button
+              type="button"
+              className="cancel-btn"
+              disabled={
+                approvalLoading ||
+                approvalStatus === "rejected"
+              }
+              onClick={() =>
+                handleApproval("rejected")
+              }
+            >
+              Reject Biodata
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* =========================================
+          EXISTING EDIT BIODATA FORM
+      ========================================= */}
 
       <form
         className="biodata-form"
         onSubmit={handleSubmit}
       >
+
 
         {/* ==================================================
             PERSONAL INFORMATION

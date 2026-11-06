@@ -1032,3 +1032,309 @@
 
 
 
+
+/* ======================================================
+   CREATE BIODATA - WEBSITE SELECTION POPUP
+   JAISWAL VAIVAAHIKI
+====================================================== */
+
+.biodata-choice-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 18px;
+  box-sizing: border-box;
+
+  background: rgba(35, 8, 8, 0.65);
+  backdrop-filter: blur(4px);
+}
+
+/* ======================================================
+   POPUP CONTAINER
+====================================================== */
+
+.biodata-choice-modal {
+  position: relative;
+
+  width: min(570px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+
+  padding: 30px;
+  box-sizing: border-box;
+
+  background: #fffaf5;
+  border: 1px solid #f0dddd;
+  border-radius: 20px;
+
+  box-shadow:
+    0 22px 65px rgba(50, 0, 0, 0.25);
+
+  text-align: center;
+  animation: biodataChoiceAppear 0.2s ease-out;
+}
+
+@keyframes biodataChoiceAppear {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ======================================================
+   CLOSE BUTTON
+====================================================== */
+
+.biodata-choice-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 50%;
+
+  background: #f7eaea;
+  color: #8b0000;
+
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.biodata-choice-close:hover {
+  background: #efd2d2;
+}
+
+.biodata-choice-close:focus-visible {
+  outline: 3px solid #d6a64f;
+  outline-offset: 2px;
+}
+
+/* ======================================================
+   MODAL HEADER
+====================================================== */
+
+.biodata-choice-header {
+  margin-bottom: 22px;
+}
+
+.biodata-choice-eyebrow {
+  display: block;
+  margin-bottom: 9px;
+
+  color: #a00000;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+}
+
+.biodata-choice-header h3 {
+  margin: 0 0 10px;
+  color: #7d0000;
+
+  font-size: 27px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.biodata-choice-header p {
+  margin: 0 auto !important;
+  color: #666666 !important;
+
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+}
+
+/* ======================================================
+   THREE WEBSITE CARDS
+====================================================== */
+
+.biodata-choice-list {
+  display: grid;
+  gap: 13px;
+}
+
+.biodata-choice-card {
+  padding: 17px;
+  text-align: left;
+
+  border: 1px solid #ead4d4;
+  border-radius: 13px;
+
+  background: #ffffff;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.biodata-choice-card:hover {
+  border-color: #990000;
+  box-shadow: 0 5px 18px rgba(80, 0, 0, 0.08);
+}
+
+.biodata-choice-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.biodata-choice-card h4 {
+  margin: 0;
+  color: #7d0000;
+
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.biodata-choice-price {
+  flex-shrink: 0;
+  padding: 5px 11px;
+
+  color: #990000;
+  background: #fff2e5;
+  border: 1px solid #e9ccaa;
+  border-radius: 8px;
+
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.biodata-choice-recommended {
+  display: inline-block;
+  margin-top: 7px;
+
+  color: #96600c;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.biodata-choice-card p {
+  margin: 9px 0 13px !important;
+
+  color: #666666 !important;
+  font-size: 13px !important;
+  line-height: 1.6 !important;
+}
+
+/* ======================================================
+   CARD LINKS - SAME MAROON AS MAIN BUTTON
+====================================================== */
+
+.biodata-choice-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  width: 100%;
+  min-height: 43px;
+  padding: 10px 14px;
+
+  box-sizing: border-box;
+
+  background: #990000;
+  color: #ffffff;
+
+  border-radius: 8px;
+
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.biodata-choice-link:hover {
+  background: #700000;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.biodata-choice-link:focus-visible {
+  outline: 3px solid #d6a64f;
+  outline-offset: 3px;
+}
+
+.biodata-choice-link svg {
+  color: #ffffff;
+  font-size: 13px;
+}
+
+/* ======================================================
+   FOOTER NOTE
+====================================================== */
+
+.biodata-choice-note {
+  margin: 18px 0 0 !important;
+
+  color: #777777 !important;
+  font-size: 12px !important;
+  line-height: 1.6 !important;
+}
+
+/* ======================================================
+   MOBILE RESPONSIVE
+====================================================== */
+
+@media (max-width: 600px) {
+  .biodata-choice-overlay {
+    padding: 12px;
+  }
+
+  .biodata-choice-modal {
+    padding: 28px 16px 20px;
+    border-radius: 16px;
+    max-height: 92vh;
+  }
+
+  .biodata-choice-header h3 {
+    font-size: 22px;
+  }
+
+  .biodata-choice-card {
+    padding: 14px;
+  }
+
+  .biodata-choice-card h4 {
+    font-size: 14px;
+  }
+
+  .biodata-choice-price {
+    font-size: 14px;
+    padding: 4px 9px;
+  }
+
+  .biodata-choice-link {
+    font-size: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .biodata-choice-modal {
+    animation: none;
+  }
+}
+
+
+

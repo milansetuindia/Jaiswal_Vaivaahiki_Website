@@ -41,9 +41,11 @@ function ManageBiodata() {
 
       setError("");
 
-      const response = await fetch(
-        `${API_URL}/api/biodatas`
+
+      const response = await adminFetch(
+          "/api/biodatas/admin/all"
       );
+
 
       const result =
         await response.json();
@@ -689,6 +691,31 @@ function ManageBiodata() {
                           >
                             {biodata.profileNumber || "Not assigned"}
                           </small>
+
+
+                          {biodata.submissionSource === "user" && (
+                            <small
+                              style={{
+                                display: "block",
+                                marginTop: "5px",
+                                fontWeight: "600",
+                                color:
+                                  biodata.approvalStatus === "approved"
+                                    ? "#067647"
+                                    : biodata.approvalStatus === "rejected"
+                                    ? "#b42318"
+                                    : "#a15c00",
+                              }}
+                            >
+                              User Submission —{" "}
+                              {biodata.approvalStatus === "approved"
+                                ? "Approved"
+                                : biodata.approvalStatus === "rejected"
+                                ? "Rejected"
+                                : "Pending Review"}
+                            </small>
+                          )}
+
                         </span>
 
 
@@ -729,12 +756,26 @@ function ManageBiodata() {
 
                           {/* VIEW */}
 
-                          <Link
-                            to={`/biodata/${biodata._id}`}
-                            className="view-btn"
-                          >
-                            View
-                          </Link>
+
+                          {/* VIEW / REVIEW BIODATA */}
+
+                          {biodata.submissionSource === "user" &&
+                          biodata.approvalStatus !== "approved" ? (
+                            <Link
+                              to={`/admin/biodata/edit/${biodata._id}`}
+                              className="view-btn"
+                            >
+                              Review
+                            </Link>
+                          ) : (
+                            <Link
+                              to={`/biodata/${biodata._id}`}
+                              className="view-btn"
+                            >
+                              View
+                            </Link>
+                          )}
+
 
 
                           {/* EDIT */}

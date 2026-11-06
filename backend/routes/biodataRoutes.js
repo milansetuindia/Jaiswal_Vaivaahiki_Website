@@ -16,6 +16,19 @@ const {
   updateBiodata,
 } = require("../controllers/biodataController");
 
+
+
+const {
+  getPublicBiodatas,
+  getPublicBiodataById,
+  getAdminBiodatas,
+  getAdminBiodataById,
+  setApprovalStatus,
+  getPublicPdf,
+} = require("../controllers/userBiodataController");
+
+
+
 const router = express.Router();
 
 // ======================================================
@@ -110,10 +123,12 @@ router.post(
 // GET ALL BIODATAS
 // ======================================================
 
+
 router.get(
   "/",
-  getAllBiodatas
+  getPublicBiodatas
 );
+
 
 // ======================================================
 // DELETE BIODATA
@@ -154,10 +169,12 @@ router.put(
 // GET BIODATA BY ID
 // ======================================================
 
+
 router.get(
   "/:id",
-  getBiodataById
+  getPublicBiodataById
 );
+
 
 
 
@@ -324,6 +341,52 @@ router.put(
     }
   }
 );
+
+
+
+
+
+// ======================================================
+// ADMIN - VIEW ALL INCLUDING PENDING
+// ======================================================
+
+router.get(
+  "/admin/all",
+  adminAuth,
+  getAdminBiodatas
+);
+
+// ======================================================
+// ADMIN - VIEW PRIVATE BIODATA DETAILS
+// ======================================================
+
+router.get(
+  "/admin/:id",
+  adminAuth,
+  getAdminBiodataById
+);
+
+// ======================================================
+// ADMIN - APPROVE OR REJECT USER SUBMISSION
+// ======================================================
+
+router.patch(
+  "/admin/:id/approval",
+  adminAuth,
+  setApprovalStatus
+);
+
+// ======================================================
+// PUBLIC PDF ACCESS
+// ======================================================
+
+router.get(
+  "/:id/pdf",
+  getPublicPdf
+);
+
+
+
 
 
 // ======================================================

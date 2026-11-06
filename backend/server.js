@@ -16,6 +16,12 @@ const {
 } = require("./utils/adminSecurity");
 
 
+
+const {
+  ensureUserIndexes,
+} = require("./utils/userIndexes");
+
+
 // ======================================================
 // LOAD ENVIRONMENT VARIABLES
 // ======================================================
@@ -33,6 +39,24 @@ const {
 } = require("./controllers/biodataController");
 
 const adminRoutes = require("./routes/adminRoutes");
+
+const userRoutes = require("./routes/userRoutes");
+
+
+const userBiodataRoutes = require(
+  "./routes/userBiodataRoutes"
+);
+
+
+
+const passwordResetRoutes = require(
+  "./routes/passwordResetRoutes"
+);
+
+const {
+  ensurePasswordResetIndexes,
+} = require("./utils/passwordResetIndexes");
+
 
 const app = express();
 
@@ -56,6 +80,7 @@ app.use(
     allowedHeaders: [
       "Content-Type",
       "X-Admin-CSRF",
+      "X-User-CSRF",
     ],
     methods: [
       "GET",
@@ -67,6 +92,7 @@ app.use(
     ],
   })
 );
+
 
 
 app.use(express.json({ limit: "20kb" }));
@@ -155,23 +181,49 @@ app.get("/api/health", (req, res) => {
 // ROUTES
 // ======================================================
 
+
 app.use(
   "/api/admin",
   adminRoutes
 );
 
 app.use(
+  "/api/users",
+  userRoutes
+);
+
+
+app.use(
+  "/api/users/password-reset",
+  passwordResetRoutes
+);
+
+
+app.use(
   "/api/biodatas",
   biodataRoutes
 );
+
+
+
+app.use(
+  "/api/user-biodata",
+  userBiodataRoutes
+);
+
 
 // ======================================================
 // START SERVER
 // ======================================================
 
+
 async function startServer() {
   await connectDatabase();
+
   await ensureAdminIndexes(db);
+  await ensureUserIndexes(db);
+  await ensurePasswordResetIndexes(db);
+
 
 
   // ====================================================

@@ -40,34 +40,36 @@ function uploadBufferToCloudinary(
 // DELETE CLOUDINARY FILE
 // ======================================================
 
+
+
 async function deleteCloudinaryFile(
   publicId,
-  resourceType
+  resourceType = "image",
+  deliveryType = "upload"
 ) {
-  if (!publicId) {
-    return;
-  }
+  if (!publicId) return;
 
   try {
     await cloudinary.uploader.destroy(
       publicId,
       {
-        resource_type:
-          resourceType || "image",
+        resource_type: resourceType,
+        type: deliveryType,
       }
     );
 
     console.log(
-      `Cloudinary ${resourceType || "image"} deleted:`,
+      "Cloudinary file deleted:",
       publicId
     );
   } catch (error) {
     console.error(
-      `Cloudinary ${resourceType || "image"} deletion error:`,
+      "Cloudinary deletion error:",
       error.message
     );
   }
 }
+
 
 // ======================================================
 // DELETE OLD LOCAL FILE
@@ -742,8 +744,14 @@ async function updateBiodata(
               public_id:
                 `${uniquePdfId}.pdf`,
 
-              resource_type:
-                "raw",
+
+              resource_type: "raw",
+
+              type:
+                existingBiodata.submissionSource === "user"
+                  ? "authenticated"
+                  : "upload",
+
             }
           );
 
@@ -752,6 +760,12 @@ async function updateBiodata(
 
         updateData.biodataPdfPublicId =
           newPdf.public_id;
+
+        updateData.biodataPdfType =
+          existingBiodata.submissionSource === "user"
+            ? "authenticated"
+            : "upload";
+
 
       } catch (pdfError) {
         console.error(
@@ -884,10 +898,13 @@ async function updateBiodata(
       if (
         existingBiodata.biodataPdfPublicId
       ) {
+
         await deleteCloudinaryFile(
           existingBiodata.biodataPdfPublicId,
-          "raw"
+          "raw",
+          existingBiodata.biodataPdfType || "upload"
         );
+
       } else {
         await deleteLegacyLocalFile(
           existingBiodata.biodataPdf,
@@ -1021,10 +1038,13 @@ async function deleteBiodata(
       biodata.biodataPdfPublicId
     ) {
 
+
       await deleteCloudinaryFile(
         biodata.biodataPdfPublicId,
-        "raw"
+        "raw",
+        biodata.biodataPdfType || "upload"
       );
+
 
     } else {
 

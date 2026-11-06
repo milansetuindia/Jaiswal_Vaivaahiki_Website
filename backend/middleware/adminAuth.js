@@ -57,10 +57,14 @@ async function adminAuth(req, res, next) {
       ["POST", "PUT", "PATCH", "DELETE"]
         .includes(req.method)
     ) {
+
       const allowedOrigins = [
-        "https://jaiswal-vaivaahiki.netlify.app",
         "http://localhost:5173",
+        "https://jaiswal-vaivaahiki.netlify.app",
+        "https://jaiswal-vaivaahiki.com",
+        "https://www.jaiswal-vaivaahiki.com",
       ];
+
 
       if (!allowedOrigins.includes(req.get("origin"))) {
         return res.sendStatus(403);

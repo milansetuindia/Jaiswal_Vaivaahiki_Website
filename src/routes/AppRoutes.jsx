@@ -1,4 +1,3 @@
-// src/routes/AppRoutes.jsx
 
 import {
   BrowserRouter,
@@ -20,7 +19,28 @@ import AddBiodata from "../pages/Admin/AddBiodata";
 import ManageBiodata from "../pages/Admin/ManageBiodata";
 import EditBiodata from "../pages/Admin/EditBiodata";
 
+import UserAddBiodata from "../pages/User/AddBiodata";
+
+import UserForgotPassword from "../pages/User/ForgotPassword";
+
 import ProtectedAdminRoute from "../components/admin/ProtectedAdminRoute";
+
+
+
+// ======================================================
+// NEW USER PORTAL
+// ======================================================
+
+import UserRegister from "../pages/User/Register";
+import UserVerifyEmail from "../pages/User/VerifyEmail";
+import UserLogin from "../pages/User/Login";
+import UserDashboard from "../pages/User/Dashboard";
+
+import ProtectedUserRoute from "../components/user/ProtectedUserRoute";
+
+// ======================================================
+// OTHER EXISTING PAGES
+// ======================================================
 
 import NotFound from "../pages/NotFound";
 import Contact from "../pages/Contact";
@@ -32,7 +52,6 @@ import Terms from "../pages/Terms";
 function AppRoutes() {
   return (
     <BrowserRouter>
-
       <Routes>
 
         {/* =========================================
@@ -94,17 +113,57 @@ function AppRoutes() {
           element={<Biodata />}
         />
 
+        {/* =========================================
+            NEW USER REGISTRATION / LOGIN
+        ========================================= */}
+
+        <Route
+          path="/user/register"
+          element={<UserRegister />}
+        />
+
+        <Route
+          path="/user/verify-email"
+          element={<UserVerifyEmail />}
+        />
+
+        <Route
+          path="/user/login"
+          element={<UserLogin />}
+        />
+
+        {/* =========================================
+            PROTECTED USER PORTAL
+        ========================================= */}
+
+        <Route
+          element={<ProtectedUserRoute />}
+        >
+          <Route
+            path="/user/dashboard"
+            element={<UserDashboard />}
+          />
+          <Route
+            path="/user/biodata/add"
+            element={<UserAddBiodata />}
+          />
+        </Route>
+
+
+        <Route
+          path="/user/forgot-password"
+          element={<UserForgotPassword />}
+        />
+
 
         {/* =========================================
             ADMIN LOGIN
-            This page remains public.
         ========================================= */}
 
         <Route
           path="/admin/login"
           element={<AdminLogin />}
         />
-
 
         {/* =========================================
             PROTECTED ADMIN ROUTES
@@ -113,7 +172,6 @@ function AppRoutes() {
         <Route
           element={<ProtectedAdminRoute />}
         >
-
           <Route
             path="/admin"
             element={<Admin />}
@@ -133,12 +191,10 @@ function AppRoutes() {
             path="/admin/biodata/edit/:id"
             element={<EditBiodata />}
           />
-
         </Route>
 
-
         {/* =========================================
-            404
+            PAGE NOT FOUND
         ========================================= */}
 
         <Route
@@ -147,7 +203,6 @@ function AppRoutes() {
         />
 
       </Routes>
-
     </BrowserRouter>
   );
 }
